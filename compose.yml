@@ -5,7 +5,6 @@ services:
     command: python manage.py migrate --noinput
     restart: "no"
     environment:
-      # These will be pulled securely from your Defang configuration
       - DATABASE_URL
       - SECRET_KEY
       - DEBUG=False
@@ -24,16 +23,39 @@ services:
         target: 8000
         published: 8000
     environment:
-      # Just list the keys here. Provide the values in the Defang dashboard.
+      # Core Django Config
       - SECRET_KEY
       - DEBUG=False
       - DATABASE_URL
+      - HOSTS
+      - CSRF_TRUSTED_ORIGINS
+      - ADMIN_URL
+
+      # Email Config
       - EMAIL_HOST
       - EMAIL_HOST_USER
       - EMAIL_HOST_PASSWORD
+
+      # Image Processing
       - IMAGEKIT_PRIV_KEY
       - IMAGEKIT_PUB_KEY
       - IMAGEKIT_URL
+
+      # Vector Database
+      - PINECONE_INDEX_NAME
+      - PINECONE_API_KEY
+
+      # AI Coach & Engines
+      - COHERE_API_KEY
+      - COHERE_API_KEY_FOR_EVAL_ENGINE
+      - COHERE_API_KEY_FOR_PROBLEM_GENERATION
+      - COHERE_API_KEY_FOR_DUEL
+      - COHERE_API_KEY_FOR_QUIZ
+      - COHERE_API_KEY_FOR_CAREER_COACH
+      - HF_TOKEN
+      
+      # SSL/Security
+      - CA_CERT
     depends_on:
       migrate:
         condition: service_completed_successfully
