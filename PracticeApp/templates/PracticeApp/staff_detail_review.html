@@ -1,0 +1,140 @@
+{% extends "BlogApp/base.html" %}
+{% block body %}
+
+<div class="container-fluid page-header mb-5 py-5">
+    <div class="container">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Candidate Examination Audit</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb text-uppercase">
+                <li class="breadcrumb-item"><a class="text-white" href="/auth/dashboard">Dashboard</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="/practice/certifications/staff-queue/">Queue</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">Audit Log #{{ attempt.id }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container py-4">
+    <div class="row">
+        
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-sm border-0 rounded-3 sticky-top" style="top: 24px; z-index: 10;">
+                <div class="card-header bg-dark text-white py-3">
+                    <h5 class="mb-0 fw-bold text-light"><i class="fa fa-info-circle me-2 text-light"></i>Audit Overview</h5>
+                </div>
+                <div class="card-body p-4">
+                    <!-- SECTION 1: CANDIDATE DOSSIER INFO -->
+                    <div class="mb-4">
+                        <small class="text-muted d-block uppercase tracking-wider text-xs mb-2">Candidate Student</small>
+                        
+                        <!-- Clean Flex-row container that collapses nicely on mobile -->
+                        <div class="d-flex flex-column flex-sm-row align-items-center align-items-sm-start bg-light p-3 rounded-3 border mb-3">
+                            <!-- Profile Avatar Column -->
+                            <div class="me-sm-3 mb-3 mb-sm-0 flex-shrink-0">
+                                {% if attempt.student.profile and attempt.student.profile.profile_pic %}
+                                    <img src="{{attempt.student.profile.profile_pic}}" alt="{{attempt.student.username}}" class="rounded-circle shadow-sm border border-2 border-white" style="width: 80px; height: 80px; object-fit: cover;">
+                                {% else %}
+                                    <img src="https://ik.imagekit.io/hivepulse/hivepulse/default/default-user.jpg" alt="{{attempt.student.username}}" class="rounded-circle shadow-sm border border-2 border-white" style="width: 80px; height: 80px; object-fit: cover;">
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Metadata Text Column -->
+                            <div class="text-center text-sm-start w-100 overflow-hidden">
+                                <h5 class="text-dark fw-bold mb-1 text-truncate">{{ attempt.student.username }}</h5>
+                                <span class="text-muted small d-block mb-2 text-truncate"><i class="fa fa-envelope me-1"></i>{{ attempt.student.email }}</span>
+                                
+                                <!-- CodeVisor Gamification Badge Metric -->
+                                <div class="d-inline-flex align-items-center bg-white px-2 py-1 rounded border shadow-2xs">
+                                    <i class="fa fa-trophy text-warning me-2 small"></i>
+                                    <span class="text-dark fw-bold small">
+                                        CodeVisor ELO: <span class="text-primary font-monospace">{{ attempt.student.profile.elo_score|default:"0" }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- SECTION 2: TARGET COMPETENCY -->
+                    <div class="mb-3 p-2 px-3 border-start border-3 border-dark bg-light rounded-end">
+                        <small class="text-muted d-block uppercase tracking-wider text-xs">Competency Field</small>
+                        <span class="text-dark fw-bold fs-6"><i class="fa fa-code-branch text-muted me-2 small"></i>{{ attempt.domain.display_name }}</span>
+                    </div>
+                
+                    <!-- SECTION 3: GRADING STATISTICS -->
+                    <div class="mb-4 p-2 px-3 border-start border-3 {% if attempt.score_percentage >= 70 %}border-success bg-success-light{% else %}border-danger bg-danger-light{% endif %} rounded-end">
+                        <small class="text-muted d-block uppercase tracking-wider text-xs">AI Computed Grade Score</small>
+                        <span class="fs-2 fw-bold font-monospace d-block {% if attempt.score_percentage >= 70 %}text-success{% else %}text-danger{% endif %}">
+                            <i class="fa {% if attempt.score_percentage >= 70 %}fa-check{% else %}fa-times{% endif %} me-2 fs-4"></i>{{ attempt.score_percentage }}%
+                        </span>
+                    </div>
+                
+                    <hr class="my-4 opacity-25">
+                
+                    <!-- COHERE ANALYTICS CARD -->
+                    <div class="p-3 bg-light rounded border border-primary border-start border-4 mb-4 shadow-3xs">
+                        <h6 class="fw-bold text-dark mb-2"><i class="fa fa-brain text-primary me-2"></i>Cohere AI Performance Evaluation Note:</h6>
+                        <p class="text-muted small mb-0 font-italic">"{{ ai_note }}"</p>
+                    </div>
+                
+                    <!-- ACTION CONTROL HANDLERS -->
+                    <form method="POST" action="/practice/certifications/staff-review/{{ attempt.id }}/" class="d-flex flex-column gap-2 mt-4">
+                        {% csrf_token %}
+                        
+                        <button type="submit" name="action_decision" value="approve" class="btn btn-success text-white btn-lg fw-bold w-100 shadow-sm py-3">
+                            <i class="fa fa-check-circle me-2"></i>Approve & Issue Certificate
+                        </button>
+                        
+                        <button type="submit" name="action_decision" value="reject" class="btn btn-outline-danger btn-md fw-bold w-100 py-2">
+                            <i class="fa fa-times-circle me-2"></i>Reject Submission Sheet
+                        </button>
+                    </form>
+                
+                    <a href="/practice/certifications/staff-queue/" class="btn btn-sm btn-link text-muted fw-bold d-block text-center mt-3 text-decoration-none">
+                        <i class="fa fa-arrow-left me-1"></i>Return to Listing Tables
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <h4 class="fw-bold text-dark mb-4"><i class="fa fa-list-ol text-primary me-2"></i>Detailed Question & Response Sheet Log</h4>
+
+            {% for item in formatted_questions %}
+            <div class="card shadow-sm border-0 rounded-3 mb-3 {% if item.student_answer == item.correct_answer %}border-start border-success border-4{% else %}border-start border-danger border-4{% endif %}">
+                <div class="card-body p-4">
+                    <h6 class="fw-bold text-dark mb-3">
+                        <span class="text-primary me-1">Q{{ forloop.counter }}.</span> {{ item.question_text }}
+                    </h6>
+                    
+                    <div class="row g-2 mt-2">
+                        <div class="col-md-6">
+                            <div class="p-2 px-3 rounded small {% if item.student_answer == item.correct_answer %}bg-success-light border border-success-subtle{% else %}bg-danger-light border border-danger-subtle{% endif %}">
+                                <small class="text-muted d-block text-xs uppercase fw-bold">Candidate Answered:</small>
+                                <span class="fw-medium text-dark">{{ item.student_answer }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="p-2 px-3 rounded small bg-light border">
+                                <small class="text-muted d-block text-xs uppercase fw-bold text-success">Valid System Key Answer:</small>
+                                <span class="fw-bold text-success">{{ item.correct_answer }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .bg-success-light { background-color: #d1e7dd; }
+    .bg-danger-light { background-color: #f8d7da; }
+    .text-xs { font-size: 0.75rem; }
+    .uppercase { text-transform: uppercase; }
+    .tracking-wider { tracking: 0.05em; }
+</style>
+
+{% endblock %}

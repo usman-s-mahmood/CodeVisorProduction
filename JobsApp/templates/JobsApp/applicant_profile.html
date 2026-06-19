@@ -1,0 +1,181 @@
+{% extends "BlogApp/base.html" %}
+{% block body %}
+
+<div class="container-fluid page-header mb-5 py-5">
+    <div class="container">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Candidate Profile</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb text-uppercase">
+                <li class="breadcrumb-item"><a class="text-white" href="#">Back to Applicant List</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">{{ applicant.username }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-4">
+        
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 rounded-3 text-center mb-4">
+                <div class="card-body p-5">
+                    <div class="bg-light text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-4" style="width: 100px; height: 100px;">
+                        {% if applicant.profile and applicant.profile.profile_pic %}
+                            <img src="{{applicant.profile.profile_pic}}" alt="{{applicant.username}}" class="rounded-circle img-fluid shadow-sm" style="width: 100px; height: 100px; object-fit: cover;">
+                        {% else %}
+                            <img src="https://ik.imagekit.io/hivepulse/hivepulse/default/default-user.jpg" alt="{{applicant.username}}" class="rounded-circle img-fluid shadow-sm" style="width: 100px; height: 100px; object-fit: cover;">
+                        {% endif %}
+                    </div>
+                    
+                    <h3 class="fw-bold text-dark mb-1">{{ applicant.get_full_name|default:applicant.username }}</h3>
+                    <p class="text-muted"><i class="fa fa-envelope me-2"></i>{{ applicant.email }}</p>
+
+                    <hr class="my-4">
+
+                    <h5 class="fw-bold mb-3">Platform Stats</h5>
+                    <ul class="list-group list-group-flush text-start">
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <span><i class="fa fa-code text-info me-2"></i>Skill Level</span>
+                            <span class="badge bg-dark rounded-pill">{{ profile.skill_level|title }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <span><i class="fa fa-star text-warning me-2"></i>Total XP</span>
+                            <span class="badge bg-dark rounded-pill">{{ profile.elo_score|default:"0" }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <span><i class="fa fa-check-circle text-success me-2"></i>Problems Solved</span>
+                            <span class="badge bg-dark rounded-pill">{{ problems_solved_count }}</span>
+                        </li>
+                    </ul>
+
+                    {% if profile.interests %}
+                    <div class="mt-4 text-start">
+                        <h6 class="fw-bold mb-2">Interests</h6>
+                        <p class="text-muted small">{{ profile.interests }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            
+            <div class="card shadow-sm border-0 rounded-3 mb-4">
+                <div class="card-header bg-white py-3 border-bottom">
+                    <h5 class="mb-0 text-dark fw-bold">
+                        <i class="fa fa-award text-success me-2"></i>CodeVisor Verified Credentials
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <p class="text-muted small mb-4"></p>
+                    
+                    <div class="row g-3">
+                        {% for cert in verified_certifications %}
+                            <div class="col-md-6">
+                                <div class="p-3 border rounded-3 bg-light position-relative overflow-hidden d-flex flex-column h-100 border-start border-success border-4 shadow-3xs">
+                                    
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <div>
+                                            <h6 class="fw-bold text-dark mb-1">{{ cert.domain.display_name }}</h6>
+                                            <small class="text-muted font-monospace uppercase text-xs d-block">Credential Token: CV-{{ cert.id|stringformat:"04d" }}</small>
+                                        </div>
+                                        <span class="badge bg-success text-white px-2 py-1 small rounded-pill flex-shrink-0">
+                                            <i class="fa fa-check-circle me-1"></i>Verified
+                                        </span>
+                                    </div>
+                                    
+                                    <hr class="my-2 opacity-25">
+                                    
+                                    <div class="mt-auto d-flex justify-content-between align-items-center text-muted small">
+                                        <span><i class="fa fa-calculator me-1 text-success"></i>Exam Grade: <strong class="text-dark">{{ cert.score_percentage }}%</strong></span>
+                                        <span><i class="fa fa-calendar-alt me-1"></i>Issued: {{ cert.updated_at|date:"M Y" }}</span>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="col-12 text-center text-muted py-4 bg-light rounded-3 border border-dashed">
+                                <i class="fa fa-certificate fa-2x mb-2 text-muted opacity-50"></i>
+                                <p class="mb-0 small fw-medium">No system-verified certifications have been issued to this candidate yet.</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0 rounded-3 mb-4">
+                <div class="card-body p-5">
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+                        <h4 class="text-primary fw-bold mb-0">Application: {{ job.title }}</h4>
+                        <span class="badge bg-secondary fs-6 py-2 px-3">Current Status: {{ application.get_status_display }}</span>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold text-dark mb-1">Applied On</h6>
+                            <p class="text-muted"><i class="fa fa-calendar me-2"></i>{{ application.applied_at|date:"F d, Y - h:i A" }}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold text-dark mb-1">Availability</h6>
+                            <p class="text-muted"><i class="fa fa-clock me-2"></i>{{ application.get_availability_display }}</p>
+                        </div>
+                        {% if application.relevant_project_url %}
+                        <div class="col-12 mb-3">
+                            <h6 class="fw-bold text-dark mb-1">Relevant Project</h6>
+                            <a href="{{ application.relevant_project_url }}" target="_blank" class="text-primary"><i class="fa fa-link me-2"></i>{{ application.relevant_project_url }}</a>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    {% if application.cover_letter %}
+                    <h6 class="fw-bold text-dark mb-2">Cover Letter</h6>
+                    <div class="p-4 bg-light rounded border mb-4 text-muted" style="line-height: 1.7;">
+                        {{ application.cover_letter|safe }}
+                    </div>
+                    {% endif %}
+
+                    <div class="p-4 border border-primary border-2 rounded-3 bg-white">
+                        <h5 class="fw-bold text-dark mb-3">Recruiter Actions</h5>
+                        <div class="row align-items-end g-3">
+                            
+                            <div class="col-md-5">
+                                <a href="{{ application.cv.url }}" target="_blank" class="btn btn-primary btn-lg w-100 fw-bold">
+                                    <i class="fa fa-file-pdf me-2"></i>Download CV
+                                </a>
+                            </div>
+
+                            <div class="col-md-7">
+                                <form method="POST" action="">
+                                    {% csrf_token %}
+                                    <label class="form-label fw-bold text-dark small mb-1">Update Status:</label>
+                                    <div class="input-group">
+                                        <select name="new_status" class="form-select border-secondary">
+                                            {% for key, value in status_choices %}
+                                                <option value="{{ key }}" {% if application.status == key %}selected{% endif %}>
+                                                    {{ value }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                        <button type="submit" class="btn btn-success fw-bold px-4">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .text-xs { font-size: 0.72rem; }
+    .uppercase { text-transform: uppercase; }
+    .shadow-3xs { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+</style>
+
+{% endblock %}

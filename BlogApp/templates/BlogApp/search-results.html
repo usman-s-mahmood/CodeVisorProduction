@@ -1,0 +1,127 @@
+{% extends "BlogApp/base.html" %}
+
+{% block body %}
+
+
+<div class="container-fluid page-header mb-5 py-5">
+    <div class="container">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Search: {{query}}</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb text-uppercase">
+                <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">Search Results</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<br>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 mb-5">
+                {% if post_check == False %}
+                    <p class="fs-1 text-center"><strong>No posts found for this query: {{query}}</strong></p>
+                {% endif %}
+                {% for post in posts %}
+                    <div class="row">
+                        {% comment %} <form action="/posts/{{post.title|slugify}}" id="imageMainPost{{post.id}}" method=POST>
+                            {% csrf_token %}
+                            <input type="hidden" name="post_id" value={{post.id}}>
+                        </form>
+                        <a 
+                            href="javascript:void(0)"
+                            onclick="document.getElementById('imageMainPost{{post.id}}').submit();"
+                        > {% endcomment %}
+                        <a href="/posts/{{post.slug}}">
+                        {% if post.thumbnail %}
+                            <img src="{{post.thumbnail}}/tr:w-720,h-360" alt="{{post.title}}" class="img-fluid" width="720px">
+                        {% else %}
+                            <img src="https://ik.imagekit.io/hivepulse/hivepulse/default/default-post.png" alt="{{post.title}}" class="img-fluid" width="720px">
+                        {% endif %}
+                        </a>
+                    </div>
+                    <div class="row">
+                        {% comment %} <a 
+                            href="javascript:void(0)"
+                            onclick="document.getElementById('imageMainPost{{post.id}}').submit();"
+                        > {% endcomment %}
+                        <a href="/posts/{{post.slug}}">
+                            <p class="fs-3"><strong class="text-dark">{{post.title}}</strong></p>
+                        </a>
+                        <p class="fs-6"><strong class="text-secondary">{{post.tagline|slice:":20"}} ...</strong></p>
+                    </div>
+                    <br>
+                {% endfor %}
+            </div>
+            <div class="col-md-4">
+                <div class="row">
+                        <form class="d-flex" role="search" method=POST action="/search">
+                            {% csrf_token %}
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+                            <button class="btn btn-outline-primary" type="submit">Search</button>
+                        </form>
+                </div>
+                <br>
+                <div class="row">
+                    <hr>
+                        <p class="fs-4 text-center"><strong>Categories</strong></p>
+                    <hr>
+                    {% for value in categories %}
+                        <a href="/category/{{value|slugify}}">
+                            <p class="fs-6 text-center"><strong class="text-secondary">{{value}}</strong></p>
+                        </a>
+                    {% endfor %}
+                </div>
+                <div class="row d-flex">
+                    <hr>
+                        <p class="fs-3 text-center"><strong>Recent Posts</strong></p>
+                    <hr>
+                    <div class="row d-flex">
+                    {% for post in recents %}
+                        <div class="row mt-3">
+                            <div class="col-md-4 text-center">
+                                {% comment %} <form action="/posts/{{post.title|slugify}}" id="imageRecentPost{{post.id}}" method=POST>
+                                    {% csrf_token %}
+                                    <input type="hidden" name="post_id" value={{post.id}}>
+                                </form>
+                                <a 
+                                    href="javascript:void(0)"
+                                    onclick="document.getElementById('imageRecentPost{{post.id}}').submit();"
+                                > {% endcomment %}
+                                <a href="/posts/{{post.slug}}">
+                                    {% if post.thumbnail %}
+                                        <img src="{{post.thumbnail}}" alt="{{post.title}}" class="img-fluid" width="100px">
+                                    {% else %}
+                                        <img src="https://ik.imagekit.io/hivepulse/hivepulse/default/default-post.png" alt="{{post.title}}" class="img-fluid" width="100px">
+                                    {% endif %}
+                                </a>
+                            </div>
+                            <div class="col-md-8 text-center">
+                                {% comment %} <a 
+                                    href="javascript:void(0)"
+                                    onclick="document.getElementById('imageRecentPost{{post.id}}').submit();"
+                                > {% endcomment %}
+                                <a href="/posts/{{post.slug}}">
+                                {{post.title|slice:":20"}} ...</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div>
+                {% if posts.has_previous %}
+                    <a href="?page={{posts.previous_page_number}}" class="btn btn-primary me-1">Previous</a>
+                {% endif %}
+                {% comment %} {{posts.number}}
+                {{posts.paginator.num_pages}} {% endcomment %}
+                {% if posts.has_next %}
+                    <a href="?page={{posts.next_page_number}}" class="btn btn-primary">Next</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+<br>
+{% endblock body %}

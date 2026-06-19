@@ -1,0 +1,90 @@
+{% extends "BlogApp/base.html" %}
+{% block body %}
+
+<!-- Page Header Start -->
+<div class="container-fluid page-header mb-5 py-5">
+    <div class="container text-center">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Credential Verification Service</h1>
+        <p class="text-white-50 lead">Instantly validate the integrity and authenticity of professional engineering certifications issued by CodeVisor.</p>
+    </div>
+</div>
+
+<!-- Main Core Verification Console Workspace Layout -->
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            
+            <!-- SEARCH CONSOLE PANEL -->
+            <div class="card shadow-md border-0 rounded-3 mb-4">
+                <div class="card-body p-5 text-center">
+                    <i class="fa fa-shield-alt fa-3x text-primary mb-3"></i>
+                    <h4 class="fw-bold text-dark mb-3">Enter Certificate Verification Token</h4>
+                    
+                    <form method="GET" action="/practice/certifications/verify/#cert-section">
+                        <div class="input-group input-group-lg shadow-sm rounded">
+                            <input type="text" name="token" value="{{ query_token }}" class="form-control font-monospace text-center border-secondary uppercase" placeholder="e.g., CV-0012" required>
+                            <button type="submit" class="btn btn-primary fw-bold px-4">Verify Status</button>
+                        </div>
+                    </form>
+                    <div class="form-text text-muted mt-2 small">Verification identifiers are located along the lower bottom boundary margins of official PDF documents.</div>
+                </div>
+            </div>
+            <div id="cert-section">
+            <!-- RESULT PROCESSING MATRIX PIPELINE PANEL -->
+            {% if searched %}
+                {% if attempt %}
+                    <!-- TRUE DISCOVERED TOKEN SUCCESS CARD MATCH -->
+                    <div class="card border-0 shadow-sm rounded-3 overflow-hidden border-top border-success border-4 animated fadeInUp">
+                        <div class="card-body p-5">
+                            <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
+                                <div class="bg-success text-white rounded-circle p-3 me-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                    <i class="fa fa-badge-check fa-2x"></i>
+                                </div>
+                                <div>
+                                    <span class="badge bg-success text-white px-3 py-1 mb-1 rounded-pill text-uppercase">Authentic Credential</span>
+                                    <h4 class="text-dark fw-bold mb-0">Token CV-{{ attempt.id|stringformat:"04d" }} is Active</h4>
+                                </div>
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-sm-6">
+                                    <small class="text-muted d-block uppercase text-xs">Certified Professional</small>
+                                    <strong class="text-dark fs-5">{{ attempt.student.get_full_name|default:attempt.student.username }}</strong>
+                                </div>
+                                <div class="col-sm-6">
+                                    <small class="text-muted d-block uppercase text-xs">Competency Field Focus</small>
+                                    <strong class="text-primary fs-5">{{ attempt.domain.display_name }}</strong>
+                                </div>
+                                <div class="col-sm-6">
+                                    <small class="text-muted d-block uppercase text-xs">Examination Metric Grade</small>
+                                    <strong class="text-dark fs-5 font-monospace">{{ attempt.score_percentage }}% Score Index</strong>
+                                </div>
+                                <div class="col-sm-6">
+                                    <small class="text-muted d-block uppercase text-xs">Audited System Issue Timeline</small>
+                                    <strong class="text-dark fs-5">{{ attempt.updated_at|date:"F d, Y" }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <!-- INVALID RECORD FAILURE CARD OUTCOME -->
+                    <div class="alert alert-danger border-0 shadow-sm rounded-3 p-4 border-start border-danger border-4 d-flex align-items-start animated shake" role="alert">
+                        <i class="fa fa-times-circle fa-2x text-danger me-3 mt-1"></i>
+                        <div>
+                            <h5 class="fw-bold text-danger mb-1">Verification Failed</h5>
+                            <p class="mb-0 text-muted small">{{ error_message }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .text-xs { font-size: 0.72rem; }
+    .uppercase { text-transform: uppercase; }
+</style>
+
+{% endblock %}

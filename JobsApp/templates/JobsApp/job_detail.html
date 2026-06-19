@@ -1,0 +1,97 @@
+{% extends "BlogApp/base.html" %}
+{% block body %}
+
+<div class="container-fluid page-header mb-5 py-5">
+    <div class="container">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Role Details</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb text-uppercase">
+                <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="/marketplace/board/">Marketplace</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">{{ job.title }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-5">
+        
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 rounded-3 mb-4">
+                <div class="card-body p-5">
+                    <h2 class="text-primary fw-bold mb-3">{{ job.title }}</h2>
+                    <div class="d-flex align-items-center mb-4 text-muted">
+                        {% comment %} <i class="fa fa-building me-2"></i><span class="me-4">{{ job.recruiter.username }}</span> {% endcomment %}
+                        <i class="fa fa-building me-2"></i><span class="me-4">{{ job.company_name }}</span>
+                        <i class="fa fa-clock me-2"></i><span>Posted {{ job.created_at|date:"M d, Y" }}</span>
+                    </div>
+                    
+                    <hr class="mb-4">
+                    
+                    <div class="job-description text-dark" style="line-height: 1.8;">
+                        {{ job.description|safe }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow border-primary border-top border-5 rounded-3 sticky-top" style="top: 100px; z-index: 1;">
+                <div class="card-body p-4">
+                    <h4 class="fw-bold text-dark mb-4">Job Summary</h4>
+                    
+                    <ul class="list-unstyled text-muted mb-4">
+                        <li class="mb-3">
+                            <i class="fa fa-briefcase text-primary me-2"></i>
+                            <strong>Job Type:</strong><br>
+                            <span class="ms-4">{{ job.get_employment_type_display }}</span>
+                        </li>
+                        
+                        {% if job.location %}
+                        <li class="mb-3">
+                            <i class="fa fa-map-marker-alt text-primary me-2"></i>
+                            <strong>Location:</strong><br>
+                            <span class="ms-4">{{ job.location }}</span>
+                        </li>
+                        {% endif %}
+                        
+                        {% if job.salary_range %}
+                        <li class="mb-3">
+                            <i class="fa fa-money-bill-wave text-success me-2"></i>
+                            <strong>Salary Range:</strong><br>
+                            <span class="ms-4 text-success fw-bold">{{ job.salary_range }}</span>
+                        </li>
+                        {% endif %}
+                    </ul>
+
+                    <div class="d-grid gap-2">
+                        {% if not user.is_authenticated %}
+                            <a href="/auth/login/" class="btn btn-primary btn-lg fw-bold">Log In to Apply</a>
+                        
+                        {% elif user.profile.role == 'student' %}
+                            {% if job.is_active %}
+                                <a href="/marketplace/job/{{job.id}}/apply/" class="btn btn-success btn-lg fw-bold text-white shadow-sm">
+                                    <i class="fa fa-paper-plane me-2"></i>Apply Now
+                                </a>
+                            {% else %}
+                                <button class="btn btn-secondary btn-lg fw-bold" disabled>This position is closed</button>
+                            {% endif %}
+                        
+                        {% elif user.profile.role == 'recruiter' %}
+                            {% if user == job.recruiter %}
+                                <a href="/marketplace/edit-job/{{job.id}}" class="btn btn-warning btn-lg fw-bold text-white">Edit This Posting</a>
+                                <a href="/marketplace/delete-job/{{job.id}}" class="btn btn-danger btn-lg fw-bold text-white">Delete This Posting</a>
+                            {% else %}
+                                <button class="btn btn-outline-secondary btn-lg fw-bold" disabled>Recruiters Cannot Apply</button>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

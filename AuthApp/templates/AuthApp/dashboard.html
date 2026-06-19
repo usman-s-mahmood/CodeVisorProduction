@@ -1,0 +1,786 @@
+{% extends "BlogApp/base.html" %}
+
+{% block body %}
+
+<!-- Page Header Start (Untouched) -->
+<div class="container-fluid page-header mb-5 py-5">
+    <div class="container">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">User Dashboard</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb text-uppercase">
+                <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="#">Auth</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">Dashboard</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container mt-5">
+    
+    <!-- User Profile & Details Row -->
+    <div class="row g-4 mb-5">
+        <!-- Profile Picture & Actions -->
+        <div class="col-12 col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 text-center h-100">
+                <div class="card-body p-4">
+                    {% if user.profile and user.profile.profile_pic %}
+                        <img src="{{user.profile.profile_pic}}" alt="{{user.username}}" class="rounded-circle img-fluid shadow-sm mb-3" style="width: 120px; height: 120px; object-fit: cover;">
+                    {% else %}
+                        <img src="https://ik.imagekit.io/hivepulse/hivepulse/default/default-user.jpg" alt="{{user.username}}" class="rounded-circle img-fluid shadow-sm mb-3" style="width: 120px; height: 120px; object-fit: cover;">
+                    {% endif %}
+                    
+                    <h4 class="fw-bold">{{ user.first_name }} {{ user.last_name }}</h4>
+                    <p class="text-muted mb-4">@{{ user.username }}</p>
+                    
+                    <!-- Cleaned up buttons -->
+                    <div class="d-grid gap-2">
+                        {% if user.profile %}
+                            <a href="/auth/edit-profile" class="btn btn-primary rounded-pill">Edit Profile</a>
+                        {% else %}
+                            <a href="/auth/create-profile" class="btn btn-primary rounded-pill">Create Profile</a>
+                        {% endif %}
+                        
+                        <!-- Account Settings Dropdown -->
+                        <div class="dropdown d-grid">
+                            <button class="btn btn-light rounded-pill dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Account Settings
+                            </button>
+                            <ul class="dropdown-menu w-100 text-center border-0 shadow">
+                                <li><a class="dropdown-item" href="/auth/edit-user">Edit Account</a></li>
+                                <li><a class="dropdown-item" href="/auth/edit-password">Change Password</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="/auth/delete-user">Delete Account</a></li>
+                            </ul>
+                        </div>
+                        <a href="/auth/logout" class="btn btn-outline-danger rounded-pill mt-2">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Info & Bio -->
+        <div class="col-12 col-md-8">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold text-dark mb-4 border-bottom pb-2">Profile Information</h5>
+                    <div class="row mb-3">
+                        <div class="col-sm-4 text-muted">Email</div>
+                        <div class="col-sm-8">{{ user.email }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-4 text-muted">Member Since</div>
+                        <div class="col-sm-8">{{ user.date_joined|date:"F j, Y" }}</div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-sm-4 text-muted">Last Login</div>
+                        <div class="col-sm-8">{{ user.last_login|date:"F j, Y, g:i a" }}</div>
+                    </div>
+
+                    {% if is_student %}
+                    <div class="row mb-4">
+                        <div class="col-sm-4 text-muted">Elo Score</div>
+                        <div class="col-sm-8">{{ user.profile.elo_score }}</div>
+                    </div>
+                    {% endif %}
+                    
+
+                    <h5 class="fw-bold text-dark mb-3 border-bottom pb-2">About Me</h5>
+                    {% if user.profile %}
+                        <p class="text-secondary">{{ user.profile.about_user|default:"<i class='text-muted'>No bio provided.</i>" }}</p>
+                        {% if user.profile.social_link %}
+                            <a href="{{ user.profile.social_link }}" target="_blank" class="text-decoration-none text-primary">
+                                <i class="bi bi-link-45deg"></i> {{ user.profile.social_link }}
+                            </a>
+                        {% endif %}
+                    {% else %}
+                        <p class="text-muted">Create a profile to add your bio and social links.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if user.profile.role == 'student' %}
+<div id="student-apps-anchor"></div>
+
+<div class="card shadow-sm border-0 rounded-3 mt-4 mb-5">
+    <div class="card-header bg-white py-3">
+        <h4 class="mb-0 text-primary">My Job Applications</h4>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="px-4 py-3">Company</th>
+                        <th class="py-3">Role</th>
+                        <th class="py-3">Applied Date</th>
+                        <th class="py-3">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for app in applied_jobs %}
+                    <tr>
+                        <td class="px-4 fw-bold text-dark">{{ app.job.company_name }}</td>
+                        <td><a href="/marketplace/job/{{app.job.id}}" class="text-primary fw-bold">{{ app.job.title }}</a></td>
+                        <td class="text-muted small">{{ app.applied_at|date:"M d, Y" }}</td>
+                        <td>
+                            {% if app.status == 'pending' %}
+                                <span class="badge bg-warning text-dark">Pending Review</span>
+                            {% elif app.status == 'reviewed' %}
+                                <span class="badge bg-info text-white">Reviewed</span>
+                            {% elif app.status == 'interview' %}
+                                <span class="badge bg-success text-white">Interview Scheduled</span>
+                            {% elif app.status == 'rejected' %}
+                                <span class="badge bg-danger text-white">Rejected</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center py-4 text-muted">
+                            You haven't applied to any jobs yet. Check out the <a href="/marketplace/board/">Job Board</a>!
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    {% if applied_jobs.has_other_pages %}
+    <div class="card-footer bg-white py-3">
+        <nav aria-label="Student applications navigation">
+            <ul class="pagination justify-content-center mb-0">
+                {% if applied_jobs.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?student_app_page={{ applied_jobs.previous_page_number }}#student-apps-anchor">Previous</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">Previous</span></li>
+                {% endif %}
+                
+                <li class="page-item active">
+                    <span class="page-link">Page {{ applied_jobs.number }} of {{ applied_jobs.paginator.num_pages }}</span>
+                </li>
+                
+                {% if applied_jobs.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?student_app_page={{ applied_jobs.next_page_number }}#student-apps-anchor">Next</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">Next</span></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+
+
+    <!-- Algorithm Problems Section (Students Only) -->
+    {% if is_student %}
+    
+    <div class=" card shadow-sm border-0 rounded-3 mb-4 bg-light">
+        <div class="row card-body p-4 text-center">
+            <div class="col-6">
+                <p class="text-dark fs-4 mb-3 fw-bold uppercase tracking-wider">Get an overview of your progress</p>
+            </div>
+            <div class="col-6">
+                <a href="/auth/analytics" class="btn btn-primary">Analytics Dashboard</a>
+            </div>
+            
+        </div>
+    </div>
+    
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <h3 class="fw-bold text-dark mb-4">Practice Problems</h3>
+                    
+                    <!-- Tabs Navigation -->
+                    <ul class="nav nav-pills mb-4" id="problemTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link rounded-pill {% if active_tab == 'beginner' %}active{% endif %}" id="beginner-tab" data-bs-toggle="pill" data-bs-target="#beginner" type="button" role="tab">Beginner</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link rounded-pill {% if active_tab == 'intermediate' %}active{% endif %}" id="intermediate-tab" data-bs-toggle="pill" data-bs-target="#intermediate" type="button" role="tab">Intermediate</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link rounded-pill {% if active_tab == 'advanced' %}active{% endif %}" id="advanced-tab" data-bs-toggle="pill" data-bs-target="#advanced" type="button" role="tab">Advanced</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link rounded-pill text-info border border-info border-opacity-25" id="ai-arena-tab" data-bs-toggle="pill" data-bs-target="#ai-arena" type="button" role="tab">
+                                <i class="bi bi-robot"></i> My AI Arena
+                            </button>
+                        </li>
+                    </ul>
+
+                    <!-- Tabs Content -->
+                    <div class="tab-content" id="problemTabsContent">
+    
+                        <div class="tab-pane fade {% if active_tab == 'beginner' %}show active{% endif %}" id="beginner" role="tabpanel" tabindex="0">
+
+
+                            <div class="list-group list-group-flush">
+                                {% for prob in problems.beginner %}
+                                    <a href="/practice/solve/{{ prob.slug }}/" target="_blank" class="list-group-item list-group-item-action py-4 border-0 border-bottom">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <h6 class="mb-0 fw-bold">
+                                                <span class="text-success me-2">#{{ prob.problem_id }}</span>{{ prob.title }}
+                                            </h6>
+                                            {% if prob.solved_date %}
+                                                <span class="badge bg-secondary text-light border border-secondary rounded-pill ms-3 px-3 py-2">
+                                                    <i class="bi bi-check-circle-fill text-success me-1"></i> Solved {{ prob.solved_date|date:"M d, Y" }}
+                                                </span>
+                                            {% else %}
+                                                <span class="badge bg-success rounded-pill ms-3 px-3 py-2">Solve</span>
+                                            {% endif %}
+                                        </div>
+                                        <p class="text-muted small mb-3" style="line-height: 1.5;">
+                                            {{ prob.problem_description|truncatechars:120 }}
+                                        </p>
+                                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                                            <small class="text-secondary fw-semibold me-2">
+                                                <i class="bi bi-trophy"></i> Elo: {{ prob.elo_requirement }}
+                                            </small>
+                                            {% for tag in prob.topic_tags|slice:":3" %}
+                                                <span class="badge bg-light text-secondary border fw-normal">{{ tag }}</span>
+                                            {% endfor %}
+                                            {% if prob.topic_tags|length > 3 %}
+                                                <span class="badge bg-light text-secondary border fw-normal">+{{ prob.topic_tags|length|add:"-3" }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </a>
+                                {% empty %}
+                                    <div class="text-center py-5">
+                                        <p class="text-muted">No beginner problems available.</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    
+                        <div class="tab-pane fade {% if active_tab == 'intermediate' %}show active{% endif %}" id="intermediate" role="tabpanel" tabindex="0">
+                            <div class="list-group list-group-flush">
+                                {% for prob in problems.intermediate %}
+                                    <a href="/practice/solve/{{ prob.slug }}/" target="_blank" class="list-group-item list-group-item-action py-4 border-0 border-bottom">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <h6 class="mb-0 fw-bold">
+                                                <span class="text-warning me-2">#{{ prob.problem_id }}</span>{{ prob.title }}
+                                            </h6>
+                                            {% if prob.solved_date %}
+                                                <span class="badge bg-secondary text-light border border-secondary rounded-pill ms-3 px-3 py-2">
+                                                    <i class="bi bi-check-circle-fill text-success me-1"></i> Solved {{ prob.solved_date|date:"M d, Y" }}
+                                                </span>
+                                            {% else %}
+                                                <span class="badge bg-warning text-dark rounded-pill ms-3 px-3 py-2">Solve</span>
+                                            {% endif %}
+                                        </div>
+                                        <p class="text-muted small mb-3" style="line-height: 1.5;">
+                                            {{ prob.problem_description|truncatechars:120 }}
+                                        </p>
+                                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                                            <small class="text-secondary fw-semibold me-2">
+                                                <i class="bi bi-trophy"></i> Elo: {{ prob.elo_requirement }}
+                                            </small>
+                                            {% for tag in prob.topic_tags|slice:":3" %}
+                                                <span class="badge bg-light text-secondary border fw-normal">{{ tag }}</span>
+                                            {% endfor %}
+                                            {% if prob.topic_tags|length > 3 %}
+                                                <span class="badge bg-light text-secondary border fw-normal">+{{ prob.topic_tags|length|add:"-3" }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </a>
+                                {% empty %}
+                                    <div class="text-center py-5">
+                                        <p class="text-muted">No intermediate problems available.</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    
+                        <div class="tab-pane fade {% if active_tab == 'advanced' %}show active{% endif %}" id="advanced" role="tabpanel" tabindex="0">
+                            <div class="list-group list-group-flush">
+                                {% for prob in problems.advanced %}
+                                    <a href="/practice/solve/{{ prob.slug }}/" target="_blank" class="list-group-item list-group-item-action py-4 border-0 border-bottom">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <h6 class="mb-0 fw-bold">
+                                                <span class="text-danger me-2">#{{ prob.problem_id }}</span>{{ prob.title }}
+                                            </h6>
+                                            {% if prob.solved_date %}
+                                                <span class="badge bg-secondary text-light border border-secondary rounded-pill ms-3 px-3 py-2">
+                                                    <i class="bi bi-check-circle-fill text-success me-1"></i> Solved {{ prob.solved_date|date:"M d, Y" }}
+                                                </span>
+                                            {% else %}
+                                                <span class="badge bg-danger rounded-pill ms-3 px-3 py-2">Solve</span>
+                                            {% endif %}
+                                        </div>
+                                        <p class="text-muted small mb-3" style="line-height: 1.5;">
+                                            {{ prob.problem_description|truncatechars:120 }}
+                                        </p>
+                                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                                            <small class="text-secondary fw-semibold me-2">
+                                                <i class="bi bi-trophy"></i> Elo: {{ prob.elo_requirement }}
+                                            </small>
+                                            {% for tag in prob.topic_tags|slice:":3" %}
+                                                <span class="badge bg-light text-secondary border fw-normal">{{ tag }}</span>
+                                            {% endfor %}
+                                            {% if prob.topic_tags|length > 3 %}
+                                                <span class="badge bg-light text-secondary border fw-normal">+{{ prob.topic_tags|length|add:"-3" }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </a>
+                                {% empty %}
+                                    <div class="text-center py-5">
+                                        <p class="text-muted">No advanced problems available.</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="ai-arena" role="tabpanel" tabindex="0">
+    
+                            {% if is_arena_eligible %}
+
+                            <div class="card shadow-sm border-0 rounded-3 mt-4 mb-4">
+                                <div class="card-header bg-white py-3">
+                                    <h4 class="mb-0 text-dark fw-bold"><i class="fa fa-certificate text-primary me-2"></i>Available Professional Certifications</h4>
+                                </div>
+                                <div class="card-body p-4">
+                                    <p class="text-muted small">Select an IT competency field below. Our systems will check your recent algorithm practice metrics to generate a custom 20 MCQ examination</p>
+                                    
+                                    <div class="row g-3">
+                                        {% for topic in certification_topics %}
+                                            <div class="col-md-4">
+                                                <div class="p-3 border rounded bg-light d-flex flex-column justify-content-between h-100">
+                                                    <div>
+                                                        <h5 class="fw-bold text-dark mb-1">{{ topic.display_name }}</h5>
+                                                    </div>
+                                                    <a href="/practice/certifications/generate/{{ topic.id }}/" class="btn btn-sm btn-primary fw-bold w-100">
+                                                        Launch Certification Exam
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        {% empty %}
+                                            <div class="col-12 text-center text-muted py-3">
+                                                No active certification modules have been published by system administrators yet.
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card shadow-sm border-0 rounded-3 mt-4 mb-5">
+                                <div class="card-header bg-white py-3">
+                                    <h4 class="mb-0 text-dark fw-bold"><i class="fa fa-history text-info me-2"></i>My Certification Logs</h4>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover align-middle mb-0">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th class="px-4 py-3">Certification Topic Framework</th>
+                                                    <th class="py-3">Exam Target Score</th>
+                                                    <th class="py-3">Submission Timeline</th>
+                                                    <th class="py-3">Verification Status</th>
+                                                    <th class="py-3">Print PDF</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for cert in pending_student_certs %}
+                                                <tr>
+                                                    <td class="px-4 fw-bold text-dark">{{ cert.domain.display_name }}</td>
+                                                    <td class="font-monospace fw-bold {% if cert.score_percentage >= 70 %}text-success{% else %}text-danger{% endif %}">
+                                                        {{ cert.score_percentage }}%
+                                                    </td>
+                                                    <td class="text-muted small">{{ cert.created_at|date:"M d, Y h:i A" }}</td>
+                                                    <td>
+                                                        {% if cert.status == 'pending' %}
+                                                            <span class="badge bg-warning text-dark px-3 py-2"><i class="fa fa-spinner fa-spin me-1"></i>Pending Review</span>
+                                                        {% elif cert.status == 'verified' %}
+                                                            <span class="badge bg-success text-white px-3 py-2"><i class="fa fa-check-circle me-1"></i>Verified & Issued</span>
+                                                        {% elif cert.status == 'rejected' %}
+                                                            <span class="badge bg-danger text-white px-3 py-2"><i class="fa fa-times-circle me-1"></i>Rejected</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <span class="text-light"> <a href="/practice/certifications/download/{{cert.id}}/"> <i class="fa fa-print" aria-hidden="true"></i> </a></span>
+                                                    </td>
+                                                </tr>
+                                                {% empty %}
+                                                <tr>
+                                                    <td colspan="4" class="text-center py-4 text-muted small">
+                                                        You have not initiated or logged any technical competency verification attempts yet.
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                                <div class="card bg-dark bg-opacity-10 border border-info border-opacity-25 rounded-4 mb-4 p-4 shadow-sm">
+                                    <h5 class="fw-bold text-info mb-1"><i class="bi bi-crosshair me-2"></i>Direct Challenge</h5>
+                                    <p class="text-muted small mb-3">Challenge a specific friend by entering their exact username.</p>
+                                    
+                                    <form action="/practice/duel/create/" method="POST" class="input-group">
+                                        {% csrf_token %}
+                                        <span class="input-group-text bg-transparent border-info border-opacity-50 text-info">@</span>
+                                        <input type="text" name="opponent_username" class="form-control bg-transparent border-info border-opacity-50 text-light shadow-none" placeholder="Enter opponent's username..." required>
+                                        <button class="btn btn-info text-dark fw-bold px-4" type="submit">
+                                            <i class="bi bi-lightning-charge-fill me-1"></i> Send Challenge
+                                        </button>
+                                    </form>
+                                </div>
+                        
+                                <h5 class="fw-bold text-dark mb-3"><i class="bi bi-people-fill me-2"></i>Suggested Rivals <span class="badge bg-secondary ms-2 fw-normal" style="font-size: 0.7rem;">{{ active_tab|title }} Level</span></h5>
+                                
+                                <div class="row g-3 mb-5">
+                                    {% for rival in suggested_rivals %}
+                                    <div class="col-12 col-md-4">
+                                        <div class="card h-100 bg-white border-0 shadow-sm rounded-4 text-center p-3 transition-hover">
+                                            <img src="{{ rival.profile.profile_pic|default:'https://ik.imagekit.io/hivepulse/hivepulse/default/default-user.jpg' }}" alt="{{ rival.username }}" class="rounded-circle mx-auto mb-2 shadow-sm" style="width: 65px; height: 65px; object-fit: cover;">
+                                            <h6 class="fw-bold text-dark mb-0">@{{ rival.username }}</h6>
+                                            <p class="text-warning fw-bold small mb-3"><i class="bi bi-trophy-fill me-1"></i> {{ rival.profile.elo_score|default:"0" }} Elo</p>
+                                            
+                                            <form action="/practice/duel/create/" method="POST" class="mt-auto">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="opponent_username" value="{{ rival.username }}">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill w-100 fw-bold">
+                                                    <i class="bi bi-swords me-1"></i> Duel
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    {% empty %}
+                                    <div class="col-12 text-center py-4 bg-light rounded-4 border-dashed">
+                                        <p class="text-dark mb-0">No rivals found at your exact skill level right now.<br>Check back later or invite a friend!</p>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="card bg-dark bg-opacity-10 border border-secondary border-opacity-25 rounded-4 mb-5 p-5 text-center shadow-sm">
+                                    <i class="bi bi-lock-fill text-secondary opacity-50 mb-3" style="font-size: 3rem;"></i>
+                                    <h4 class="fw-bold text-dark">Arena Locked</h4>
+                                    <p class="text-muted mb-0">You must solve at least <strong>5 distinct problems</strong> from the standard lists to unlock the AI Duel Arena and Solo Generation.</p>
+                                </div>
+                            {% endif %}
+                        
+                            <h5 class="fw-bold text-dark mb-3"><i class="bi bi-shield-shaded me-2"></i>Active Matches</h5>
+                            <div class="list-group list-group-flush mb-5 rounded-4 overflow-hidden shadow-sm">
+                                {% for duel in user_duels %}
+                                    <div class="list-group-item py-3 d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="fw-bold mb-1">
+                                                {% if duel.challenger == user %}
+                                                    vs @{{ duel.opponent.username }}
+                                                {% else %}
+                                                    Challenged by @{{ duel.challenger.username }}
+                                                {% endif %}
+                                            </h6>
+                                            <small class="text-muted">
+                                                Status: <span class="fw-semibold text-uppercase {% if duel.status == 'pending' %}text-warning{% elif duel.status == 'active' %}text-danger{% else %}text-success{% endif %}">{{ duel.get_status_display }}</span>
+                                            </small>
+                                        </div>
+                                        
+                                        <div>
+                                            {% if duel.status == 'pending' and duel.opponent == user %}
+                                                <form action="/practice/duel/accept/{{ duel.id }}/" method="POST" class="d-inline">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-sm btn-success rounded-pill fw-bold px-3">Accept & Start</button>
+                                                </form>
+                                            {% elif duel.status == 'active' %}
+                                                <a href="/practice/duel/arena/{{ duel.id }}/" class="btn btn-sm btn-danger rounded-pill fw-bold px-3">Enter Arena</a>
+                                            {% elif duel.status == 'grading' %}
+                                                <span class="badge bg-warning text-dark rounded-pill px-3 py-2">
+                                                    <i class="bi bi-hourglass-split"></i> AI Judging...
+                                                </span>
+                                            {% elif duel.status == 'completed' %}
+                                                {% if duel.winner == user %}
+                                                    <span class="badge bg-success rounded-pill px-3 py-2">Victory</span>
+                                                {% elif duel.winner == None %}
+                                                    <span class="badge bg-info text-dark rounded-pill px-3 py-2">Draw</span>
+                                                {% else %}
+                                                    <span class="badge bg-secondary rounded-pill px-3 py-2">Defeat</span>
+                                                {% endif %}
+                                            {% else %}
+                                                <span class="badge bg-light text-secondary border px-3 py-2">Waiting...</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% empty %}
+                                    <div class="list-group-item text-center py-4 bg-light text-muted border border-dashed rounded">
+                                        No active or pending duels. Send a challenge to get started!
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            
+                            {% if is_arena_eligible %}
+                            <hr class="text-secondary opacity-25 my-5">
+                            <div class="d-flex justify-content-between align-items-center mb-4 bg-dark bg-opacity-10 p-3 rounded-4 border border-info border-opacity-25">
+                                <div>
+                                    <h6 class="mb-1 fw-bold text-info"><i class="bi bi-stars"></i> Solo AI Practice Generator</h6>
+                                    <small class="text-muted">Uses your recent solutions to generate a custom solo challenge. (Max 5/day)</small>
+                                </div>
+                                <button id="generateAiBtn" class="btn btn-info text-dark fw-bold rounded-pill shadow-sm" onclick="triggerAIGeneration()">
+                                    <i class="bi bi-lightning-charge-fill"></i> Generate Solo
+                                </button>
+                            </div>
+                            {% endif %}
+                        
+                        </div>
+                        <!--
+                        <div class="tab-pane fade" id="ai-arena" role="tabpanel" tabindex="0">
+    
+                            <div class="d-flex justify-content-between align-items-center mb-4 bg-dark bg-opacity-10 p-3 rounded-4 border border-info border-opacity-25">
+                                <div>
+                                    <h6 class="mb-1 fw-bold text-info"><i class="bi bi-stars"></i> AI Problem Generator</h6>
+                                    <small class="text-muted">Uses your recent solutions to generate a custom challenge. (Max 5/day)</small>
+                                </div>
+                                <button id="generateAiBtn" class="btn btn-info text-dark fw-bold rounded-pill shadow-sm" onclick="triggerAIGeneration()">
+                                    <i class="bi bi-lightning-charge-fill"></i> Generate Now
+                                </button>
+                            </div>
+                        
+                            <div class="list-group list-group-flush">
+                                {% for prob in ai_problems %}
+                                    <a href="/practice/solve/{{ prob.slug }}/" target="_blank" class="list-group-item list-group-item-action py-4 border-0 border-bottom">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <h6 class="mb-0 fw-bold">
+                                                <span class="text-info me-2"><i class="bi bi-stars"></i></span>{{ prob.title }}
+                                            </h6>
+                                            {% if prob.solved_date %}
+                                                <span class="badge bg-secondary text-light border border-secondary rounded-pill ms-3 px-3 py-2">
+                                                    <i class="bi bi-check-circle-fill text-success me-1"></i> Solved {{ prob.solved_date|date:"M d, Y" }}
+                                                </span>
+                                            {% else %}
+                                                <span class="badge bg-info text-dark rounded-pill ms-3 px-3 py-2">Solve</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="d-flex align-items-center gap-2 flex-wrap mt-3">
+                                            <small class="text-secondary fw-semibold me-2">
+                                                <i class="bi bi-trophy"></i> Elo: {{ prob.elo_requirement }}
+                                            </small>
+                                            {% for tag in prob.topic_tags|slice:":3" %}
+                                                <span class="badge bg-light text-secondary border fw-normal">{{ tag }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    </a>
+                                {% empty %}
+                                    <div class="text-center py-5">
+                                        <p class="text-muted">You haven't generated any AI problems yet.<br>Solve 5 distinct normal problems to unlock this feature!</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div> -->
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+
+    {% if user.profile.role == 'recruiter' %}
+<div class="card shadow-sm border-0 rounded-3 mb-5" id="emp-job-board">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <h4 class="mb-0 text-primary">My Job Postings</h4>
+        <a href="/marketplace/create-job" target="_blank" class="btn btn-primary btn-sm fw-bold">
+            <i class="fa fa-plus me-2"></i>Post New Job
+        </a>
+    </div>
+    
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="px-4 py-3">Job Title</th>
+                        <th class="py-3">Type</th>
+                        <th class="py-3">Status</th>
+                        <th class="py-3">Posted Date</th>
+                        <th class="px-4 py-3 text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for job in jobs %}
+                    <tr>
+                        <td class="px-4 fw-bold text-dark">{{ job.title }}</td>
+                        <td><span class="badge bg-secondary">{{ job.get_employment_type_display }}</span></td>
+                        <td>
+                            {% if job.is_active %}
+                                <span class="badge bg-success">Active</span>
+                            {% else %}
+                                <span class="badge bg-danger">Closed</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-muted small">{{ job.created_at|date:"M d, Y" }}</td>
+                        <td class="px-4 text-end">
+                            <a href="/marketplace/edit-job/{{job.id}}" class="btn btn-sm btn-outline-primary me-1" title="Edit">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <a href="/marketplace/delete-job/{{job.id}}" class="btn btn-sm btn-outline-danger" title="Delete">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                            <a href="/marketplace/job/{{job.id}}/applicants" class="btn btn-sm btn-outline-success me-1" title="View Applicants">
+                                <i class="fa fa-users"></i>
+                            </a>
+                            <a href="/marketplace/job/{{job.id}}/" class="btn btn-sm btn-outline-success me-1" title="View Job Post">
+                                <i class="fa fa-address-card"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-5 text-muted">
+                            You haven't posted any jobs yet. Click "Post New Job" to get started!
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    {% if jobs.has_other_pages %}
+    <div class="card-footer bg-white py-3">
+        <nav>
+            <ul class="pagination justify-content-center mb-0">
+                {% if jobs.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?job_page={{ jobs.previous_page_number }}#emp-job-board">Previous</a></li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">Previous</span></li>
+                {% endif %}
+                
+                <li class="page-item active"><span class="page-link">Page {{ jobs.number }} of {{ jobs.paginator.num_pages }}</span></li>
+                
+                {% if jobs.has_next %}
+                    <li class="page-item"><a class="page-link" href="?job_page={{ jobs.next_page_number }}#emp-job-board">Next</a></li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">Next</span></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+
+
+    <!-- Posts Section (Staff/Superuser) -->
+    {% if user.is_superuser or user.is_staff %}
+    <div class="row mb-5" id="post-section">
+        <h3 class="fw-bold text-dark mb-4">My Posts</h3>
+        
+        {% if not has_posts %}
+            <div class="card border-0 shadow-sm rounded-4 p-5 text-center bg-light">
+                <p class="text-secondary mb-3">You haven't published any posts yet.</p>
+                <div class="container">
+                    <a href="/add-post" class="btn btn-success rounded-pill px-4">Create Your First Post</a>
+                </div>
+            </div>
+        {% else %}
+            <div class="row g-4">
+                {% for post in posts %}
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                        <a href="/posts/{{post.slug}}">
+                            {% if post.thumbnail %}
+                                <img src="{{post.thumbnail}}/tr:w-720,h-360" class="card-img-top" alt="{{post.title}}" style="height: 200px; object-fit: cover;">
+                            {% else %}
+                                <img src="https://ik.imagekit.io/hivepulse/hivepulse/default/default-post.png" class="card-img-top" alt="{{post.title}}" style="height: 200px; object-fit: cover;">
+                            {% endif %}
+                        </a>
+                        <div class="card-body">
+                            <a href="/posts/{{post.slug}}" class="text-dark text-decoration-none">
+                                <h5 class="card-title fw-bold">{{post.title|slice:":40"}}...</h5>
+                            </a>
+                            <p class="card-text text-secondary">{{post.tagline|slice:":60"}}...</p>
+                        </div>
+                        <div class="card-footer bg-white border-top-0 pt-0">
+                            <div class="d-flex justify-content-between">
+                                <a href="/posts/{{post.slug}}" class="btn btn-sm btn-light rounded-pill">Read</a>
+                                <div>
+                                    <a href="/edit-post/{{post.id}}" class="btn btn-sm btn-outline-primary rounded-pill me-1">Edit</a>
+                                    <a href="/delete-post/{{post.id}}" class="btn btn-sm btn-outline-danger rounded-pill">Del</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Pagination -->
+            <div class="mt-5 d-flex justify-content-center">
+                {% if posts.has_previous %}
+                    <a href="?post_page={{posts.previous_page_number}}#post-section" class="btn btn-outline-primary rounded-pill px-4 me-2">Previous</a>
+                {% endif %}
+                {% if posts.has_next %}
+                    <a href="?post_page={{posts.next_page_number}}#post-section" class="btn btn-primary rounded-pill px-4">Next</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+
+
+    <script>
+        // 1. Add the missing getCookie helper function for Django CSRF
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // 2. Your AI Generation Function
+        async function triggerAIGeneration() {
+            const btn = document.getElementById('generateAiBtn');
+            const originalContent = btn.innerHTML;
+            
+            // Set loading state
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generating...';
+        
+            try {
+                const response = await fetch('/practice/api/generate-ai/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'), // This will work perfectly now!
+                        'Content-Type': 'application/json'
+                    }
+                });
+        
+                const data = await response.json();
+        
+                if (response.ok) {
+                    // Success! Redirect to the new problem IDE
+                    window.open(data.redirect_url, '_blank');
+                } else {
+                    // Show the error (e.g., "Solve 5 distinct problems" or "Daily limit reached")
+                    alert(data.error || "An error occurred.");
+                }
+            } catch (error) {
+                alert("Failed to connect to the AI Engine.");
+                console.error(error);
+            } finally {
+                // Reset button state
+                btn.disabled = false;
+                btn.innerHTML = originalContent;
+            }
+        }
+    </script>
+</div>
+{% endblock %}

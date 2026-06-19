@@ -1,0 +1,106 @@
+{% extends "BlogApp/base.html" %}
+{% block body %}
+
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+<style>
+    trix-editor {
+        min-height: 250px;
+        border-radius: 0.375rem;
+        border: 1px solid #ced4da;
+        background-color: #fff;
+    }
+    trix-toolbar .trix-button-group {
+        border-bottom: 1px solid #ced4da;
+        background-color: #f8f9fa;
+    }
+</style>
+
+<div class="container-fluid page-header mb-5 py-5">
+    <div class="container">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Developer Market Place</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb text-uppercase">
+                <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="#">Marketplace</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">Edit Job</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 rounded-3">
+                <div class="card-body p-5">
+                    
+                    <h2 class="mb-4 text-primary">Edit Role: {{ job.title }}</h2>
+                    <p class="text-muted mb-4">Update the details below to modify your marketplace listing.</p>
+
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-dark">{{ form.title.label }}</label>
+                            {{ form.title }}
+                            <div class="text-danger small">{{ form.title.errors }}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold text-dark">{{ form.employment_type.label }}</label>
+                                {{ form.employment_type }}
+                                <div class="text-danger small">{{ form.employment_type.errors }}</div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold text-dark">{{ form.location.label }}</label>
+                                {{ form.location }}
+                                <div class="text-danger small">{{ form.location.errors }}</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-dark">{{ form.company_name.label }}</label>
+                            {{ form.company_name }}
+                            <div class="text-danger small">{{ form.company_name.errors }}</div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-dark">{{ form.salary_range.label }}</label>
+                            {{ form.salary_range }}
+                            <div class="text-danger small">{{ form.salary_range.errors }}</div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-dark">{{ form.description.label }}</label>
+                            
+                            {{ form.description }} 
+                            <trix-editor input="trix_description_input" class="trix-content"></trix-editor>
+                            
+                            <div class="text-danger small mt-1">{{ form.description.errors }}</div>
+                        </div>
+
+                        <div class="form-check form-switch mb-5">
+                            {{ form.is_active }}
+                            <label class="form-check-label fw-bold ms-2" for="{{ form.is_active.id_for_label }}">
+                                {{ form.is_active.label }}
+                            </label>
+                            <div class="form-text">If turned off, this job will be hidden from the student board.</div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-warning btn-lg py-3 fw-bold text-white">Update Job Posting</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+
+
+
+{% endblock %}

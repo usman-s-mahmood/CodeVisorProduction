@@ -1,0 +1,125 @@
+{% extends "BlogApp/base.html" %}
+{% block body %}
+
+<div class="container-fluid page-header mb-5 py-5">
+    <div class="container">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Search Results</h1>
+        <p class="text-white-50 mb-4">Refine your criteria or head back to the main developer board.</p>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <form method="GET" action="/marketplace/search">
+                    <div class="input-group input-group-lg">
+                        <input type="text" name="q" class="form-control" placeholder="Search by job title" value="{{ search_query }}">
+                        <button class="btn btn-primary px-4" type="submit"><i class="fa fa-search me-2"></i>Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            
+            <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom" id="results">
+                <h4 class="mb-0 text-dark">
+                    Found {{ jobs.paginator.count }} result{% if jobs.paginator.count != 1 %}s{% endif %} for "<span class="text-primary">{{ search_query }}</span>"
+                </h4>
+                <a href="/marketplace/board/" class="btn btn-outline-secondary btn-sm fw-bold">
+                    <i class="fa fa-arrow-left me-2"></i>Back to Global Board
+                </a>
+            </div>
+
+            <div class="d-flex flex-column gap-3">
+                {% for job in jobs %}
+                <div class="card shadow-sm border-0 rounded-3 search-card transition-hover">
+                    <div class="card-body p-4">
+                        <div class="row align-items-center">
+                            
+                            <div class="col-md-9 mb-3 mb-md-0">
+                                <div class="d-flex align-items-center mb-2">
+                                    <h4 class="mb-0 text-primary fw-bold me-3">{{ job.title }}</h4>
+                                    <span class="badge bg-light text-dark border">{{ job.get_employment_type_display }}</span>
+                                </div>
+                                
+                                <div class="text-muted mb-2 small">
+                                    {% comment %} <i class="fa fa-building me-2"></i>{{ job.recruiter.username }}  {% endcomment %}
+                                    <i class="fa fa-building me-2"></i>{{ job.company_name }} 
+                                    {% if job.location %}
+                                        <i class="fa fa-map-marker-alt ms-3 me-2"></i>{{ job.location }}
+                                    {% endif %}
+                                    {% if job.salary_range %}
+                                        <i class="fa fa-money-bill-wave ms-3 me-2 text-success"></i>{{ job.salary_range }}
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="text-muted small">
+                                    {{ job.description|striptags|truncatechars:150 }}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3 text-md-end">
+                                <div class="text-muted small mb-2"><i class="fa fa-clock me-1"></i>{{ job.created_at|timesince }} ago</div>
+                                <a href="/marketplace/job/{{job.id}}" class="btn btn-primary fw-bold px-4">View Details</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-5 bg-light rounded border">
+                    <i class="fa fa-folder-open fa-4x text-muted mb-3"></i>
+                    <h3 class="text-dark">No matches discovered</h3>
+                    <p class="text-muted">We couldn't find any active job postings matching your specific keywords. Try double-checking your spelling or checking for broader terms.</p>
+                    <a href="/marketplace/board/" class="btn btn-primary mt-2 fw-bold">View All Listings</a>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% if jobs.has_other_pages %}
+            <div class="mt-5">
+                <nav aria-label="Search results navigation">
+                    <ul class="pagination justify-content-center">
+                        
+                        {% if jobs.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link shadow-sm" href="/marketplace/search?page={{ jobs.previous_page_number }}&q={{ search_query }}#results">Previous</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled"><span class="page-link shadow-sm">Previous</span></li>
+                        {% endif %}
+                        
+                        <li class="page-item active">
+                            <span class="page-link shadow-sm fw-bold">Page {{ jobs.number }} of {{ jobs.paginator.num_pages }}</span>
+                        </li>
+                        
+                        {% if jobs.has_next %}
+                            <li class="page-item">
+                                <a class="page-link shadow-sm" href="/marketplace/search?page={{ jobs.next_page_number }}&q={{ search_query }}#results">Next</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled"><span class="page-link shadow-sm">Next</span></li>
+                        {% endif %}
+                        
+                    </ul>
+                </nav>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+<style>
+    .transition-hover {
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .transition-hover:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.10)!important;
+    }
+</style>
+
+{% endblock %}

@@ -1,0 +1,317 @@
+{%extends 'BlogApp/base.html'%}
+{%block body%}
+
+    <!-- Carousel Start -->
+    <div class="container-fluid p-0 mb-5">
+        <div class="owl-carousel header-carousel position-relative">
+            <div class="owl-carousel-item position-relative">
+                <img class="img-fluid" src="/static/BlogApp/img/carousel-2.jpg" alt="">
+                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(0, 0, 0, .4);">
+                    <div class="container">
+                        <div class="row justify-content-start">
+                            <div class="col-10 col-lg-8">
+                                <h5 class="text-white text-uppercase mb-3 animated slideInDown"></h5>
+                                <h1 class="display-3 text-white animated slideInDown mb-4">Master Coding With Artificial Intelligence</h1>
+                                {% comment %} <p class="fs-5 fw-medium text-white mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea elitr.</p> {% endcomment %}
+                                <a href="/about" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Know More</a>
+                                <a href="/auth/register" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Get Started</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="owl-carousel-item position-relative">
+                <img class="img-fluid" src="/static/BlogApp/img/carousel-2.jpg" alt="">
+                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(0, 0, 0, .4);">
+                    <div class="container">
+                        <div class="row justify-content-start">
+                            <div class="col-10 col-lg-8">
+                                <h5 class="text-white text-uppercase mb-3 animated slideInDown"></h5>
+                                <h1 class="display-3 text-white animated slideInDown mb-4">Master Coding With <span class="fw-bold">Artificial Intelligence</span></h1>
+                                {% comment %} <p class="fs-5 fw-medium text-white mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea elitr.</p> {% endcomment %}
+                                <a href="/about" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Know More</a>
+                                <a href="/auth/register" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Get Started</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Carousel End -->
+
+
+    <!-- Service Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 service-item-top wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="overflow-hidden">
+                        <img class="img-fluid w-100 h-100" src="/static/BlogApp/img/service-1.jpg" alt="">
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between bg-light p-4">
+                        <h5 class="text-truncate me-3 mb-0">AI Assistant</h5>
+                        <a class="btn btn-square btn-outline-primary border-2 border-white flex-shrink-0" href=""><i class="fa fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 service-item-top wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="overflow-hidden">
+                        <img class="img-fluid w-100 h-100" src="/static/BlogApp/img/service-2.jpg" alt="">
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between bg-light p-4">
+                        <h5 class="text-truncate me-3 mb-0">Competitive Coding</h5>
+                        <a class="btn btn-square btn-outline-primary border-2 border-white flex-shrink-0" href=""><i class="fa fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 service-item-top wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="overflow-hidden">
+                        <img class="img-fluid w-100 h-100" src="/static/BlogApp/img/service-3.jpg" alt="">
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between bg-light p-4">
+                        <h5 class="text-truncate me-3 mb-0">Code Battles</h5>
+                        <a class="btn btn-square btn-outline-primary border-2 border-white flex-shrink-0" href=""><i class="fa fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Service End -->
+
+
+    <!-- About Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <h6 class="text-secondary text-uppercase">About Us</h6>
+                    <h1 class="mb-4">A platform for Competitive Coding</h1>
+                    <p class="mb-4">CodeVisor is an AI based Competitive Coding platform that enables its users to practice coding with real life, project-based examples</p>
+                    <p class="fw-medium text-primary"><i class="fa fa-check text-success me-3"></i>Master The Art of Problem Solving</p>
+                    <p class="fw-medium text-primary"><i class="fa fa-check text-success me-3"></i>Compete with your friends via Code Battles</p>
+                    <p class="fw-medium text-primary"><i class="fa fa-check text-success me-3"></i>AI based assistant for coding problems</p>
+                    
+                </div>
+                <div class="col-lg-6 pt-4" style="min-height: 500px;">
+                    <div class="position-relative h-100 wow fadeInUp" data-wow-delay="0.5s">
+                        <img class="position-absolute img-fluid w-100 h-100" src="/static/BlogApp/img/about-1.jpg" style="object-fit: cover; padding: 0 0 50px 100px;" alt="">
+                        <img class="position-absolute start-0 bottom-0 img-fluid bg-white pt-2 pe-2 w-50 h-50" src="/static/BlogApp/img/about-2.jpg" style="object-fit: cover;" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- About End -->
+
+
+    <!-- Service Start -->
+    <div class="container-fluid py-5 px-4 px-lg-0">
+        <div class="row g-0">
+            <div class="col-lg-3 d-none d-lg-flex">
+                <div class="d-flex align-items-center justify-content-center bg-primary w-100 h-100">
+                    <h1 class="display-3 text-white m-0" style="transform: rotate(-90deg);">Built with the latest Tech</h1>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-9">
+                <div class="ms-lg-5 ps-lg-5">
+                    <div class="text-center text-lg-start wow fadeInUp" data-wow-delay="0.1s">
+                        {% comment %} <h6 class="text-secondary text-uppercase">Tech Stack</h6> {% endcomment %}
+                        <h1 class="mb-5">Tech Stack</h1>
+                    </div>
+                    <div class="owl-carousel service-carousel position-relative wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="bg-light p-4">
+                            <div class="d-flex align-items-center justify-content-center border border-5 border-white mb-4" style="width: 75px; height: 75px;">
+                                <i class="fab fa-python fa-2x text-dark mb-3"></i>
+                            </div>
+                            <h4 class="mb-3">Python</h4>
+                            <p>The most popular and beginner friendly programming language</p>
+                            <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Easy Syntax</p>
+                            <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Community Support</p>
+                            <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Diverse Fields</p>
+                        </div>
+                        <div class="bg-light p-4">
+                            <div class="d-flex align-items-center justify-content-center border border-5 border-white mb-4" style="width: 75px; height: 75px;">
+                                <i class="fas fa-laptop fa-2x text-dark mb-3"></i>
+                            </div>
+                            <h4 class="mb-3">Django</h4>
+                            <p>The web framework for perfectionists</p>
+                            <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Robust Architecture</p>
+                            <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Open Source</p>
+                            <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>RBAC Auth Structure</p>
+                        </div>
+                        <div class="bg-light p-4">
+                            <div class="d-flex align-items-center justify-content-center border border-5 border-white mb-4" style="width: 75px; height: 75px;">
+                                <i class="fas fa-brain fa-2x text-dark mb-3"></i>
+                            </div>
+                            <h4 class="mb-3">Llama</h4>
+                            <p>The LLM developed by programmers for the programmers</p>
+                            <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Great for Coding tasks</p>
+                            <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Open Source</p>
+                            <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Quick Responses</p>
+                        </div>
+                        <div class="bg-light p-4">
+                            <div class="d-flex align-items-center justify-content-center border border-5 border-white mb-4" style="width: 75px; height: 75px;">
+                                <i class="fas fa-database fa-2x text-dark mb-3"></i>
+                            </div>
+                            <h4 class="mb-3">PGSQL</h4>
+                            <p>Database for handling exceptional load</p>
+                            <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Fast Response</p>
+                            <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Flexiblility</p>
+                            <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Enhanced CRUD OPs</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Service End -->
+
+
+    <!-- Booking Start -->
+    <div class="container-fluid my-5 px-0">
+        <div class="video wow fadeInUp" data-wow-delay="0.1s">
+            {% comment %} <button type="button" class="btn-play" data-bs-toggle="modal" data-src="https://www.youtube.com/embed/DWRcNpR6Kdc" data-bs-target="#videoModal">
+                <span></span>
+            </button> {% endcomment %}
+
+            <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content rounded-0">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Youtube Video</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- 16:9 aspect ratio -->
+                            <div class="ratio ratio-16x9">
+                                <iframe class="embed-responsive-item" src="" id="video" allowfullscreen allowscriptaccess="always"
+                                    allow="autoplay"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h1 class="text-white mb-4">For Queries & Suggestions</h1>
+            <h3 class="text-white mb-0">Contact Us</h3>
+        </div>
+        <div class="container position-relative wow fadeInUp" data-wow-delay="0.1s" style="margin-top: -6rem;">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="bg-light text-center p-5">
+                        <h1 class="mb-4">Contact Us</h1>
+                        <form action="/contact" method=POST>
+                            {% csrf_token %}
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="name" placeholder="Your Name" name="name">
+                                        <label for="name">Your Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" id="email" placeholder="Your Email" name="email">
+                                        <label for="email">Your Email</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="subject" placeholder="subject" name="subject">
+                                        <label for="subject">Subject</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 200px" name="message"></textarea>
+                                        <label for="message">Message</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn btn-primary rounded-pill py-3 px-5" type="submit">Send Message</button>
+                                </div>
+                            </div>
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Booking End -->
+
+
+    <!-- Testimonial Start -->
+    <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="container">
+            <div class="text-center">
+                <h6 class="text-secondary text-uppercase">Testimonial</h6>
+                <h1 class="mb-5">Our Clients Say!</h1>
+            </div>
+            <div class="owl-carousel testimonial-carousel position-relative wow fadeInUp" data-wow-delay="0.1s">
+                <div class="testimonial-item text-center">
+                    <div class="testimonial-text bg-light text-center p-4 mb-4">
+                        <p class="mb-0">AI Tutor makes it really easy to understand coding concepts</p>
+                    </div>
+                    <img class="bg-light rounded-circle p-2 mx-auto mb-2" src="/static/BlogApp/img/testimonial-1.jpg" style="width: 80px; height: 80px;">
+                    <div class="mb-2">
+                        <small class="fa fa-star text-secondary"></small>
+                        <small class="fa fa-star text-secondary"></small>
+                        <small class="fa fa-star text-secondary"></small>
+                        <small class="fa fa-star text-secondary"></small>
+                        <small class="fa fa-star text-secondary"></small>
+                    </div>
+                    <h5 class="mb-1">Sarah Jenkins</h5>
+                    <p class="m-0">Student</p>
+                </div>
+                <div class="testimonial-item text-center">
+                    <div class="testimonial-text bg-light text-center p-4 mb-4">
+                        <p class="mb-0">Code Battles are the best way to keep out of boredom and learn with friends</p>
+                    </div>
+                    <img class="bg-light rounded-circle p-2 mx-auto mb-2" src="/static/BlogApp/img/testimonial-2.jpg" style="width: 80px; height: 80px;">
+                    <div class="mb-2">
+                        <small class="fa fa-star text-secondary"></small>
+                        <small class="fa fa-star text-secondary"></small>
+                        <small class="fa fa-star text-secondary"></small>
+                        <small class="fa fa-star text-secondary"></small>
+                        <small class="fa fa-star text-secondary"></small>
+                    </div>
+                    <h5 class="mb-1">Mike Straut</h5>
+                    <p class="m-0">Student</p>
+                </div>
+                <div class="testimonial-item text-center">
+                    <div class="testimonial-text bg-light text-center p-4 mb-4">
+                        <p class="mb-0">Coding posts make it very easy to understand complex algorithms</p>
+                    </div>
+                    <img class="bg-light rounded-circle p-2 mx-auto mb-2" src="/static/BlogApp/img/testimonial-3.jpg" style="width: 80px; height: 80px;">
+                    <div class="mb-2">
+                        <small class="fa fa-star text-secondary"></small>
+                        <small class="fa fa-star text-secondary"></small>
+                        <small class="fa fa-star text-secondary"></small>
+                        <small class="fa fa-star text-secondary"></small>
+                        <small class="fa fa-star text-secondary"></small>
+                    </div>
+                    <h5 class="mb-1">Ali Khan</h5>
+                    <p class="m-0">Student</p>
+                </div>
+                <div class="testimonial-item text-center">
+                    <div class="testimonial-text bg-light text-center p-4 mb-4">
+                        <p class="mb-0">Live compiler gives an amazing IDE based experience</p>
+                    </div>
+                    <img class="bg-light rounded-circle p-2 mx-auto mb-2" src="/static/BlogApp/img/testimonial-4.jpg" style="width: 80px; height: 80px;">
+                    <div class="mb-2">
+                        <small class="fa fa-star text-secondary"></small>
+                        <small class="fa fa-star text-secondary"></small>
+                        <small class="fa fa-star text-secondary"></small>
+                        <small class="fa fa-star text-secondary"></small>
+                        <small class="fa fa-star text-secondary"></small>
+                    </div>
+                    <h5 class="mb-1">Zara Aly</h5>
+                    <p class="m-0">Student</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Testimonial End -->
+
+
+{%endblock body%}

@@ -1,0 +1,20 @@
+[
+    {
+        "id": "pattern_01",
+        "title": "Sliding Window Technique",
+        "content": "The Sliding Window pattern is used to perform a required operation on a specific window size of a given array or linked list, such as finding the longest subarray containing all 1s. Logic: Use two pointers (start and end). Extend the end pointer until the condition is met, then shrink from the start.",
+        "metadata": {"category": "Arrays", "difficulty": "Medium", "complexity": "O(n)"}
+    },
+    {
+        "id": "pattern_02",
+        "title": "Two Pointers Approach",
+        "content": "Two Pointers is a technique where two indices move through the data structure until one or both hit a certain condition. Common in sorted arrays. Variation 1: Pointers at both ends moving inward. Variation 2: Fast and Slow pointers (Hare and Tortoise) for cycle detection in linked lists.",
+        "metadata": {"category": "Linked Lists", "difficulty": "Easy", "complexity": "O(n)"}
+    },
+    {
+        "id": "pattern_03",
+        "title": "Dynamic Programming: Memoization",
+        "content": "Memoization is a top-down approach to solving complex problems by breaking them into overlapping subproblems. We store the results of expensive function calls and return the cached result when the same inputs occur again. Used for Fibonacci, Knapsack, and Longest Common Subsequence.",
+        "metadata": {"category": "DP", "difficulty": "Hard", "complexity": "O(2^n) -> O(n)"}
+    }
+]

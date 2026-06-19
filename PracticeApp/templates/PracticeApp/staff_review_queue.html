@@ -1,0 +1,187 @@
+{% extends "BlogApp/base.html" %}
+{% block body %}
+
+<div class="container-fluid page-header mb-5 py-5">
+    <div class="container">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Staff Audit Center</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb text-uppercase">
+                <li class="breadcrumb-item"><a class="text-white" href="/auth/dashboard">Dashboard</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">Verification Queue</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-11">
+            
+            <ul class="nav nav-tabs mb-4 border-bottom-0" id="auditTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active fw-bold px-4 py-2 border rounded-top me-2" id="queue-tab" data-bs-toggle="tab" data-bs-target="#queue-content" type="button" role="tab" aria-controls="queue-content" aria-selected="true">
+                        <i class="fa fa-clock me-2 text-warning"></i>Pending Workload ({{ pending_attempts.paginator.count }})
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link fw-bold px-4 py-2 border rounded-top" id="history-tab" data-bs-toggle="tab" data-bs-target="#history-content" type="button" role="tab" aria-controls="history-content" aria-selected="false">
+                        <i class="fa fa-check-double me-2 text-success"></i>Audited History Logs ({{ audited_history.paginator.count }})
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content shadow-sm rounded-3 bg-white" id="auditTabsContent">
+                
+                <div class="tab-pane fade show active" id="queue-content" role="tabpanel" aria-labelledby="queue-tab">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="px-4 py-3">Student / Candidate</th>
+                                    <th class="py-3">Topic Framework</th>
+                                    <th class="py-3">AI Calculated Score</th>
+                                    <th class="py-3">Submission Timestamp</th>
+                                    <th class="py-3 text-end px-4">Action Pipeline</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for attempt in pending_attempts %}
+                                <tr>
+                                    <td class="px-4">
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-light rounded-circle p-2 text-primary me-3 text-center" style="width: 40px; height: 40px;">
+                                                <i class="fa fa-user"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0 fw-bold text-dark">{{ attempt.student.username }}</h6>
+                                                <small class="text-muted">{{ attempt.student.email }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="fw-medium text-dark">{{ attempt.domain.display_name }}</td>
+                                    <td>
+                                        <span class="fw-bold font-monospace {% if attempt.score_percentage >= 70 %}text-success{% else %}text-danger{% endif %}">
+                                            {{ attempt.score_percentage }}%
+                                        </span>
+                                    </td>
+                                    <td class="text-muted small">{{ attempt.created_at|date:"M d, Y h:i A" }}</td>
+                                    <td class="text-end px-4">
+                                        <a href="/practice/certifications/staff-review/{{ attempt.id }}/" class="btn btn-sm btn-outline-primary fw-bold px-3">
+                                            Evaluate Details <i class="fa fa-arrow-right ms-1"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center py-5 text-muted">
+                                        <i class="fa fa-folder-open fa-3x mb-3 text-muted opacity-50"></i>
+                                        <h5>All clear! No current pending quizzes to display.</h5>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {% if pending_attempts.has_other_pages %}
+                    <div class="card-footer bg-white py-4 border-top">
+                        <nav>
+                            <ul class="pagination justify-content-center mb-0">
+                                {% if pending_attempts.has_previous %}
+                                    <li class="page-item"><a class="page-link shadow-sm" href="/practice/certifications/staff-queue/?pending_page={{ pending_attempts.previous_page_number }}&history_page={{ audited_history.number }}">Previous</a></li>
+                                {% else %}
+                                    <li class="page-item disabled"><span class="page-link shadow-sm">Previous</span></li>
+                                {% endif %}
+                                <li class="page-item active"><span class="page-link shadow-sm fw-bold">Page {{ pending_attempts.number }} of {{ pending_attempts.paginator.num_pages }}</span></li>
+                                {% if pending_attempts.has_next %}
+                                    <li class="page-item"><a class="page-link shadow-sm" href="/practice/certifications/staff-queue/?pending_page={{ pending_attempts.next_page_number }}&history_page={{ audited_history.number }}">Next</a></li>
+                                {% else %}
+                                    <li class="page-item disabled"><span class="page-link shadow-sm">Next</span></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="tab-pane fade" id="history-content" role="tabpanel" aria-labelledby="history-tab">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="px-4 py-3">Student</th>
+                                    <th class="py-3">Topic Framework</th>
+                                    <th class="py-3">Resulting Score</th>
+                                    <th class="py-3">Audited By</th>
+                                    <th class="py-3">Final Decision Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in audited_history %}
+                                <tr>
+                                    <td class="px-4 fw-bold text-dark">{{ item.student.username }}</td>
+                                    <td class="text-muted fw-medium">{{ item.domain.display_name }}</td>
+                                    <td class="font-monospace fw-bold">{{ item.score_percentage }}%</td>
+                                    <td class="small text-dark"><i class="fa fa-user-shield me-1 text-muted"></i>{{ item.reviewed_by.username }}</td>
+                                    <td>
+                                        {% if item.status == 'verified' %}
+                                            <span class="badge bg-success text-white px-3 py-1"><i class="fa fa-check-circle me-1"></i>Approved</span>
+                                        {% else %}
+                                            <span class="badge bg-danger text-white px-3 py-1"><i class="fa fa-times-circle me-1"></i>Rejected</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center py-5 text-muted">
+                                        <i class="fa fa-history fa-3x mb-3 text-muted opacity-50"></i>
+                                        <h5>No records discovered. No quiz sheets have been actioned yet.</h5>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {% if audited_history.has_other_pages %}
+                    <div class="card-footer bg-white py-4 border-top">
+                        <nav>
+                            <ul class="pagination justify-content-center mb-0">
+                                {% if audited_history.has_previous %}
+                                    <li class="page-item"><a class="page-link shadow-sm" href="/practice/certifications/staff-queue/?pending_page={{ pending_attempts.number }}&history_page={{ audited_history.previous_page_number }}">Previous</a></li>
+                                {% else %}
+                                    <li class="page-item disabled"><span class="page-link shadow-sm">Previous</span></li>
+                                {% endif %}
+                                <li class="page-item active"><span class="page-link shadow-sm fw-bold">Page {{ audited_history.number }} of {{ audited_history.paginator.num_pages }}</span></li>
+                                {% if audited_history.has_next %}
+                                    <li class="page-item"><a class="page-link shadow-sm" href="/practice/certifications/staff-queue/?pending_page={{ pending_attempts.number }}&history_page={{ audited_history.next_page_number }}">Next</a></li>
+                                {% else %}
+                                    <li class="page-item disabled"><span class="page-link shadow-sm">Next</span></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                    {% endif %}
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        // If the URL contains an active 'history_page' argument, automatically switch view focus to Tab 2
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('history_page') && !urlParams.has('pending_page')) {
+            const historyTabTrigger = document.getElementById('history-tab');
+            if (historyTabTrigger) {
+                const tabInstance = new bootstrap.Tab(historyTabTrigger);
+                tabInstance.show();
+            }
+        }
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,360 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arena: {{ problem.title }} | CodeVisor</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --neon-blue: #00d2ff;
+            --neon-purple: #9d50bb;
+            --terminal-green: #00ff41;
+            --bg-dark: #090a0f;
+            --danger-red: #ff4b4b;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navbar / HUD */
+        .navbar {
+            background: rgba(9, 10, 15, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--danger-red);
+            height: 65px;
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        #timer-display {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+        }
+        
+        .timer-critical {
+            color: var(--danger-red) !important;
+            text-shadow: 0 0 15px rgba(255, 75, 75, 0.8) !important;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+        /* 3-Pane Layout */
+        .ide-wrapper {
+            display: flex;
+            height: calc(100vh - 65px);
+            padding: 10px;
+            gap: 10px;
+        }
+
+        .left-pane { width: 40%; display: flex; flex-direction: column; }
+        .right-pane { width: 60%; display: flex; flex-direction: column; gap: 10px; }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 10px 15px;
+            background: rgba(0, 0, 0, 0.4);
+            border-bottom: 1px solid var(--glass-border);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #aaa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Problem Description Area */
+        .problem-content { padding: 20px; overflow-y: auto; flex-grow: 1; }
+
+        /* Markdown Styles */
+        .markdown-body { line-height: 1.7; font-size: 0.95rem; color: #ffffff !important; }
+        .markdown-body p, .markdown-body li, .markdown-body h1, .markdown-body h2, 
+        .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 { 
+            color: #ffffff !important; margin-bottom: 1rem; 
+        }
+        .markdown-body strong { color: #ffffff !important; font-weight: 800; }
+        .markdown-body code {
+            background: rgba(0, 210, 255, 0.1); color: var(--neon-blue); padding: 2px 6px;
+            border-radius: 4px; font-family: 'Fira Code', monospace; font-size: 0.85em;
+            border: 1px solid rgba(0, 210, 255, 0.2);
+        }
+
+        /* Editor & Terminal */
+        .editor-container { flex: 2; min-height: 0; }
+        .terminal-container { flex: 1; min-height: 0; }
+        
+        #editor { flex-grow: 1; }
+        
+        #console {
+            height: 100%; padding: 15px; overflow-y: auto; white-space: pre-wrap;
+            font-family: 'Fira Code', monospace; color: var(--terminal-green);
+            font-size: 0.9rem; outline: none;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
+
+        /* Buttons */
+        .run-btn {
+            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2);
+            color: white; font-weight: bold; padding: 6px 20px; border-radius: 5px; transition: 0.3s;
+        }
+        .run-btn:hover { background: rgba(255, 255, 255, 0.2); color: white; }
+        
+        .submit-btn {
+            background: linear-gradient(45deg, #d32f2f, #ff4b4b); border: none;
+            color: white; font-weight: bold; padding: 6px 20px; border-radius: 5px; transition: 0.3s;
+        }
+        .submit-btn:hover { box-shadow: 0 0 15px rgba(255, 75, 75, 0.4); color: white; }
+
+        .terminal-cursor {
+            display: inline-block; width: 8px; height: 15px;
+            background: var(--terminal-green); margin-left: 2px;
+            animation: blink 1s step-end infinite;
+        }
+    </style>
+    
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
+</head>
+<body>
+
+    <nav class="navbar px-4 d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-3">
+            <span class="navbar-brand m-0"><i class="bi bi-shield-shaded me-2 text-danger"></i>CodeVisor Battle Arena</span>
+            <span class="badge bg-danger bg-opacity-25 border border-danger text-danger px-3 py-2 rounded-pill">
+                LIVE DUEL vs @{% if duel.challenger == user %}{{ duel.opponent.username }}{% else %}{{ duel.challenger.username }}{% endif %}
+            </span>
+        </div>
+        
+        <div id="timer-display">--:--:--</div>
+        
+        <div class="d-flex align-items-center gap-3">
+            <button class="btn run-btn" onclick="runCode()"><i class="bi bi-play-fill me-1"></i> TEST RUN</button>
+            
+            <form action="/practice/duel/submit/{{ duel.id }}/" method="POST" id="duel-submit-form" class="m-0">
+                {% csrf_token %}
+                <input type="hidden" name="code" id="hidden-code">
+                <button type="button" class="btn submit-btn" onclick="submitDuel()">
+                    <i class="bi bi-rocket-takeoff-fill me-1"></i> SUBMIT MATCH
+                </button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="ide-wrapper">
+        <div class="left-pane glass-panel">
+            <div class="panel-header">
+                <span class="text-white fw-bold">{{ problem.problem_id }}. {{ problem.title }}</span>
+                <span class="badge bg-dark border border-secondary text-light"><i class="bi bi-trophy text-warning"></i> Elo: {{ problem.elo_requirement }}</span>
+            </div>
+            <div class="problem-content">
+                
+                <div class="mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+                    {% for tag in problem.topic_tags %}
+                        <span class="badge bg-secondary bg-opacity-25 text-info border border-info border-opacity-25 me-1 mb-1 px-2 py-1">{{ tag }}</span>
+                    {% endfor %}
+                </div>
+                
+                <div class="alert alert-danger bg-danger bg-opacity-10 border border-danger border-opacity-25 text-light rounded p-3 small mb-4">
+                    <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i> <strong>Anti-Cheat Active:</strong> 
+                    Refreshing this page will not stop your timer. You must submit before the clock hits zero.
+                </div>
+                
+                {{ problem.problem_description|json_script:"problem-desc-data" }}
+                <div id="markdown-container" class="markdown-body"></div>
+            </div>
+        </div>
+
+        <div class="right-pane">
+            <div class="editor-container glass-panel">
+                <div class="panel-header">
+                    <span class="text-white"><i class="bi bi-code-slash me-2"></i>solution.py</span>
+                    <span>Python 3.12</span>
+                </div>
+                <div id="editor"></div>
+            </div>
+
+            <div class="terminal-container glass-panel">
+                <div class="panel-header">
+                    <span class="text-white"><i class="bi bi-terminal me-2"></i>Console</span>
+                    <span>Standard IO</span>
+                </div>
+                <div id="console" tabindex="0"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // --- 1. GLOBALS & MONACO INITIALIZATION ---
+        let editor;
+        let socket;
+        let consoleDiv;
+        let currentInput = "";
+
+        // Helper to keep the cursor at the end (From your working main.js)
+        function updateTerminalDisplay(text = "") {
+            const existingCursor = consoleDiv.querySelector('.terminal-cursor');
+            if (existingCursor) existingCursor.remove();
+
+            if (text) {
+                consoleDiv.innerText += text;
+            }
+            
+            const cursor = document.createElement('span');
+            cursor.className = 'terminal-cursor';
+            consoleDiv.appendChild(cursor);
+            
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        }
+
+        require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs' } });
+        require(['vs/editor/editor.main'], function () {
+            editor = monaco.editor.create(document.getElementById('editor'), {
+                value: `{{ problem.starter_code|escapejs }}`,
+                language: 'python',
+                theme: 'vs-dark',
+                automaticLayout: true,
+                minimap: { enabled: false },
+                fontSize: 14,
+                fontFamily: "'Fira Code', monospace"
+            });
+        });
+
+        // --- 2. THE PROVEN WEBSOCKET RUN LOGIC ---
+        function runCode() {
+            consoleDiv = document.getElementById("console");
+            consoleDiv.innerHTML = ""; 
+            currentInput = "";
+            updateTerminalDisplay("Running Code in Arena Sandbox...\n-----------------------------------\n"); 
+            consoleDiv.focus();
+
+            const wsScheme = window.location.protocol === "https:" ? "wss" : "ws";
+            socket = new WebSocket(`${wsScheme}://${window.location.host}/ws/run/`);
+
+            socket.onopen = () => {
+                socket.send(editor.getValue());
+            };
+
+            socket.onmessage = (event) => {
+                updateTerminalDisplay(event.data);
+            };
+
+            socket.onclose = () => {
+                updateTerminalDisplay("\n[Execution Finished]");
+            };
+        }
+
+        // Standard Input Logic for the console (From your working main.js)
+        document.getElementById("console").addEventListener("keydown", function(e) {
+            if (!socket || socket.readyState !== WebSocket.OPEN) return;
+
+            if (e.key === "Enter") {
+                e.preventDefault();
+                socket.send(currentInput + "\n");
+                updateTerminalDisplay("\n");
+                currentInput = "";
+            } else if (e.key === "Backspace") {
+                e.preventDefault();
+                if (currentInput.length > 0) {
+                    currentInput = currentInput.slice(0, -1);
+                    const text = consoleDiv.innerText;
+                    consoleDiv.innerText = text.slice(0, -1);
+                    updateTerminalDisplay();
+                }
+            } else if (e.key.length === 1) {
+                currentInput += e.key;
+                updateTerminalDisplay(e.key);
+            }
+        });
+
+        // --- 3. COUNTDOWN TIMER LOGIC ---
+        let remainingSeconds = {{ remaining_seconds }};
+        const timerDisplay = document.getElementById('timer-display');
+        
+        function updateTimer() {
+            const h = Math.floor(remainingSeconds / 3600);
+            const m = Math.floor((remainingSeconds % 3600) / 60);
+            const s = remainingSeconds % 60;
+            
+            timerDisplay.innerText = 
+                `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            
+            if (remainingSeconds <= 300) {
+                timerDisplay.classList.add('timer-critical');
+            }
+            
+            if (remainingSeconds <= 0) {
+                clearInterval(timerInterval);
+                submitDuel(); // Force submission when time expires
+            }
+            remainingSeconds--;
+        }
+        
+        const timerInterval = setInterval(updateTimer, 1000);
+        updateTimer();
+
+        // --- 4. MARKDOWN PARSING ---
+        document.addEventListener("DOMContentLoaded", function() {
+            const descDataElement = document.getElementById('problem-desc-data');
+            if (descDataElement) {
+                const rawMarkdown = JSON.parse(descDataElement.textContent);
+                document.getElementById('markdown-container').innerHTML = marked.parse(rawMarkdown);
+            }
+            
+            // Initializing consoleDiv globally to prevent errors on first load
+            consoleDiv = document.getElementById("console");
+        });
+
+        // --- 5. THE FINAL SUBMISSION ---
+        function submitDuel() {
+            const submitBtn = document.querySelector('.submit-btn');
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> SUBMITTING...';
+            submitBtn.disabled = true;
+
+            // Extract code from Monaco and inject into the hidden form input
+            document.getElementById('hidden-code').value = editor.getValue();
+            
+            // Post the form to the backend view
+            document.getElementById('duel-submit-form').submit();
+        }
+    </script>
+</body>
+</html>

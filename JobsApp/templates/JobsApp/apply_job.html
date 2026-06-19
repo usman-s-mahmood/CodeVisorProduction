@@ -1,0 +1,88 @@
+{% extends "BlogApp/base.html" %}
+{% block body %}
+
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+<style>
+    trix-editor {
+        min-height: 200px;
+        border-radius: 0.375rem;
+        border: 1px solid #ced4da;
+        background-color: #fff;
+    }
+</style>
+
+<div class="container-fluid page-header mb-5 py-5">
+    <div class="container">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Submit Application</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb text-uppercase">
+                <li class="breadcrumb-item"><a class="text-white" href="/marketplace/board/">Marketplace</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="/marketplace/job/{{job.id}}">{{ job.title }}</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">Apply</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 rounded-3">
+                <div class="card-body p-5">
+                    
+                    <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
+                        <i class="fa fa-briefcase fa-2x text-primary me-3"></i>
+                        <div>
+                            <h3 class="mb-0 text-dark">Applying for: {{ job.title }}</h3>
+                            {% comment %} <p class="text-muted mb-0">{{ job.recruiter.username }}</p> {% endcomment %}
+                            <p class="text-muted mb-0">{{ job.company_name }}</p>
+                        </div>
+                    </div>
+
+                    <form method="POST" action="" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-dark">{{ form.cv.label }} <span class="text-danger">*</span></label>
+                            {{ form.cv }}
+                            <div class="form-text text-muted">{{ form.cv.help_text }}</div>
+                            <div class="text-danger small mt-1">{{ form.cv.errors }}</div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-dark">{{ form.relevant_project_url.label }}</label>
+                            {{ form.relevant_project_url }}
+                            <div class="text-danger small">{{ form.relevant_project_url.errors }}</div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-dark">{{ form.availability.label }} <span class="text-danger">*</span></label>
+                            {{ form.availability }}
+                            <div class="text-danger small">{{ form.availability.errors }}</div>
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label fw-bold text-dark">{{ form.cover_letter.label }}</label>
+                            
+                            {{ form.cover_letter }} 
+                            <trix-editor input="trix_cover_letter_input" class="trix-content"></trix-editor>
+                            
+                            <div class="text-danger small mt-1">{{ form.cover_letter.errors }}</div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg py-3 fw-bold text-white shadow-sm">
+                                <i class="fa fa-paper-plane me-2"></i>Send Application
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+
+{% endblock %}

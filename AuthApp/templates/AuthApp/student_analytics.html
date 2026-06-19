@@ -1,0 +1,188 @@
+{% extends "BlogApp/base.html" %}
+{% block body %}
+
+<div class="container-fluid page-header mb-5 py-5">
+    <div class="container">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Performance Intelligence</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb text-uppercase">
+                <li class="breadcrumb-item"><a class="text-white" href="/auth/dashboard/">Dashboard</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">Analytics Metric Core</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            
+            <div class="card shadow-sm border-0 rounded-3 mb-4 bg-light">
+                <div class="card-body p-4 text-center">
+                    <p class="text-muted small mb-3 fw-bold uppercase tracking-wider"><i class="fa fa-sliders-h me-2"></i>Select Analytics Matrix View Dimension</p>
+                    
+                    <div class="d-flex flex-wrap justify-content-center gap-2" role="group" aria-label="Quad chart toggle field selector">
+                        
+                        <input type="radio" class="btn-check" name="chartToggle" id="btn-toggle-domains" checked autocomplete="off">
+                        <label class="btn btn-outline-primary rounded-pill px-3 fw-bold" for="btn-toggle-domains">
+                            <i class="fa fa-cubes me-1"></i>Skill Domains
+                        </label>
+
+                        <input type="radio" class="btn-check" name="chartToggle" id="btn-toggle-certs" autocomplete="off">
+                        <label class="btn btn-outline-primary rounded-pill px-3 fw-bold" for="btn-toggle-certs">
+                            <i class="fa fa-award me-1"></i>Certifications
+                        </label>
+
+                        <input type="radio" class="btn-check" name="chartToggle" id="btn-toggle-diff" autocomplete="off">
+                        <label class="btn btn-outline-primary rounded-pill px-3 fw-bold" for="btn-toggle-diff">
+                            <i class="fa fa-layer-group me-1"></i>Task Difficulty
+                        </label>
+
+                        <input type="radio" class="btn-check" name="chartToggle" id="btn-toggle-scores" autocomplete="off">
+                        <label class="btn btn-outline-primary rounded-pill px-3 fw-bold" for="btn-toggle-scores">
+                            <i class="fa fa-bolt me-1"></i>Exam Mastery
+                        </label>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0 rounded-3 mb-5">
+                <div class="card-header bg-white py-4 border-bottom">
+                    <h5 id="chart-card-title" class="fw-bold text-dark mb-0">
+                        <i class="fa fa-chart-bar text-primary me-2"></i>Problem Solving Competency Volume Matrix
+                    </h5>
+                </div>
+                <div class="card-body p-4 p-md-5 d-flex justify-content-center align-items-center">
+                    <div class="position-relative" style="height: 400px; width: 100%; max-width: 650px;">
+                        <canvas id="codevisorMasterCanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        // 1. UNPACK JINJA DATA ARRAYS SAFELY WITH LIQUID ENGINE INJECTION
+        const domainLabels = {{ domain_labels|safe|default:"[]" }};
+        const domainCounts = {{ domain_counts|safe|default:"[]" }};
+        
+        const certData = [{{ cert_verified|default:0 }}, {{ cert_pending|default:0 }}, {{ cert_rejected|default:0 }}];
+        const certLabels = ['Verified Certificates', 'Pending Review Logs', 'Rejected Attempts'];
+        
+        const diffLabels = {{ difficulty_labels|safe|default:"[]" }};
+        const diffCounts = {{ difficulty_counts|safe|default:"[]" }};
+        
+        // Ensure robust structural fallback arrays if no quiz marks exist yet to prevent canvas errors
+        let scoreLabels = {{ score_labels|safe|default:"[]" }};
+        let scoreCounts = {{ score_averages|safe|default:"[]" }};
+        
+        if (!scoreLabels || scoreLabels.length === 0 || scoreLabels[0] === "Framework Core Baseline") {
+            scoreLabels = ["OOP Certification Exam", "Data Structures Exam", "Databases Exam"];
+            scoreCounts = [0, 0, 0];
+        }
+
+        const ctx = document.getElementById('codevisorMasterCanvas').getContext('2d');
+        const headerTitle = document.getElementById('chart-card-title');
+
+        // 2. REUSABLE RUNTIME GRAPH INSTANTIATION FACTORY
+        function renderCustomChart(type, labels, datasetLabel, data, bgColors, borderColors, optionsOverrides = {}) {
+            let config = {
+                type: type,
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: datasetLabel,
+                        data: data,
+                        backgroundColor: bgColors,
+                        borderColor: borderColors,
+                        borderWidth: 2,
+                        borderRadius: type === 'bar' ? 6 : 0
+                    }]
+                },
+                options: Object.assign({
+                    responsive: true,
+                    maintainAspectRatio: false,
+                }, optionsOverrides)
+            };
+            return new Chart(ctx, config);
+        }
+
+        // Initialize default view state profile run (Graph 1: Domains)
+        let codevisorChart = renderCustomChart(
+            'bar', domainLabels, 'Problems Completed Successfully', domainCounts, 
+            'rgba(13, 110, 253, 0.75)', '#0d6efd', 
+            { plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { ticks: { precision: 0 } } } }
+        );
+
+        // 3. CLEAN INTERACTION EVENT LISTENERS USING VALID JAVASCRIPT COMMENTS
+        
+        // TOGGLE SWITCH 1: SKILL DOMAINS
+        document.getElementById('btn-toggle-domains').addEventListener('change', function() {
+            if(this.checked) {
+                headerTitle.innerHTML = '<i class="fa fa-chart-bar text-primary me-2"></i>Problem Solving Competency Volume Matrix';
+                codevisorChart.destroy();
+                codevisorChart = renderCustomChart(
+                    'bar', domainLabels, 'Problems Completed Successfully', domainCounts, 
+                    'rgba(13, 110, 253, 0.75)', '#0d6efd', 
+                    { plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { ticks: { precision: 0 } } } }
+                );
+            }
+        });
+
+        // TOGGLE SWITCH 2: CERTIFICATIONS
+        document.getElementById('btn-toggle-certs').addEventListener('change', function() {
+            if(this.checked) {
+                headerTitle.innerHTML = '<i class="fa fa-pie-chart text-success me-2"></i>System Certification Status Pool Distribution';
+                codevisorChart.destroy();
+                codevisorChart = renderCustomChart(
+                    'doughnut', certLabels, 'Total Operations count', certData,
+                    ['#198754', '#ffc107', '#dc3545'], ['#ffffff', '#ffffff', '#ffffff'],
+                    { plugins: { legend: { display: true, position: 'bottom' } } }
+                );
+            }
+        });
+
+        // TOGGLE SWITCH 3: TASK DIFFICULTY LEVEL
+        document.getElementById('btn-toggle-diff').addEventListener('change', function() {
+            if(this.checked) {
+                headerTitle.innerHTML = '<i class="fa fa-layer-group text-info me-2"></i>Algorithmic Complexity Tier Distribution Profile';
+                codevisorChart.destroy();
+                codevisorChart = renderCustomChart(
+                    'pie', diffLabels, 'Problems Solved', diffCounts,
+                    ['#0dcaf0', '#0d6efd', '#6f42c1'], ['#ffffff', '#ffffff', '#ffffff'],
+                    { plugins: { legend: { display: true, position: 'bottom' } } }
+                );
+            }
+        });
+
+        // TOGGLE SWITCH 4: EXAM MASTERY RATINGS
+        document.getElementById('btn-toggle-scores').addEventListener('change', function() {
+            if(this.checked) {
+                headerTitle.innerHTML = '<i class="fa fa-bolt text-warning me-2"></i>AI Assessment Certification Grade Performance Averages';
+                codevisorChart.destroy();
+                codevisorChart = renderCustomChart(
+                    'bar', scoreLabels, 'Average Score (%)', scoreCounts,
+                    'rgba(255, 193, 7, 0.75)', '#ffc107',
+                    { 
+                        indexAxis: 'y', 
+                        plugins: { legend: { display: false } }, 
+                        scales: { x: { min: 0, max: 100, ticks: { callback: value => value + "%" } }, y: { grid: { display: false } } } 
+                    }
+                );
+            }
+        });
+    });
+</script>
+
+<style>
+    .uppercase { text-transform: uppercase; }
+    .tracking-wider { letter-spacing: 0.08em; }
+</style>
+
+{% endblock %}

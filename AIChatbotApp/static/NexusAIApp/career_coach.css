@@ -1,0 +1,173 @@
+:root {
+    --bg-slate-900: #0f172a;
+    --bg-slate-800: #1e293b;
+    --brand-emerald: #10b981;
+    --brand-emerald-light: rgba(16, 185, 129, 0.06);
+    --border-card: #e2e8f0;
+    --font-sans: 'Plus Jakarta Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+
+body {
+    font-family: var(--font-sans);
+    overflow: hidden;
+}
+
+.text-xs { font-size: 0.72rem !important; }
+.text-sm { font-size: 0.88rem !important; }
+.pointer-link { cursor: pointer; }
+
+/* ==================== SIDEBAR STYLING MATRIX ==================== */
+.sidebar-panel {
+    background-color: var(--bg-slate-900);
+}
+
+.history-card {
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+}
+.history-card:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+.history-card.active {
+    background-color: rgba(16, 185, 129, 0.08) !important;
+    border-left-color: var(--brand-emerald) !important;
+}
+
+/* ==================== WORKSPACE STYLING MATRIX ==================== */
+.workspace-panel {
+    min-width: 0; /* 🌟 CRITICAL BOOTSTRAP FLEX RESTRAINT RULE: Prevents strings from forcing layout expanding */
+}
+
+.chat-viewport-scroller {
+    background-color: #f8fafc;
+}
+
+/* --- RESPONSIVE DOSSIER OVERHAUL STRUCTURAL TIERS --- */
+.msg-row {
+    width: 100%;
+}
+
+.dossier-card-bubble {
+    background-color: #ffffff;
+    border: 1px solid var(--border-card);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+    width: 100%;
+    overflow: hidden; /* Prevent text spilling */
+    word-wrap: break-word; /* 🌟 CRITICAL: Force markdown text to drop to new rows naturally */
+    overflow-wrap: break-word;
+}
+
+.msg-row.user .dossier-card-bubble {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+    padding: 14px 18px;
+    width: auto;
+    max-width: 80%;
+}
+
+.dossier-header-strip {
+    background-color: #f1f5f9;
+    border-bottom: 1px solid var(--border-card);
+    padding: 10px 16px;
+}
+
+.dossier-body-text {
+    padding: 20px;
+    color: #1e293b;
+    font-size: 0.94rem;
+    line-height: 1.6;
+}
+
+/* Force markdown rendering structures inside bubble wrappers to remain uniform */
+.dossier-body-text p { margin-bottom: 12px; }
+.dossier-body-text h5 { font-weight: 700; margin-top: 16px; margin-bottom: 8px; font-size: 1.1rem; }
+.dossier-body-text ul, .dossier-body-text ol { padding-left: 20px; margin-bottom: 12px; }
+.dossier-body-text li { margin-bottom: 4px; }
+
+/* --- THE ADVERT ACTION CHECKLIST FOOTER PANEL --- */
+.dossier-todo-footer-panel {
+    background-color: var(--brand-emerald-light);
+    border-top: 1px dashed var(--brand-emerald);
+    padding: 16px 20px;
+}
+
+.todo-title-row {
+    font-weight: 700;
+    color: #065f46;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+}
+
+.todo-checklist-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.todo-item-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.todo-checkbox-input {
+    width: 16px; height: 16px;
+    accent-color: var(--brand-emerald);
+    margin-top: 3px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.todo-item-text {
+    font-size: 0.88rem;
+    color: #047857;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.todo-checkbox-input:checked + .todo-item-text {
+    text-decoration: line-through;
+    color: #94a3b8;
+    opacity: 0.65;
+}
+
+/* --- SAFE PRE CONTAINER BOUNDARIES SCROLLER --- */
+pre {
+    background-color: #0f172a !important;
+    border-radius: 8px;
+    padding: 14px;
+    margin: 14px 0;
+    overflow-x: auto; /* 🌟 CRITICAL: If resume is built as a code snippet, it will scroll inside cell limits */
+    max-width: 100%;
+}
+code { font-family: var(--font-mono); font-size: 0.84rem; }
+
+.copy-code-btn {
+    position: absolute; top: 6px; right: 6px;
+    background: rgba(255,255,255,0.06); border: none; color: #94a3b8;
+    padding: 3px 6px; border-radius: 4px; font-size: 0.65rem; cursor: pointer;
+}
+
+/* --- ANIMATION LIFT CONTROLS --- */
+.hover-lift { transition: transform 0.2s, box-shadow 0.2s; }
+.hover-lift:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.04) !important; }
+
+/* --- MOBILE BREAKPOINT OVERRIDES --- */
+@media (max-width: 767.98px) {
+    .sidebar-panel {
+        position: absolute;
+        left: -100%;
+        top: 56px; /* Sits cleanly beneath header */
+        width: 270px;
+        height: calc(100vh - 56px) !important;
+        transition: left 0.25s ease-in-out;
+    }
+    .sidebar-panel.mobile-open {
+        left: 0;
+    }
+}

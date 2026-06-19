@@ -1,0 +1,490 @@
+:root {
+    --sidebar-bg: rgba(13, 14, 18, 0.98);
+    --main-bg: #090a0f;
+    --glass: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --accent: #a855f7; /* Neon Purple */
+    --text-main: #e2e8f0;
+    --text-dim: #94a3b8;
+    --code-bg: #1a1b26; /* Tokyo Night Dark */
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--main-bg);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    overflow: hidden;
+}
+
+/* --- SIDEBAR --- */
+.sidebar {
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--glass-border);
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+    z-index: 10;
+}
+
+.new-chat-btn {
+    margin: 0 15px 20px;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    color: white;
+    padding: 12px;
+    border-radius: 12px;
+    text-align: left;
+    transition: 0.3s;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.new-chat-btn:hover {
+    background: rgba(168, 85, 247, 0.1);
+    border-color: var(--accent);
+}
+
+.search-box {
+    padding: 0 15px 15px;
+}
+
+.search-box input {
+    width: 100%;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: white;
+    font-size: 0.85rem;
+    outline: none;
+}
+
+.history-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 0 10px;
+}
+
+.history-item {
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: 0.2s;
+}
+
+.history-item:hover {
+    background: var(--glass);
+    color: white;
+}
+
+/* --- MAIN CHAT AREA --- */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: relative;
+}
+
+.chat-header {
+    padding: 15px 30px;
+    border-bottom: 1px solid var(--glass-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(9, 10, 15, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.message-viewport {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 40px 15%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.msg { display: flex; gap: 20px; max-width: 100%; }
+.msg.user { flex-direction: row-reverse; align-self: flex-end; }
+
+.avatar {
+    width: 35px; height: 35px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+.bot-avatar { background: var(--accent); color: white; }
+.user-avatar { background: #334155; color: white; }
+
+.bubble {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    max-width: 85%;
+}
+
+.user .bubble { 
+    background: var(--glass); 
+    border: 1px solid var(--glass-border);
+    padding: 12px 18px; 
+}
+
+/* --- MARKDOWN & CODEBOX STYLING --- */
+pre {
+    background: var(--code-bg) !important;
+    border-radius: 12px;
+    padding: 15px;
+    position: relative;
+    margin: 15px 0;
+    border: 1px solid var(--glass-border);
+    overflow-x: auto;
+}
+
+code { font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+
+.copy-code-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: #94a3b8;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    transition: 0.2s;
+    z-index: 5;
+}
+
+.copy-code-btn:hover { background: var(--accent); color: white; }
+
+.full-msg-copy {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    cursor: pointer;
+    margin-top: 10px;
+    display: inline-block;
+    transition: 0.2s;
+}
+.full-msg-copy:hover { color: var(--accent); }
+
+/* --- INPUT AREA --- */
+.input-section {
+    padding: 20px 15% 40px;
+    background: linear-gradient(transparent, var(--main-bg));
+}
+
+.input-box {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.input-box input {
+    flex-grow: 1; background: transparent; border: none;
+    color: white; outline: none; font-size: 1rem;
+}
+
+.input-box textarea {
+    flex-grow: 1;
+    background: transparent;
+    border: none;
+    color: white;
+    outline: none;
+    font-size: 1rem;
+    padding: 10px 0;
+    resize: none; /* Prevents the user from manually dragging the box */
+    max-height: 200px; /* Limits how tall it can grow before scrolling */
+    line-height: 1.5;
+    font-family: inherit;
+    overflow-y: hidden; /* Hide scrollbar until max-height is reached */
+}
+
+/* Adjust the input-box container to align items to the bottom as it grows */
+.input-box {
+    align-items: flex-end !important; 
+    min-height: 56px;
+}
+
+
+.input-box {
+    display: flex;
+    align-items: flex-end; /* Keeps buttons at the bottom as box grows */
+    padding: 12px 20px;
+    min-height: 56px;
+}
+
+.input-box textarea {
+    flex-grow: 1;
+    background: transparent;
+    border: none;
+    color: white;
+    outline: none;
+    font-size: 1rem;
+    padding: 8px 0;
+    resize: none; /* Disables the manual drag handle */
+    max-height: 200px; /* Max height before scrolling starts */
+    line-height: 1.5;
+    font-family: 'Inter', sans-serif;
+    overflow-y: hidden; /* Hide scrollbar initially */
+    display: block;
+}
+
+/* Ensure the wrapper doesn't jump around */
+.input-section {
+    width: 100%;
+    transition: all 0.2s ease;
+}
+
+
+#micBtn.active {
+    color: var(--accent) !important;
+    filter: drop-shadow(0 0 8px var(--accent));
+    animation: pulse-mic 1.2s infinite;
+}
+
+@keyframes pulse-mic {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+
+.voice-play-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+    display: inline-block;
+}
+
+.voice-play-btn:hover {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+.voice-play-btn.speaking {
+    border-color: var(--accent);
+    color: var(--accent);
+    animation: pulse-border 1.5s infinite;
+}
+
+@keyframes pulse-border {
+    0% { box-shadow: 0 0 0 0px rgba(168, 85, 247, 0.4); }
+    100% { box-shadow: 0 0 0 10px rgba(168, 85, 247, 0); }
+}
+
+
+.msg-actions {
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 8px;
+    opacity: 0.6;
+    transition: opacity 0.3s;
+}
+
+.bubble:hover .msg-actions {
+    opacity: 1;
+}
+
+.voice-play-btn, .full-msg-copy {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-dim);
+    font-size: 0.7rem;
+    padding: 3px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.voice-play-btn:hover, .full-msg-copy:hover {
+    background: var(--accent);
+    color: white;
+}
+
+/* Speaker Pulse Animation */
+.voice-play-btn.speaking {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: rgba(168, 85, 247, 0.1);
+}
+
+
+/* Hide Stop button by default */
+.voice-stop-btn {
+    display: none !important;
+    color: var(--accent) !important;
+}
+
+/* When the parent has the .speaking class, swap the buttons */
+.msg-actions.speaking .voice-play-btn {
+    display: none !important;
+}
+
+.msg-actions.speaking .voice-stop-btn {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Optional: Add a subtle pulse to the Stop button so it looks "Live" */
+.voice-stop-btn i {
+    animation: pulse-red 1.5s infinite;
+}
+
+@keyframes pulse-red {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* The Highlight Class */
+.history-item.active {
+    background: rgba(168, 85, 247, 0.15) !important; /* Your accent color with transparency */
+    border-left: 3px solid var(--accent) !important;
+    color: white !important;
+}
+
+/* Ensure search results also look good when active */
+.history-item {
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+}
+
+.sources-container {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 5px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.badge.bg-secondary {
+    background-color: rgba(168, 85, 247, 0.2) !important; /* Matches your purple theme */
+    color: #a855f7;
+    border: 1px solid rgba(168, 85, 247, 0.4);
+}
+
+/* ================= MOBILE RESPONSIVENESS ================= */
+
+.mobile-menu-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.4rem;
+}
+
+/* Tablet & below */
+@media (max-width: 992px) {
+    body {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 260px;
+        height: 100%;
+        z-index: 1000;
+        transition: 0.3s ease;
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    /* Overlay when sidebar is open */
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 999;
+        display: none;
+    }
+
+    .sidebar-overlay.active {
+        display: block;
+    }
+
+    .chat-container {
+        width: 100%;
+    }
+
+    .message-viewport {
+        padding: 20px;
+    }
+
+    .input-section {
+        padding: 15px;
+    }
+
+    .bubble {
+        max-width: 100%;
+    }
+}
+
+.navbar-brand {
+    font-weight: 800;
+    letter-spacing: 1px;
+    background: linear-gradient(to right, var(--neon-blue), var(--neon-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+/* Small phones */
+@media (max-width: 576px) {
+    .chat-header {
+        padding: 10px 15px;
+    }
+
+    .message-viewport {
+        padding: 15px;
+        gap: 20px;
+    }
+
+    .input-box {
+        padding: 10px 15px;
+    }
+
+    .bubble {
+        font-size: 0.9rem;
+    }
+
+    .avatar {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
+

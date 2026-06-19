@@ -1,0 +1,29 @@
+{% extends "BlogApp/base.html" %}
+
+{% block body %}
+
+<div class="container-fluid page-header mb-5 py-5">
+    <div class="container">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Delete Code Post</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb text-uppercase">
+                <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">Delete Code Post</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<br>
+    <div class="container">
+        <p class="fs-1 text-center"><strong class="text-secondary">Are you sure you want to delete this post? post would not be restored once deleted</strong></p>
+        <p class="fs-6 text-center"><strong class="text-dark">{{title}} - By {{author}}</strong></p>
+        <form action="" class="form-control text-center" method=POST>
+            {% csrf_token %}
+            {{form.as_p}}
+            <br>
+            <a href="/auth/dashboard" class="btn btn-success me-2">No</a>
+            <button class="btn btn-danger" type="submit">Yes</button>
+        </form>
+    </div>
+<br>
+{% endblock body %}

@@ -1,0 +1,124 @@
+{% extends "BlogApp/base.html" %}
+
+{% block body %}
+<div class="container-fluid page-header mb-5 py-5">
+    <div class="container">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Code Post</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb text-uppercase">
+                <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">Code Post</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="row">
+        <!-- Post Content -->
+        <div class="col-lg-8 mb-5">
+            {% if post.thumbnail %}
+                <img src="{{post.thumbnail}}" class="img-fluid rounded mb-4 w-100" alt="{{post.title}}">
+            {% else %}
+                <img src="https://ik.imagekit.io/hivepulse/hivepulse/default/default-post.png" class="img-fluid rounded mb-4 w-100" alt="{{post.title}}">
+            {% endif %}
+
+            <h2 class="fw-bold text-center">{{ post.title }}</h2>
+            <p class="text-muted text-center fs-5">{{ post.tagline }}</p>
+            <p class="text-center text-secondary">Posted on: {{ post.post_date }}</p>
+
+            <div class="mt-4">
+                {{ post.content|safe }}
+            </div>
+
+            <div class="text-center my-4">
+                {% if post.total_likes == 0 %}
+                    <p class="text-muted fs-5">No Likes on this post! Be the first to like it</p>
+                {% else %}
+                    <p class="text-muted fs-5">Total Likes: {{ post.total_likes }}</p>
+                {% endif %}
+
+                {% if not user.is_authenticated %}
+                    <a href="/auth/login" class="btn btn-outline-success mt-2">Login to like</a>
+                {% else %}
+                    {% if user in post.likes.all %}
+                        <a href="/like-post/{{ post.id }}" class="btn btn-danger mt-2">Unlike</a>
+                    {% else %}
+                        <a href="/like-post/{{ post.id }}" class="btn btn-success mt-2">Like</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+
+            <!-- Author Info -->
+            <div class="card my-5 bg-light">
+                <div class="row g-0 align-items-center">
+                    <div class="col-md-4 text-center p-3">
+                        {% if post.author.profile and post.author.profile.profile_pic %}
+                            <img src="{{ post.author.profile.profile_pic }}" alt="{{ post.author.username }}" class="img-fluid rounded-circle" width="120">
+                        {% else %}
+                            <img src="https://ik.imagekit.io/hivepulse/hivepulse/default/default-user.jpg" class="img-fluid rounded-circle" width="120" alt="default user">
+                        {% endif %}
+                    </div>
+                    <div class="col-md-8 p-3">
+                        <h5 class="card-title">{{ post.author }}</h5>
+                        {% if post.author.profile and post.author.profile.about_user %}
+                            <p class="card-text">{{ post.author.profile.about_user }}</p>
+                        {% else %}
+                            <p class="card-text text-muted">Nothing to show about this user.</p>
+                        {% endif %}
+                        {% if post.author.profile and post.author.profile.social_link %}
+                            <a href="{{ post.author.profile.social_link }}" target="_blank">{{ post.author.profile.social_link }}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comments -->
+            <div class="mt-5">
+                {% load comment_tags %}
+                <h4>Comments </h4>
+                {% render_comments post request %}
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Search -->
+            <form class="d-flex mb-4" method="POST" action="/search">
+                {% csrf_token %}
+                <input class="form-control me-2" type="search" placeholder="Search..." name="search">
+                <button class="btn btn-outline-primary" type="submit">Search</button>
+            </form>
+
+            <!-- Categories -->
+            <div class="mb-4">
+                <h5 class="text-center fw-bold">Categories</h5>
+                <hr>
+                <ul class="list-unstyled text-center">
+                    {% for value in categories %}
+                        <li><a href="/category/{{ value|slugify }}" class="text-secondary">{{ value }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Recent Posts -->
+            <div>
+                <h5 class="text-center fw-bold">Recent Posts</h5>
+                <hr>
+                {% for post in recents %}
+                    <div class="d-flex mb-3 align-items-center">
+                        <a href="/posts/{{ post.slug }}" class="me-3">
+                            {% if post.thumbnail %}
+                                <img src="{{ post.thumbnail }}" class="img-thumbnail" width="80" alt="{{ post.title }}">
+                            {% else %}
+                                <img src="https://ik.imagekit.io/hivepulse/hivepulse/default/default-post.png" class="img-thumbnail" width="80" alt="default">
+                            {% endif %}
+                        </a>
+                        <a href="/posts/{{ post.slug }}" class="text-decoration-none">{{ post.title|truncatechars:35 }}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

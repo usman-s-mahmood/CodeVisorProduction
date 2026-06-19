@@ -1,0 +1,187 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeVisor AI Career Suite</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark-dimmed.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <link rel="stylesheet" href="{% static 'NexusAIApp/career_coach.css' %}">
+</head>
+<body class="bg-light">
+
+    <div class="container-fluid p-0 overflow-hidden style-root-wrapper" style="height: 100vh;">
+        <div class="row g-0 h-100">
+            
+            <aside class="col-12 col-md-4 col-lg-3 sidebar-panel d-flex flex-column h-100 border-end border-secondary-subtle" id="sidebarPanelNode">
+                <div class="sidebar-header p-4 pb-2">
+                    <div class="brand-box d-flex align-items-center gap-2 mb-3">
+                        <i class="bi bi-briefcase-fill text-success fs-4"></i>
+                        <span class="brand-text text-white fw-bold fs-5">Career Suite</span>
+                    </div>
+                    <button class="btn btn-dark w-100 border border-secondary text-start d-flex align-items-center gap-2 py-2 px-3 rounded-3 btn-new-consultation" onclick="window.location.reload()">
+                        <i class="bi bi-plus-lg"></i> New Session
+                    </button>
+                </div>
+
+                <div class="search-wrapper px-4 pb-3">
+                    <div class="search-input-group position-relative">
+                        <i class="bi bi-search search-icon text-dark position-absolute" style="left: 12px; top: 50%; transform: translateY(-50%);"></i>
+                        <input type="text" id="coachSearchInput" class="form-control bg-white text-dark border-0 ps-5 text-sm" style="opacity: 0.8;" placeholder="Search strategy logs...">
+                    </div>
+                </div>
+
+                <div class="session-history-scroll flex-grow-1 overflow-y-auto px-2" id="coachHistoryList">
+                    {% for session in sessions %}
+                        <div class="history-card d-flex align-items-center justify-content-between p-2 rounded-2 my-1 pointer-link" onclick="loadCoachSession({{ session.id }})">
+                            <div class="d-flex align-items-center gap-2 text-truncate pe-2">
+                                <i class="bi bi-chat-square-text-fill text-light flex-shrink-0"></i>
+                                <span class="history-title-text text-white text-sm text-truncate d-block">{{ session.title }}</span>
+                            </div>
+                            <i class="bi bi-chevron-right text-light small"></i>
+                        </div>
+                    {% empty %}
+                        <div class="text-center p-4 text-light small">No counseling records discovered.</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="sidebar-footer p-3 border-top border-secondary-subtle bg-black bg-opacity-20">
+                    <div class="user-profile-badge d-flex align-items-center gap-2">
+                        <div class="avatar-circle-sm bg-dark text-white rounded-circle d-flex align-items-center justify-content-center border fw-bold" style="width:34px; height:34px; font-size:0.8rem;">
+                            {{ user.username|slice:":2"|upper }}
+                        </div>
+                        <div class="user-meta d-flex flex-column text-truncate">
+                            <span class="username-text text-white small fw-bold text-truncate">{{ user.username }}</span>
+                            <span class="role-caption text-light tracking-wide" style="font-size: 0.7rem;">Candidate Profile</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="col-12 col-md-8 col-lg-9 workspace-panel d-flex flex-column h-100 bg-white position-relative">
+                
+                <header class="workspace-header d-flex justify-content-between align-items-center px-4 py-3 border-bottom bg-white shadow-2xs">
+                    <div class="d-flex align-items-center gap-2">
+                        <button class="btn btn-light d-md-none px-2 py-1" onclick="toggleMobileSidebar()" title="Toggle Sidebar">
+                            <i class="bi bi-list fs-4"></i>
+                        </button>
+                        <div>
+                            <h5 class="fw-bold text-dark mb-0">CodeVisor Career Coach</h5>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="/auth/dashboard" class="btn btn-outline-secondary btn-sm rounded-pill fw-bold px-3 text-xs shadow-3xs">
+                            <i class="bi bi-arrow-left me-1"></i> Exit
+                        </a>
+                    </div>
+                </header>
+
+                <div class="chat-viewport-scroller flex-grow-1 overflow-y-auto px-3 px-md-4 py-4" id="coachViewport">
+                    <div class="container h-100 d-flex flex-column justify-content-center" id="welcomeDeck">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-xl-10">
+                                
+                                <div class="text-center mb-5 mt-2">
+                                    <div class="icon-hexagon d-inline-flex align-items-center justify-content-center rounded-3 bg-success bg-opacity-10 border border-success p-3 mb-3">
+                                        <i class="bi bi-shield-check text-success fs-3"></i>
+                                    </div>
+                                    <h4 class="fw-bold text-dark">Executive Placement System</h4>
+                                    <p class="text-muted small col-md-9 mx-auto">Welcome, Candidate **{{ user.username }}**. This specialized panel evaluates your repository metrics directly to configure real-time corporate recruitment vectors.</p>
+                                </div>
+
+                                <div class="row g-3 px-1">
+                                    <div class="col-12 col-md-6">
+                                        <div class="card h-100 border border-secondary-subtle shadow-3xs hover-lift action-chip-card pointer-link" onclick="triggerActionChip('Run a comprehensive professional review of my platform profile and identify my current technical blindspots.')">
+                                            <div class="card-body d-flex gap-3 p-3">
+                                                <div class="rounded bg-light p-2 text-primary fs-5 d-flex align-items-center justify-content-center" style="width:40px; height:40px;"><i class="bi bi-person-bounding-box"></i></div>
+                                                <div class="text-truncate">
+                                                    <h6 class="fw-bold text-dark mb-1 text-sm">Audit Workspace Profile</h6>
+                                                    <p class="text-muted text-xs mb-0 text-wrap">Cross-examine platform ELO and solve distribution vectors for visibility.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="card h-100 border border-secondary-subtle shadow-3xs hover-lift action-chip-card pointer-link" onclick="triggerActionChip('Launch an active, question-by-question technical mock interview sequence for a Full-Stack Software Engineer role.')">
+                                            <div class="card-body d-flex gap-3 p-3">
+                                                <div class="rounded bg-light p-2 text-success fs-5 d-flex align-items-center justify-content-center" style="width:40px; height:40px;"><i class="bi bi-terminal-box"></i></div>
+                                                <div class="text-truncate">
+                                                    <h6 class="fw-bold text-dark mb-1 text-sm">Initiate Mock Vetting</h6>
+                                                    <p class="text-muted text-xs mb-0 text-wrap">Pivot the assistant engine into an active technical hiring board manager.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="card h-100 border border-secondary-subtle shadow-3xs hover-lift action-chip-card pointer-link" onclick="triggerActionChip('Review my current active job applications in the platform marketplace and give me an immediate prep strategy.')">
+                                            <div class="card-body d-flex gap-3 p-3">
+                                                <div class="rounded bg-light p-2 text-warning fs-5 d-flex align-items-center justify-content-center" style="width:40px; height:40px;"><i class="bi bi-send-check"></i></div>
+                                                <div class="text-truncate">
+                                                    <h6 class="fw-bold text-dark mb-1 text-sm">Analyze Active Applications</h6>
+                                                    <p class="text-muted text-xs mb-0 text-wrap">Formulate strategic placement assets mapping to active marketplace roles.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="card h-100 border border-secondary-subtle shadow-3xs hover-lift action-chip-card pointer-link" onclick="triggerActionChip('Give me a tailored list of algorithmic core concepts I need to focus on next to unlock higher bracket certificates.')">
+                                            <div class="card-body d-flex gap-3 p-3">
+                                                <div class="rounded bg-light p-2 text-danger fs-5 d-flex align-items-center justify-content-center" style="width:40px; height:40px;"><i class="bi bi-signpost-split"></i></div>
+                                                <div class="text-truncate">
+                                                    <h6 class="fw-bold text-dark mb-1 text-sm">Request Certificate Strategy</h6>
+                                                    <p class="text-muted text-xs mb-0 text-wrap">Identify concept criteria barriers to clear advanced validation tasks.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="workspace-input-section px-3 px-md-5 pb-4 bg-gradient">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-xl-10">
+                            <div class="workspace-input-box border d-flex align-items-center gap-2 p-2 bg-white rounded-4 shadow-sm">
+                                <button class="btn btn-link text-muted p-2 fs-5 border-0 rounded-circle hover-bg-light" id="coachMicBtn">
+                                    <i class="bi bi-mic-fill"></i>
+                                </button>
+                                
+                                <textarea id="coachUserIn" class="form-control border-0 bg-transparent flex-grow-1 shadow-none py-1 text-sm text-dark" placeholder="Query your corporate placement advisor or pass a workflow directive..." rows="1" style="resize:none; max-height:120px; outline:none; box-shadow:none;"></textarea>
+                                
+                                <button class="btn btn-dark d-flex align-items-center justify-content-center p-2 rounded-circle border-0 flex-shrink-0 bg-slate-900" id="coachSubmitBtn" onclick="handleCoachSend()" style="width:34px; height:34px;">
+                                    <i class="bi bi-arrow-up-short fs-4"></i>
+                                </button>
+                            </div>
+                            <div class="text-center text-muted font-monospace mt-2" style="font-size:0.6rem; opacity:0.65; letter-spacing:0.5px;">
+                                CodeVisor Deployment Core v4.2 // Secure Session Log Channel // Evaluation Matrix Terminal
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+
+        </div>
+    </div>
+
+    <script src="{% static 'NexusAIApp/career_coach.js' %}"></script>
+    <script type="text/javascript">
+        // Mobile Sidebar Drawer Toggle helper logic
+        function toggleMobileSidebar() {
+            const panel = document.getElementById('sidebarPanelNode');
+            panel.classList.toggle('mobile-open');
+        }
+    </script>
+</body>
+</html>

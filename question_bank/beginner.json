@@ -1,0 +1,1281 @@
+[
+  {
+    "problem_id": 1,
+    "title": "Two Sum",
+    "slug": "two-sum",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Hash Maps"],
+    "problem_description": "Given an array of integers `nums` and an integer `target`, return indices of the two numbers such that they add up to `target`.\n\n**Example 1:**\nInput: `nums = [2, 7, 11, 15]`, `target = 9`\nOutput: `[0, 1]`\n\n**Example 2:**\nInput: `nums = [3, 2, 4]`, `target = 6`\nOutput: `[1, 2]`",
+    "starter_code": "def two_sum(nums, target):\n    pass",
+    "reference_solution": "def two_sum(nums, target):\n    seen = {}\n    for i, num in enumerate(nums):\n        diff = target - num\n        if diff in seen:\n            return [seen[diff], i]\n        seen[num] = i\n    return []",
+    "key_concepts_to_check": "Ensure the student returns a list or tuple of two integers. Check if they used a dictionary/hash map for O(n) time complexity, though an O(n^2) nested loop approach is acceptable for a beginner if it logically works.",
+    "progressive_hints": [
+      "A brute force approach uses two nested loops to check every pair, but can you do it faster?",
+      "Think about what data structure allows you to look up a value instantly.",
+      "As you iterate through the array, store the difference between the target and the current number in a dictionary."
+    ]
+  },
+  {
+    "problem_id": 2,
+    "title": "Palindrome Number",
+    "slug": "palindrome-number",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Math", "Strings"],
+    "problem_description": "Given an integer `x`, return `True` if `x` is a palindrome, and `False` otherwise. An integer is a palindrome when it reads the same forward and backward.\n\n**Example 1:**\nInput: `x = 121`\nOutput: `True`\n\n**Example 2:**\nInput: `x = -121`\nOutput: `False`",
+    "starter_code": "def is_palindrome(x):\n    pass",
+    "reference_solution": "def is_palindrome(x):\n    if x < 0:\n        return False\n    return str(x) == str(x)[::-1]",
+    "key_concepts_to_check": "Verify that negative numbers immediately return False. Converting to a string and reversing it is the standard beginner approach and should pass. Mathematical digit reversal is also excellent.",
+    "progressive_hints": [
+      "Can a negative number ever be a palindrome? Think about the minus sign.",
+      "The easiest way to solve this in Python is to convert the integer into a string.",
+      "You can reverse a string in Python using slicing: string[::-1]."
+    ]
+  },
+  {
+    "problem_id": 3,
+    "title": "FizzBuzz",
+    "slug": "fizzbuzz",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Math", "Simulation"],
+    "problem_description": "Given an integer `n`, return a string array `answer` (1-indexed) where:\n- `answer[i] == \"FizzBuzz\"` if `i` is divisible by 3 and 5.\n- `answer[i] == \"Fizz\"` if `i` is divisible by 3.\n- `answer[i] == \"Buzz\"` if `i` is divisible by 5.\n- `answer[i] == str(i)` in any other case.\n\n**Example:**\nInput: `n = 5`\nOutput: `[\"1\", \"2\", \"Fizz\", \"4\", \"Buzz\"]`",
+    "starter_code": "def fizz_buzz(n):\n    pass",
+    "reference_solution": "def fizz_buzz(n):\n    res = []\n    for i in range(1, n + 1):\n        if i % 15 == 0:\n            res.append(\"FizzBuzz\")\n        elif i % 3 == 0:\n            res.append(\"Fizz\")\n        elif i % 5 == 0:\n            res.append(\"Buzz\")\n        else:\n            res.append(str(i))\n    return res",
+    "key_concepts_to_check": "Check for correct usage of the modulo operator (%). The condition for checking divisibility by BOTH 3 and 5 (or 15) must come first in their if/else chain.",
+    "progressive_hints": [
+      "You will need a loop that goes from 1 up to and including n.",
+      "Use the modulo operator (%) to check for remainders. If a number % 3 == 0, it is divisible by 3.",
+      "Order matters! Make sure you check if a number is divisible by both 3 and 5 before you check them individually."
+    ]
+  },
+  {
+    "problem_id": 4,
+    "title": "Reverse String",
+    "slug": "reverse-string",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Strings", "Two Pointers"],
+    "problem_description": "Write a function that reverses a string. The input string is given as an array of characters `s`. You must do this by modifying the input array in-place.\n\n**Example:**\nInput: `s = [\"h\",\"e\",\"l\",\"l\",\"o\"]`\nOutput: `[\"o\",\"l\",\"l\",\"e\",\"h\"]`",
+    "starter_code": "def reverse_string(s):\n    pass",
+    "reference_solution": "def reverse_string(s):\n    left, right = 0, len(s) - 1\n    while left < right:\n        s[left], s[right] = s[right], s[left]\n        left += 1\n        right -= 1",
+    "key_concepts_to_check": "Ensure the student modifies the array in-place. Using standard two pointers swapping characters from the outside in is the optimal approach. Python's s.reverse() is valid but flag if they create a new array.",
+    "progressive_hints": [
+      "You cannot create a new array, you have to modify the existing one.",
+      "Think about using two pointers: one at the beginning of the array and one at the end.",
+      "Swap the elements at the two pointers, then move the left pointer forward and the right pointer backward."
+    ]
+  },
+  {
+    "problem_id": 5,
+    "title": "Valid Anagram",
+    "slug": "valid-anagram",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Strings", "Hash Maps", "Sorting"],
+    "problem_description": "Given two strings `s` and `t`, return `True` if `t` is an anagram of `s`, and `False` otherwise. An Anagram is a word formed by rearranging the letters of a different word.\n\n**Example 1:**\nInput: `s = \"anagram\", t = \"nagaram\"`\nOutput: `True`\n\n**Example 2:**\nInput: `s = \"rat\", t = \"car\"`\nOutput: `False`",
+    "starter_code": "def is_anagram(s, t):\n    pass",
+    "reference_solution": "def is_anagram(s, t):\n    if len(s) != len(t):\n        return False\n    return sorted(s) == sorted(t)",
+    "key_concepts_to_check": "Validate if the strings contain the exact same characters in the same quantities. Using sorted() is acceptable for beginners. Using a hash map to count characters is excellent.",
+    "progressive_hints": [
+      "If the strings have different lengths, they cannot be anagrams.",
+      "If you sort the letters of both strings alphabetically, what should happen?",
+      "For a faster approach, you can count the frequency of each letter using a dictionary."
+    ]
+  },
+  {
+    "problem_id": 6,
+    "title": "Find Maximum in Array",
+    "slug": "find-maximum-in-array",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays"],
+    "problem_description": "Given an array of numbers, write a function to find and return the largest number in the array. Do not use the built-in `max()` function.\n\n**Example:**\nInput: `nums = [3, 1, 7, 2, 5]`\nOutput: `7`",
+    "starter_code": "def find_max(nums):\n    pass",
+    "reference_solution": "def find_max(nums):\n    max_val = nums[0]\n    for num in nums:\n        if num > max_val:\n            max_val = num\n    return max_val",
+    "key_concepts_to_check": "Check that they iterate through the array and manually keep track of the largest value seen so far. Reject solutions that just call Python's max() function.",
+    "progressive_hints": [
+      "You need a variable to keep track of the biggest number you've seen so far.",
+      "Set your tracking variable to the first element of the array initially.",
+      "Loop through the array. If the current number is bigger than your tracker, update the tracker."
+    ]
+  },
+  {
+    "problem_id": 7,
+    "title": "Contains Duplicate",
+    "slug": "contains-duplicate",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Hash Maps"],
+    "problem_description": "Given an integer array `nums`, return `True` if any value appears at least twice in the array, and return `False` if every element is distinct.\n\n**Example 1:**\nInput: `nums = [1, 2, 3, 1]`\nOutput: `True`\n\n**Example 2:**\nInput: `nums = [1, 2, 3, 4]`\nOutput: `False`",
+    "starter_code": "def contains_duplicate(nums):\n    pass",
+    "reference_solution": "def contains_duplicate(nums):\n    return len(nums) != len(set(nums))",
+    "key_concepts_to_check": "Verify they return a boolean. Converting to a set and comparing lengths is the most Pythonic beginner way. Using a dictionary/hash set to track seen elements is also highly acceptable.",
+    "progressive_hints": [
+      "A nested loop will work but will be very slow. Think about data structures.",
+      "Python has a data structure called a 'set' that only holds unique values.",
+      "If you convert the list to a set, how will its length compare to the original list if there were duplicates?"
+    ]
+  },
+  {
+    "problem_id": 8,
+    "title": "Power of Two",
+    "slug": "power-of-two",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Math", "Bit Manipulation"],
+    "problem_description": "Given an integer `n`, return `True` if it is a power of two. Otherwise, return `False`.\n\n**Example 1:**\nInput: `n = 1`\nOutput: `True` (since 2^0 = 1)\n\n**Example 2:**\nInput: `n = 16`\nOutput: `True` (since 2^4 = 16)\n\n**Example 3:**\nInput: `n = 3`\nOutput: `False`",
+    "starter_code": "def is_power_of_two(n):\n    pass",
+    "reference_solution": "def is_power_of_two(n):\n    if n <= 0:\n        return False\n    while n % 2 == 0:\n        n /= 2\n    return n == 1",
+    "key_concepts_to_check": "Check if the logic continuously divides the number by 2 or uses bitwise operations. Negative numbers and zero must return False.",
+    "progressive_hints": [
+      "If a number is a power of two, dividing it by 2 repeatedly will eventually result in 1.",
+      "Use a while loop to keep dividing the number by 2 as long as there is no remainder.",
+      "Don't forget to handle the case where the input number is 0 or negative!"
+    ]
+  },
+  {
+    "problem_id": 9,
+    "title": "Single Number",
+    "slug": "single-number",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Bit Manipulation"],
+    "problem_description": "Given a non-empty array of integers `nums`, every element appears twice except for one. Find that single one.\n\n**Example:**\nInput: `nums = [4, 1, 2, 1, 2]`\nOutput: `4`",
+    "starter_code": "def single_number(nums):\n    pass",
+    "reference_solution": "def single_number(nums):\n    res = 0\n    for num in nums:\n        res ^= num\n    return res",
+    "key_concepts_to_check": "Evaluate if they successfully find the isolated number. Using a dictionary to count frequencies is an acceptable beginner solution. Using XOR (^) is the optimal solution.",
+    "progressive_hints": [
+      "You could use a dictionary to count how many times each number appears.",
+      "If you want a more advanced solution without extra memory, look into bitwise operators.",
+      "The XOR operator (^) returns 0 if you apply it to two identical numbers."
+    ]
+  },
+  {
+    "problem_id": 10,
+    "title": "Missing Number",
+    "slug": "missing-number",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Math"],
+    "problem_description": "Given an array `nums` containing `n` distinct numbers in the range `[0, n]`, return the only number in the range that is missing from the array.\n\n**Example:**\nInput: `nums = [3, 0, 1]`\nOutput: `2` (since n=3, the range is 0 to 3, and 2 is missing)",
+    "starter_code": "def missing_number(nums):\n    pass",
+    "reference_solution": "def missing_number(nums):\n    n = len(nums)\n    expected_sum = n * (n + 1) // 2\n    actual_sum = sum(nums)\n    return expected_sum - actual_sum",
+    "key_concepts_to_check": "Check if they find the missing integer. Sorting the array and iterating is acceptable but slow. The mathematical approach (expected sum minus actual sum) is the preferred logic.",
+    "progressive_hints": [
+      "You could sort the array first, but there is a faster mathematical way.",
+      "What would the sum of all numbers from 0 to n be if nothing was missing?",
+      "Calculate the expected sum of the sequence, then subtract the actual sum of your array."
+    ]
+  },
+
+  {
+    "problem_id": 11,
+    "title": "Valid Palindrome",
+    "slug": "valid-palindrome",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Strings", "Two Pointers"],
+    "problem_description": "A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Given a string `s`, return `True` if it is a palindrome, or `False` otherwise.\n\n**Example 1:**\nInput: `s = \"A man, a plan, a canal: Panama\"`\nOutput: `True`\n\n**Example 2:**\nInput: `s = \"race a car\"`\nOutput: `False`",
+    "starter_code": "def is_palindrome(s):\n    pass",
+    "reference_solution": "def is_palindrome(s):\n    cleaned = [c.lower() for c in s if c.isalnum()]\n    return cleaned == cleaned[::-1]",
+    "key_concepts_to_check": "Ensure the student correctly filters out spaces and punctuation, and converts everything to lowercase before checking for the palindrome. Using python's `.isalnum()` is the expected approach.",
+    "progressive_hints": [
+      "First, try to build a new string that only contains the letters and numbers from the original string.",
+      "Python has a handy built-in string method called `.isalnum()` that checks if a character is alphanumeric.",
+      "Don't forget to convert your cleaned string to lowercase using `.lower()` before checking if it reads the same backwards."
+    ]
+  },
+  {
+    "problem_id": 12,
+    "title": "Move Zeroes",
+    "slug": "move-zeroes",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Two Pointers"],
+    "problem_description": "Given an integer array `nums`, move all `0`s to the end of it while maintaining the relative order of the non-zero elements. **Note:** You must do this in-place without making a copy of the array.\n\n**Example:**\nInput: `nums = [0, 1, 0, 3, 12]`\nOutput: `[1, 3, 12, 0, 0]`",
+    "starter_code": "def move_zeroes(nums):\n    pass",
+    "reference_solution": "def move_zeroes(nums):\n    insert_pos = 0\n    for num in nums:\n        if num != 0:\n            nums[insert_pos] = num\n            insert_pos += 1\n    while insert_pos < len(nums):\n        nums[insert_pos] = 0\n        insert_pos += 1",
+    "key_concepts_to_check": "The solution must modify the original list in-place. If they return a new list, fail it. A two-pointer approach (one to track the current index, one for the next non-zero insertion) is ideal.",
+    "progressive_hints": [
+      "Since you can't make a new array, try keeping track of where the next non-zero number should go.",
+      "Loop through the array. Every time you find a number that isn't zero, move it to your 'insert position' and increment that position.",
+      "Once you've moved all the non-zero numbers to the front, fill the rest of the array with zeros from the 'insert position' to the end."
+    ]
+  },
+  {
+    "problem_id": 13,
+    "title": "Majority Element",
+    "slug": "majority-element",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Hash Maps", "Sorting"],
+    "problem_description": "Given an array `nums` of size `n`, return the majority element. The majority element is the element that appears more than `n / 2` times. You may assume that the majority element always exists in the array.\n\n**Example 1:**\nInput: `nums = [3, 2, 3]`\nOutput: `3`\n\n**Example 2:**\nInput: `nums = [2, 2, 1, 1, 1, 2, 2]`\nOutput: `2`",
+    "starter_code": "def majority_element(nums):\n    pass",
+    "reference_solution": "def majority_element(nums):\n    counts = {}\n    for num in nums:\n        counts[num] = counts.get(num, 0) + 1\n        if counts[num] > len(nums) // 2:\n            return num",
+    "key_concepts_to_check": "Using a dictionary to count occurrences is the standard beginner approach. Sorting the array and returning the middle element `nums[len(nums)//2]` is also acceptable.",
+    "progressive_hints": [
+      "You can use a dictionary to keep a tally of how many times each number appears.",
+      "As soon as a number's tally goes above the length of the array divided by 2, you have found your answer.",
+      "Alternative trick: If you sort the array, the majority element will always be located exactly in the middle."
+    ]
+  },
+  {
+    "problem_id": 14,
+    "title": "Length of Last Word",
+    "slug": "length-of-last-word",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Strings"],
+    "problem_description": "Given a string `s` consisting of words and spaces, return the length of the last word in the string. A word is a maximal substring consisting of non-space characters only.\n\n**Example 1:**\nInput: `s = \"Hello World\"`\nOutput: `5`\n\n**Example 2:**\nInput: `s = \"   fly me   to   the moon  \"`\nOutput: `4`",
+    "starter_code": "def length_of_last_word(s):\n    pass",
+    "reference_solution": "def length_of_last_word(s):\n    words = s.split()\n    return len(words[-1]) if words else 0",
+    "key_concepts_to_check": "Check if they handle trailing spaces correctly. Python's `.split()` handles multiple spaces automatically, which makes it the optimal beginner solution.",
+    "progressive_hints": [
+      "Those extra spaces at the end of the string could cause issues if you count from the back manually.",
+      "Python has a `.split()` method that breaks a string into a list of words and automatically ignores extra spaces.",
+      "Once you have a list of words, just return the length of the very last item in that list."
+    ]
+  },
+  {
+    "problem_id": 15,
+    "title": "Search Insert Position",
+    "slug": "search-insert-position",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Binary Search"],
+    "problem_description": "Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.\n\n**Example 1:**\nInput: `nums = [1, 3, 5, 6]`, `target = 5`\nOutput: `2`\n\n**Example 2:**\nInput: `nums = [1, 3, 5, 6]`, `target = 2`\nOutput: `1`",
+    "starter_code": "def search_insert(nums, target):\n    pass",
+    "reference_solution": "def search_insert(nums, target):\n    left, right = 0, len(nums) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if nums[mid] == target:\n            return mid\n        elif nums[mid] < target:\n            left = mid + 1\n        else:\n            right = mid - 1\n    return left",
+    "key_concepts_to_check": "A simple for-loop checking `if nums[i] >= target` is acceptable for an 800 Elo beginner. Using standard O(log n) Binary Search is excellent and should be praised in the feedback.",
+    "progressive_hints": [
+      "The simplest way is to loop through the array and stop as soon as you find a number that is greater than or equal to the target.",
+      "Because the array is already sorted, you can find the answer much faster using Binary Search.",
+      "If using Binary Search, the `left` pointer will naturally end up at the exact index where the target should be inserted if the loop finishes without finding it."
+    ]
+  },
+  {
+    "problem_id": 16,
+    "title": "Plus One",
+    "slug": "plus-one",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Math"],
+    "problem_description": "You are given a large integer represented as an integer array `digits`, where each `digits[i]` is the ith digit of the integer. Increment the large integer by one and return the resulting array of digits.\n\n**Example 1:**\nInput: `digits = [1, 2, 3]`\nOutput: `[1, 2, 4]`\n\n**Example 2:**\nInput: `digits = [9, 9, 9]`\nOutput: `[1, 0, 0, 0]`",
+    "starter_code": "def plus_one(digits):\n    pass",
+    "reference_solution": "def plus_one(digits):\n    for i in range(len(digits) - 1, -1, -1):\n        if digits[i] == 9:\n            digits[i] = 0\n        else:\n            digits[i] += 1\n            return digits\n    return [1] + digits",
+    "key_concepts_to_check": "Check how they handle the number 9. Converting the array to an integer, adding 1, and converting back to an array is a valid Pythonic beginner solution. Iterating backwards and carrying the one is optimal.",
+    "progressive_hints": [
+      "The easiest trick in Python is to turn the array of integers into a single string, convert that string to a real number, add 1, and turn it back into a list.",
+      "If you want to solve it mathematically, loop through the array backwards.",
+      "If a digit is 9, it becomes 0 and you carry the 1 to the next digit. If you finish the loop and everything was a 9, you need to add a [1] to the front of the array."
+    ]
+  },
+  {
+    "problem_id": 17,
+    "title": "Squares of a Sorted Array",
+    "slug": "squares-of-a-sorted-array",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Sorting"],
+    "problem_description": "Given an integer array `nums` sorted in non-decreasing order, return an array of the squares of each number sorted in non-decreasing order.\n\n**Example 1:**\nInput: `nums = [-4, -1, 0, 3, 10]`\nOutput: `[0, 1, 9, 16, 100]`",
+    "starter_code": "def sorted_squares(nums):\n    pass",
+    "reference_solution": "def sorted_squares(nums):\n    return sorted([x * x for x in nums])",
+    "key_concepts_to_check": "Squaring each number and then sorting the array is the expected beginner approach. Two pointers comparing the absolute values from both ends is the advanced O(n) approach.",
+    "progressive_hints": [
+      "Notice that negative numbers become positive when squared, which messes up the sorted order.",
+      "The simplest approach is to create a new list where you square every number, and then use Python's built-in `sorted()` function.",
+      "A more advanced way is to use two pointers, one at the start (most negative) and one at the end (most positive), and compare their squares to build the result array backwards."
+    ]
+  },
+  {
+    "problem_id": 18,
+    "title": "First Unique Character",
+    "slug": "first-unique-character",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Strings", "Hash Maps"],
+    "problem_description": "Given a string `s`, find the first non-repeating character in it and return its index. If it does not exist, return `-1`.\n\n**Example 1:**\nInput: `s = \"leetcode\"`\nOutput: `0` (because 'l' only appears once and is first)\n\n**Example 2:**\nInput: `s = \"loveleetcode\"`\nOutput: `2` (because 'v' is the first unique character)",
+    "starter_code": "def first_uniq_char(s):\n    pass",
+    "reference_solution": "def first_uniq_char(s):\n    char_counts = {}\n    for char in s:\n        char_counts[char] = char_counts.get(char, 0) + 1\n    for i, char in enumerate(s):\n        if char_counts[char] == 1:\n            return i\n    return -1",
+    "key_concepts_to_check": "The student needs to count the occurrences of every character first, then iterate through the string a second time to find the first character with a count of 1. Dictionaries/hash maps are required.",
+    "progressive_hints": [
+      "You cannot know if a character is unique until you have looked at the entire string.",
+      "Try looping through the string once and storing the count of each character in a dictionary.",
+      "Loop through the string a second time. The first character you find that has a dictionary count of 1 is your answer."
+    ]
+  },
+  {
+    "problem_id": 19,
+    "title": "Find the Difference",
+    "slug": "find-the-difference",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Strings", "Hash Maps"],
+    "problem_description": "You are given two strings `s` and `t`. String `t` is generated by randomly shuffling string `s` and then adding one more letter at a random position. Return the letter that was added to `t`.\n\n**Example:**\nInput: `s = \"abcd\", t = \"abcde\"`\nOutput: `\"e\"`",
+    "starter_code": "def find_the_difference(s, t):\n    pass",
+    "reference_solution": "def find_the_difference(s, t):\n    for char in t:\n        if s.count(char) != t.count(char):\n            return char",
+    "key_concepts_to_check": "Using Python's `.count()` method is a valid beginner solution. Sorting both strings and comparing them side-by-side, or using a dictionary to track character counts, are also acceptable.",
+    "progressive_hints": [
+      "If you sort both strings alphabetically, the extra character will stand out when you compare them index by index.",
+      "Alternatively, you can loop through string 't' and use the `.count()` method to see if a character appears more times in 't' than in 's'.",
+      "If you want to be really efficient, you can convert characters to their ASCII integer values, sum both strings, and find the difference."
+    ]
+  },
+  {
+    "problem_id": 20,
+    "title": "Roman to Integer",
+    "slug": "roman-to-integer",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Math", "Hash Maps", "Strings"],
+    "problem_description": "Roman numerals are represented by seven different symbols: I(1), V(5), X(10), L(50), C(100), D(500), and M(1000). Given a roman numeral, convert it to an integer. Note that sometimes a smaller numeral is placed before a larger one to indicate subtraction (e.g., IV is 4).\n\n**Example 1:**\nInput: `s = \"III\"`\nOutput: `3`\n\n**Example 2:**\nInput: `s = \"IX\"`\nOutput: `9`",
+    "starter_code": "def roman_to_int(s):\n    pass",
+    "reference_solution": "def roman_to_int(s):\n    roman = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}\n    total = 0\n    for i in range(len(s) - 1):\n        if roman[s[i]] < roman[s[i+1]]:\n            total -= roman[s[i]]\n        else:\n            total += roman[s[i]]\n    return total + roman[s[-1]]",
+    "key_concepts_to_check": "The student must define a dictionary of Roman numeral values. The logic must check if the current numeral is smaller than the next one; if it is, they must subtract its value instead of adding it.",
+    "progressive_hints": [
+      "Start by creating a dictionary that maps each Roman letter to its integer value.",
+      "Usually, you just add the values of the letters together. The only tricky part is when a smaller letter comes before a bigger one (like IV).",
+      "Loop through the string. If the current letter is smaller than the next letter, subtract its value. Otherwise, add its value."
+    ]
+  },
+  {
+    "problem_id": 21,
+    "title": "Intersection of Two Arrays",
+    "slug": "intersection-of-two-arrays",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Hash Maps"],
+    "problem_description": "Given two integer arrays `nums1` and `nums2`, return an array of their intersection. Each element in the result must be unique and you may return the result in any order.\n\n**Example 1:**\nInput: `nums1 = [1, 2, 2, 1]`, `nums2 = [2, 2]`\nOutput: `[2]`\n\n**Example 2:**\nInput: `nums1 = [4, 9, 5]`, `nums2 = [9, 4, 9, 8, 4]`\nOutput: `[9, 4]`",
+    "starter_code": "def intersection(nums1, nums2):\n    pass",
+    "reference_solution": "def intersection(nums1, nums2):\n    return list(set(nums1) & set(nums2))",
+    "key_concepts_to_check": "Using Python's built-in set intersection (`&` or `.intersection()`) is the most pythonic approach. Iterating through one list and checking if the element exists in a set of the other list is also completely valid.",
+    "progressive_hints": [
+      "You only want unique values, so converting both lists to a data structure that removes duplicates is a great first step.",
+      "Python has a `set` data structure that is perfect for this. It even has built-in math operators for intersections.",
+      "If you convert both lists to sets, you can use the `&` operator to instantly find the overlapping numbers."
+    ]
+  },
+  {
+    "problem_id": 22,
+    "title": "Valid Parentheses",
+    "slug": "valid-parentheses",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Strings", "Stacks"],
+    "problem_description": "Given a string `s` containing just the characters `'('`, `')'`, `'{'`, `'}'`, `'['` and `']'`, determine if the input string is valid. An input string is valid if open brackets are closed by the same type of brackets, and in the correct order.\n\n**Example 1:**\nInput: `s = \"()[]{}\"`\nOutput: `True`\n\n**Example 2:**\nInput: `s = \"([)]\"`\nOutput: `False`",
+    "starter_code": "def is_valid(s):\n    pass",
+    "reference_solution": "def is_valid(s):\n    stack = []\n    mapping = {\")\": \"(\", \"}\": \"{\", \"]\": \"[\"}\n    for char in s:\n        if char in mapping:\n            top_element = stack.pop() if stack else '#'\n            if mapping[char] != top_element:\n                return False\n        else:\n            stack.append(char)\n    return not stack",
+    "key_concepts_to_check": "The student must use a Stack (a standard Python list using .append() and .pop()) to track the most recently opened brackets. Using a dictionary to map closing brackets to opening ones is ideal.",
+    "progressive_hints": [
+      "As you read the string from left to right, you need to remember the last opened bracket. What data structure is 'Last-In, First-Out'?",
+      "Use a list as a Stack. Whenever you see an opening bracket, push it onto the stack.",
+      "When you see a closing bracket, pop the top item off the stack. If they don't match, or if the stack is empty, the string is invalid."
+    ]
+  },
+  {
+    "problem_id": 23,
+    "title": "Best Time to Buy and Sell Stock",
+    "slug": "best-time-to-buy-and-sell-stock",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Dynamic Programming"],
+    "problem_description": "You are given an array `prices` where `prices[i]` is the price of a given stock on the `ith` day. You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock. Return the maximum profit you can achieve. If you cannot achieve any profit, return `0`.\n\n**Example 1:**\nInput: `prices = [7, 1, 5, 3, 6, 4]`\nOutput: `5` (Buy on day 2 at price 1, sell on day 5 at price 6)\n\n**Example 2:**\nInput: `prices = [7, 6, 4, 3, 1]`\nOutput: `0`",
+    "starter_code": "def max_profit(prices):\n    pass",
+    "reference_solution": "def max_profit(prices):\n    min_price = float('inf')\n    max_profit = 0\n    for price in prices:\n        if price < min_price:\n            min_price = price\n        elif price - min_price > max_profit:\n            max_profit = price - min_price\n    return max_profit",
+    "key_concepts_to_check": "Fail any O(n^2) nested loop solutions as they will time out on large datasets. The student must iterate through the array once, keeping track of the minimum price seen so far and the maximum profit calculated so far.",
+    "progressive_hints": [
+      "A nested loop checking every possible combination will be too slow. You only need to go through the array once.",
+      "As you move through the days, keep track of the absolute lowest price you have seen so far.",
+      "For every day, calculate the profit if you sold at today's price minus the lowest price you've tracked. Keep updating your maximum profit."
+    ]
+  },
+  {
+    "problem_id": 24,
+    "title": "Climbing Stairs",
+    "slug": "climbing-stairs",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Math", "Dynamic Programming"],
+    "problem_description": "You are climbing a staircase. It takes `n` steps to reach the top. Each time you can either climb `1` or `2` steps. In how many distinct ways can you climb to the top?\n\n**Example 1:**\nInput: `n = 2`\nOutput: `2` (1 step + 1 step, OR 2 steps)\n\n**Example 2:**\nInput: `n = 3`\nOutput: `3` (1+1+1, 1+2, 2+1)",
+    "starter_code": "def climb_stairs(n):\n    pass",
+    "reference_solution": "def climb_stairs(n):\n    if n <= 2:\n        return n\n    a, b = 1, 2\n    for _ in range(3, n + 1):\n        a, b = b, a + b\n    return b",
+    "key_concepts_to_check": "Recognize that this is exactly the Fibonacci sequence. The number of ways to reach step N is the sum of ways to reach step N-1 and N-2. Using two variables to track the previous two steps is optimal.",
+    "progressive_hints": [
+      "To reach step 4, you either jumped from step 3 (a 1-step jump) or jumped from step 2 (a 2-step jump).",
+      "This means the total ways to get to step 4 is exactly (ways to get to step 3) + (ways to get to step 2).",
+      "Does this addition pattern remind you of the Fibonacci sequence? You just need a loop to calculate the next number in the sequence."
+    ]
+  },
+  {
+    "problem_id": 25,
+    "title": "Find First Occurrence in a String",
+    "slug": "find-first-occurrence-in-a-string",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Strings", "Two Pointers"],
+    "problem_description": "Given two strings `needle` and `haystack`, return the index of the first occurrence of `needle` in `haystack`, or `-1` if `needle` is not part of `haystack`.\n\n**Example 1:**\nInput: `haystack = \"sadbutsad\"`, `needle = \"sad\"`\nOutput: `0`\n\n**Example 2:**\nInput: `haystack = \"leetcode\"`, `needle = \"leeto\"`\nOutput: `-1`",
+    "starter_code": "def strStr(haystack, needle):\n    pass",
+    "reference_solution": "def strStr(haystack, needle):\n    return haystack.find(needle)",
+    "key_concepts_to_check": "Using Python's built-in `.find()` or `.index()` is completely acceptable for a beginner. If they implement a manual sliding window with string slicing (`haystack[i:i+len(needle)] == needle`), praise them heavily.",
+    "progressive_hints": [
+      "Python has incredibly powerful built-in string methods. Is there one that 'finds' a substring?",
+      "If you want to code it manually, try a loop that checks chunks of the haystack.",
+      "Check `haystack[i : i + length_of_needle]`. If it perfectly matches the needle, return `i`."
+    ]
+  },
+  {
+    "problem_id": 26,
+    "title": "Word Pattern",
+    "slug": "word-pattern",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Strings", "Hash Maps"],
+    "problem_description": "Given a `pattern` and a string `s`, find if `s` follows the same pattern. Here follow means a full match, such that there is a bijection between a letter in `pattern` and a non-empty word in `s`.\n\n**Example 1:**\nInput: `pattern = \"abba\"`, `s = \"dog cat cat dog\"`\nOutput: `True`\n\n**Example 2:**\nInput: `pattern = \"abba\"`, `s = \"dog cat cat fish\"`\nOutput: `False`",
+    "starter_code": "def word_pattern(pattern, s):\n    pass",
+    "reference_solution": "def word_pattern(pattern, s):\n    words = s.split()\n    if len(pattern) != len(words):\n        return False\n    char_to_word = {}\n    word_to_char = {}\n    for c, w in zip(pattern, words):\n        if c in char_to_word and char_to_word[c] != w:\n            return False\n        if w in word_to_char and word_to_char[w] != c:\n            return False\n        char_to_word[c] = w\n        word_to_char[w] = c\n    return True",
+    "key_concepts_to_check": "The student must split the string into words. They must use two dictionaries (or check values in one) to ensure a true two-way mapping (bijection). 'a' must map to 'dog', AND 'dog' must map to 'a'.",
+    "progressive_hints": [
+      "First, split the string `s` into a list of words. If the length of the pattern and the list of words don't match, return False.",
+      "You need to map each letter in the pattern to a specific word. A dictionary is perfect for this.",
+      "Be careful! You have to check mapping in both directions. If 'a' maps to 'dog', you have to ensure 'dog' doesn't accidentally also get mapped to 'b' later on."
+    ]
+  },
+  {
+    "problem_id": 27,
+    "title": "Isomorphic Strings",
+    "slug": "isomorphic-strings",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Strings", "Hash Maps"],
+    "problem_description": "Given two strings `s` and `t`, determine if they are isomorphic. Two strings `s` and `t` are isomorphic if the characters in `s` can be replaced to get `t`. No two characters may map to the same character, but a character may map to itself.\n\n**Example 1:**\nInput: `s = \"egg\"`, `t = \"add\"`\nOutput: `True`\n\n**Example 2:**\nInput: `s = \"foo\"`, `t = \"bar\"`\nOutput: `False`",
+    "starter_code": "def is_isomorphic(s, t):\n    pass",
+    "reference_solution": "def is_isomorphic(s, t):\n    return len(set(s)) == len(set(t)) == len(set(zip(s, t)))",
+    "key_concepts_to_check": "Similar to Word Pattern, it requires a two-way mapping check. The 1-line Python trick comparing sets is genius, but standard two-dictionary mapping loops are expected and perfectly valid.",
+    "progressive_hints": [
+      "This is very similar to the Word Pattern problem, but mapping letters to letters instead of letters to words.",
+      "If you loop through both strings at the same time, keep track of which letter from `s` is mapped to which letter from `t`.",
+      "Remember that two different letters from `s` cannot map to the exact same letter in `t`."
+    ]
+  },
+  {
+    "problem_id": 28,
+    "title": "Add Strings",
+    "slug": "add-strings",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Strings", "Math"],
+    "problem_description": "Given two non-negative integers, `num1` and `num2` represented as string, return the sum of `num1` and `num2` as a string. You must solve the problem mathematically; you are not allowed to use any built-in library for handling large integers (such as converting the whole string to an integer directly).\n\n**Example 1:**\nInput: `num1 = \"11\"`, `num2 = \"123\"`\nOutput: `\"134\"`",
+    "starter_code": "def add_strings(num1, num2):\n    pass",
+    "reference_solution": "def add_strings(num1, num2):\n    res = []\n    carry = 0\n    p1 = len(num1) - 1\n    p2 = len(num2) - 1\n    while p1 >= 0 or p2 >= 0 or carry:\n        n1 = int(num1[p1]) if p1 >= 0 else 0\n        n2 = int(num2[p2]) if p2 >= 0 else 0\n        total = n1 + n2 + carry\n        carry = total // 10\n        res.append(str(total % 10))\n        p1 -= 1\n        p2 -= 1\n    return ''.join(res[::-1])",
+    "key_concepts_to_check": "Reject the solution if they just write `str(int(num1) + int(num2))`. They must iterate backwards through both strings, convert single digits to integers, add them, and handle the carry-over.",
+    "progressive_hints": [
+      "You cannot just convert the whole string to an integer. You have to do math the way you learned in elementary school: digit by digit.",
+      "Start at the end (the right side) of both strings and work your way backwards.",
+      "Add the two digits together. If the sum is 10 or higher, don't forget to keep a 'carry' variable to add to the next column!"
+    ]
+  },
+  {
+    "problem_id": 29,
+    "title": "Third Maximum Number",
+    "slug": "third-maximum-number",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Sorting"],
+    "problem_description": "Given an integer array `nums`, return the third distinct maximum number in this array. If the third maximum does not exist, return the maximum number.\n\n**Example 1:**\nInput: `nums = [3, 2, 1]`\nOutput: `1`\n\n**Example 2:**\nInput: `nums = [1, 2]`\nOutput: `2` (Third max doesn't exist, so return the max)",
+    "starter_code": "def third_max(nums):\n    pass",
+    "reference_solution": "def third_max(nums):\n    unique_nums = list(set(nums))\n    unique_nums.sort(reverse=True)\n    if len(unique_nums) >= 3:\n        return unique_nums[2]\n    return unique_nums[0]",
+    "key_concepts_to_check": "They must handle duplicates properly (e.g., [2, 2, 3, 1] means 1 is the third max). Converting to a set, sorting in descending order, and grabbing the 3rd index is the standard, clean approach.",
+    "progressive_hints": [
+      "The problem asks for 'distinct' maximum numbers. That means duplicates should be completely ignored.",
+      "Convert the array to a Set to instantly destroy all duplicate numbers, then turn it back into a List.",
+      "Sort your new list in reverse order (biggest to smallest). If the list is at least 3 items long, return index [2]. Otherwise, return index [0]."
+    ]
+  },
+  {
+    "problem_id": 30,
+    "title": "Perfect Number",
+    "slug": "perfect-number",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Math"],
+    "problem_description": "A perfect number is a positive integer that is equal to the sum of its positive divisors, excluding the number itself. Given an integer `num`, return `True` if it is a perfect number, otherwise return `False`.\n\n**Example 1:**\nInput: `num = 28`\nOutput: `True` (Divisors are 1, 2, 4, 7, 14. 1 + 2 + 4 + 7 + 14 = 28)\n\n**Example 2:**\nInput: `num = 7`\nOutput: `False`",
+    "starter_code": "def check_perfect_number(num):\n    pass",
+    "reference_solution": "def check_perfect_number(num):\n    if num <= 1:\n        return False\n    total = 1\n    for i in range(2, int(num**0.5) + 1):\n        if num % i == 0:\n            total += i\n            if i != num // i:\n                total += num // i\n    return total == num",
+    "key_concepts_to_check": "A brute force loop up to `num - 1` is mathematically valid but will hit a time limit on large numbers. An optimal solution loops up to the square root of the number and adds both the divisor and its paired quotient.",
+    "progressive_hints": [
+      "The simplest way is to loop from 1 up to `num - 1`, use modulo (`%`) to find all divisors, and add them up. But this might be too slow for massive numbers.",
+      "Math trick: You only need to check for divisors up to the square root of the number! Every divisor below the square root has a paired divisor above it.",
+      "For example, if `num` is 28 and you find the divisor 2, you know 14 is also a divisor because 28 / 2 = 14. You get two divisors for the price of one loop iteration!"
+    ]
+  },
+
+  {
+    "problem_id": 31,
+    "title": "Contains Duplicate II",
+    "slug": "contains-duplicate-ii",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Hash Maps", "Sliding Window"],
+    "problem_description": "Given an integer array `nums` and an integer `k`, return `True` if there are two distinct indices `i` and `j` in the array such that `nums[i] == nums[j]` and `abs(i - j) <= k`.\n\n**Example 1:**\nInput: `nums = [1, 2, 3, 1]`, `k = 3`\nOutput: `True`\n\n**Example 2:**\nInput: `nums = [1, 2, 3, 1, 2, 3]`, `k = 2`\nOutput: `False`",
+    "starter_code": "def contains_nearby_duplicate(nums, k):\n    pass",
+    "reference_solution": "def contains_nearby_duplicate(nums, k):\n    seen = {}\n    for i, num in enumerate(nums):\n        if num in seen and i - seen[num] <= k:\n            return True\n        seen[num] = i\n    return False",
+    "key_concepts_to_check": "The student should use a dictionary to keep track of the most recent index where each number was seen. An O(n^2) nested loop will time out on large test cases but is logically valid for a strict beginner.",
+    "progressive_hints": [
+      "You need to know not just IF a number has appeared before, but WHERE it appeared last.",
+      "Use a dictionary where the key is the number, and the value is its index in the array.",
+      "As you iterate, if you find a number already in your dictionary, check the difference between the current index and the stored index. If it's <= k, you win!"
+    ]
+  },
+  {
+    "problem_id": 32,
+    "title": "Is Subsequence",
+    "slug": "is-subsequence",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Strings", "Two Pointers"],
+    "problem_description": "Given two strings `s` and `t`, return `True` if `s` is a subsequence of `t`, or `False` otherwise. A subsequence of a string is a new string that is formed from the original string by deleting some (can be none) of the characters without disturbing the relative positions of the remaining characters.\n\n**Example 1:**\nInput: `s = \"abc\"`, `t = \"ahbgdc\"`\nOutput: `True`\n\n**Example 2:**\nInput: `s = \"axc\"`, `t = \"ahbgdc\"`\nOutput: `False`",
+    "starter_code": "def is_subsequence(s, t):\n    pass",
+    "reference_solution": "def is_subsequence(s, t):\n    i, j = 0, 0\n    while i < len(s) and j < len(t):\n        if s[i] == t[j]:\n            i += 1\n        j += 1\n    return i == len(s)",
+    "key_concepts_to_check": "A two-pointer approach is ideal here. One pointer tracks the position in `s`, the other in `t`. The pointer for `s` only advances when a match is found.",
+    "progressive_hints": [
+      "You need to check if the letters of `s` appear in `t` in the exact same order.",
+      "Set up two pointers (counters). One to track your place in `s`, and one to track your place in `t`.",
+      "Loop through `t`. If the current letter matches the letter you are looking for in `s`, move your `s` pointer forward."
+    ]
+  },
+  {
+    "problem_id": 33,
+    "title": "Find All Numbers Disappeared in an Array",
+    "slug": "find-all-numbers-disappeared-in-an-array",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Hash Maps"],
+    "problem_description": "Given an array `nums` of `n` integers where `nums[i]` is in the range `[1, n]`, return an array of all the integers in the range `[1, n]` that do not appear in `nums`.\n\n**Example:**\nInput: `nums = [4, 3, 2, 7, 8, 2, 3, 1]`\nOutput: `[5, 6]`",
+    "starter_code": "def find_disappeared_numbers(nums):\n    pass",
+    "reference_solution": "def find_disappeared_numbers(nums):\n    return list(set(range(1, len(nums) + 1)) - set(nums))",
+    "key_concepts_to_check": "Using Python sets to find the difference between the expected range and the actual numbers is the cleanest beginner solution. Marking elements negative in-place is the advanced O(1) space solution.",
+    "progressive_hints": [
+      "You know the array is supposed to contain every number from 1 up to the length of the array.",
+      "Create a Set containing the full expected range (1 to n).",
+      "Convert the input array to a Set as well, and use Python's subtraction operator (-) to find the numbers that are missing!"
+    ]
+  },
+  {
+    "problem_id": 34,
+    "title": "Maximum Average Subarray I",
+    "slug": "maximum-average-subarray-i",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Sliding Window"],
+    "problem_description": "You are given an integer array `nums` consisting of `n` elements, and an integer `k`. Find a contiguous subarray whose length is equal to `k` that has the maximum average value and return this value.\n\n**Example:**\nInput: `nums = [1, 12, -5, -6, 50, 3]`, `k = 4`\nOutput: `12.75` (Maximum average is (12 - 5 - 6 + 50) / 4 = 51 / 4 = 12.75)",
+    "starter_code": "def find_max_average(nums, k):\n    pass",
+    "reference_solution": "def find_max_average(nums, k):\n    current_sum = sum(nums[:k])\n    max_sum = current_sum\n    for i in range(k, len(nums)):\n        current_sum += nums[i] - nums[i - k]\n        if current_sum > max_sum:\n            max_sum = current_sum\n    return max_sum / k",
+    "key_concepts_to_check": "A sliding window technique is required. If they calculate the `sum()` from scratch inside every loop iteration, it is O(n*k) and should fail for inefficiency.",
+    "progressive_hints": [
+      "If you calculate the sum of every group of `k` numbers from scratch, your code will be too slow.",
+      "Try a Sliding Window! Calculate the sum of the first `k` numbers once.",
+      "As you slide the window forward by one step, just add the new number to your sum, and subtract the number that fell out of the window behind it."
+    ]
+  },
+  {
+    "problem_id": 35,
+    "title": "Pascal's Triangle",
+    "slug": "pascals-triangle",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Dynamic Programming"],
+    "problem_description": "Given an integer `numRows`, return the first numRows of Pascal's triangle. In Pascal's triangle, each number is the sum of the two numbers directly above it.\n\n**Example:**\nInput: `numRows = 5`\nOutput: `[[1], [1, 1], [1, 2, 1], [1, 3, 3, 1], [1, 4, 6, 4, 1]]`",
+    "starter_code": "def generate(numRows):\n    pass",
+    "reference_solution": "def generate(numRows):\n    res = [[1]]\n    for i in range(numRows - 1):\n        temp = [0] + res[-1] + [0]\n        row = []\n        for j in range(len(res[-1]) + 1):\n            row.append(temp[j] + temp[j + 1])\n        res.append(row)\n    return res",
+    "key_concepts_to_check": "The student must construct a 2D array (list of lists). The logic should show that the current row's elements are derived by summing adjacent elements from the previous row.",
+    "progressive_hints": [
+      "Notice that every row begins and ends with a 1.",
+      "To build a new row, look at the very last row you added to your results.",
+      "A clever trick: pad the previous row with a 0 at the beginning and end, then add adjacent pairs to generate the new row."
+    ]
+  },
+  {
+    "problem_id": 36,
+    "title": "Remove Duplicates from Sorted Array",
+    "slug": "remove-duplicates-from-sorted-array",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Two Pointers"],
+    "problem_description": "Given an integer array `nums` sorted in non-decreasing order, remove the duplicates in-place such that each unique element appears only once. The relative order of the elements should be kept the same. Return the number of unique elements `k`.\n\n**Example:**\nInput: `nums = [1, 1, 2]`\nOutput: `2`, with the first two elements of nums being 1 and 2.",
+    "starter_code": "def remove_duplicates(nums):\n    pass",
+    "reference_solution": "def remove_duplicates(nums):\n    if not nums: return 0\n    insert_pos = 1\n    for i in range(1, len(nums)):\n        if nums[i] != nums[i - 1]:\n            nums[insert_pos] = nums[i]\n            insert_pos += 1\n    return insert_pos",
+    "key_concepts_to_check": "They MUST modify the array in-place. If they use `list(set(nums))` and return the length without modifying the original `nums` object, it's a fail. A two-pointer approach is required.",
+    "progressive_hints": [
+      "You cannot create a new array. You must overwrite the duplicates in the existing array.",
+      "Use one pointer to iterate through the array, and a second pointer to track where the next unique number should be written.",
+      "Because the array is sorted, duplicates will always be right next to each other. If the current number is different from the previous number, write it to your 'insert' pointer's position."
+    ]
+  },
+  {
+    "problem_id": 37,
+    "title": "Remove Element",
+    "slug": "remove-element",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Two Pointers"],
+    "problem_description": "Given an integer array `nums` and an integer `val`, remove all occurrences of `val` in `nums` in-place. The order of the elements may be changed. Then return the number of elements in `nums` which are not equal to `val`.\n\n**Example:**\nInput: `nums = [3, 2, 2, 3]`, `val = 3`\nOutput: `2`, with the first two elements of nums being 2.",
+    "starter_code": "def remove_element(nums, val):\n    pass",
+    "reference_solution": "def remove_element(nums, val):\n    insert_pos = 0\n    for num in nums:\n        if num != val:\n            nums[insert_pos] = num\n            insert_pos += 1\n    return insert_pos",
+    "key_concepts_to_check": "Similar to Remove Duplicates, this must be an in-place modification using a pointer that tracks the insertion index.",
+    "progressive_hints": [
+      "Just like the 'Move Zeroes' problem, you need to shuffle elements around without creating a new list.",
+      "Keep a tracker variable for where the next valid (non-val) number should be placed.",
+      "Loop through the array. If the number is NOT equal to `val`, put it at the tracker's position and increment the tracker."
+    ]
+  },
+  {
+    "problem_id": 38,
+    "title": "Summary Ranges",
+    "slug": "summary-ranges",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays"],
+    "problem_description": "You are given a sorted unique integer array `nums`. Return the smallest sorted list of ranges that cover all the numbers in the array exactly. That is, each element of nums is covered by exactly one of the ranges, and there is no integer x such that x is in one of the ranges but not in nums.\n\n**Example 1:**\nInput: `nums = [0, 1, 2, 4, 5, 7]`\nOutput: `[\"0->2\", \"4->5\", \"7\"]`",
+    "starter_code": "def summary_ranges(nums):\n    pass",
+    "reference_solution": "def summary_ranges(nums):\n    ranges = []\n    i = 0\n    while i < len(nums):\n        start = nums[i]\n        while i + 1 < len(nums) and nums[i + 1] == nums[i] + 1:\n            i += 1\n        if start != nums[i]:\n            ranges.append(f\"{start}->{nums[i]}\")\n        else:\n            ranges.append(str(start))\n        i += 1\n    return ranges",
+    "key_concepts_to_check": "The logic must track consecutive sequences. Formatting the string correctly with '->' or returning a single number if the range length is 1 is critical.",
+    "progressive_hints": [
+      "You need to group numbers that are right next to each other sequentially.",
+      "Use a loop. Mark the start of a sequence, then use an inner while loop to keep moving forward as long as the next number is exactly `current_number + 1`.",
+      "When the sequence breaks, format your string. If the start and end of the sequence are the same, just return the number. Otherwise, use the '->' format."
+    ]
+  },
+  {
+    "problem_id": 39,
+    "title": "Excel Sheet Column Number",
+    "slug": "excel-sheet-column-number",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Math", "Strings"],
+    "problem_description": "Given a string `columnTitle` that represents the column title as appears in an Excel sheet, return its corresponding column number.\n\n**Example 1:**\nInput: `columnTitle = \"A\"`\nOutput: `1`\n\n**Example 2:**\nInput: `columnTitle = \"AB\"`\nOutput: `28`",
+    "starter_code": "def title_to_number(columnTitle):\n    pass",
+    "reference_solution": "def title_to_number(columnTitle):\n    res = 0\n    for char in columnTitle:\n        res = res * 26 + (ord(char) - ord('A') + 1)\n    return res",
+    "key_concepts_to_check": "This is essentially base-26 to base-10 conversion. The student must use `ord()` or a predefined alphabet map to get character values and multiply the running total by 26 for each new character.",
+    "progressive_hints": [
+      "Think of this like a base-10 number system, except instead of digits 0-9, we have base-26 with letters A-Z.",
+      "In base 10, '12' is (1 * 10) + 2. In base 26, 'AB' is (1 * 26) + 2.",
+      "Use Python's `ord()` function to get the integer value of the character. `ord(char) - 64` will give you A=1, B=2, etc."
+    ]
+  },
+  {
+    "problem_id": 40,
+    "title": "Valid Mountain Array",
+    "slug": "valid-mountain-array",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays"],
+    "problem_description": "Given an array of integers `arr`, return `True` if and only if it is a valid mountain array. It is a mountain if its length is >= 3, it strictly increases to a peak, and then strictly decreases to the end.\n\n**Example 1:**\nInput: `arr = [0, 3, 2, 1]`\nOutput: `True`\n\n**Example 2:**\nInput: `arr = [3, 5, 5]`\nOutput: `False`",
+    "starter_code": "def valid_mountain_array(arr):\n    pass",
+    "reference_solution": "def valid_mountain_array(arr):\n    if len(arr) < 3:\n        return False\n    i = 0\n    while i + 1 < len(arr) and arr[i] < arr[i + 1]:\n        i += 1\n    if i == 0 or i == len(arr) - 1:\n        return False\n    while i + 1 < len(arr) and arr[i] > arr[i + 1]:\n        i += 1\n    return i == len(arr) - 1",
+    "key_concepts_to_check": "The student must ensure the peak is not at the very beginning or the very end. The array must strictly increase, hit a peak, and then strictly decrease.",
+    "progressive_hints": [
+      "A mountain has to go up, and then it has to go down. Flat areas (equal numbers next to each other) are not allowed.",
+      "Try 'walking' up the mountain from the left side with a pointer as long as the numbers are increasing.",
+      "Once you stop increasing, check if you are at the start or the end (which means it's not a mountain). If not, start walking down. You should reach the exact end of the array."
+    ]
+  },
+  {
+    "problem_id": 41,
+    "title": "Add Binary",
+    "slug": "add-binary",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Math", "Strings", "Bit Manipulation"],
+    "problem_description": "Given two binary strings `a` and `b`, return their sum as a binary string.\n\n**Example 1:**\nInput: `a = \"11\"`, `b = \"1\"`\nOutput: `\"100\"`\n\n**Example 2:**\nInput: `a = \"1010\"`, `b = \"1011\"`\nOutput: `\"10101\"`",
+    "starter_code": "def add_binary(a, b):\n    pass",
+    "reference_solution": "def add_binary(a, b):\n    return bin(int(a, 2) + int(b, 2))[2:]",
+    "key_concepts_to_check": "Using Python's built-in `int(x, 2)` to convert base-2 strings to integers, adding them, and using `bin()` is the most Pythonic beginner approach. If they manually iterate backwards and carry the 1, praise their algorithmic understanding heavily.",
+    "progressive_hints": [
+      "Python has built-in ways to convert strings of different number bases into standard integers.",
+      "Try using `int(string, 2)` to convert the binary strings into regular numbers.",
+      "Add the numbers together, then convert the result back to binary using the `bin()` function. Don't forget to slice off the '0b' prefix at the start!"
+    ]
+  },
+  {
+    "problem_id": 42,
+    "title": "Ransom Note",
+    "slug": "ransom-note",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Strings", "Hash Maps"],
+    "problem_description": "Given two strings `ransomNote` and `magazine`, return `True` if `ransomNote` can be constructed by using the letters from `magazine` and `False` otherwise. Each letter in `magazine` can only be used once in `ransomNote`.\n\n**Example 1:**\nInput: `ransomNote = \"a\"`, `magazine = \"b\"`\nOutput: `False`\n\n**Example 2:**\nInput: `ransomNote = \"aa\"`, `magazine = \"aab\"`\nOutput: `True`",
+    "starter_code": "def can_construct(ransomNote, magazine):\n    pass",
+    "reference_solution": "def can_construct(ransomNote, magazine):\n    for char in set(ransomNote):\n        if ransomNote.count(char) > magazine.count(char):\n            return False\n    return True",
+    "key_concepts_to_check": "The logic must ensure that the count of every unique character in the ransom note is less than or equal to its count in the magazine. Using `collections.Counter` or standard `.count()` is perfect.",
+    "progressive_hints": [
+      "You don't need to check the order of the letters, only the quantity.",
+      "For every unique letter in your ransom note, count how many times you need it.",
+      "Check if the magazine has at least that many copies of the letter. If even one letter is short, return False."
+    ]
+  },
+  {
+    "problem_id": 43,
+    "title": "First Bad Version",
+    "slug": "first-bad-version",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Binary Search"],
+    "problem_description": "You are a product manager and currently leading a team to develop a new product. Unfortunately, the latest version fails the quality check. Since each version is developed based on the previous version, all the versions after a bad version are also bad. \n\nSuppose you have `n` versions `[1, 2, ..., n]` and you want to find out the first bad one. You are given an API `bool isBadVersion(version)` which returns whether `version` is bad. Implement a function to find the first bad version. You should minimize the number of calls to the API.\n\n**Example:**\nInput: `n = 5`, `bad = 4`\nOutput: `4`",
+    "starter_code": "def first_bad_version(n):\n    pass",
+    "reference_solution": "def first_bad_version(n):\n    left, right = 1, n\n    while left < right:\n        mid = left + (right - left) // 2\n        if isBadVersion(mid):\n            right = mid\n        else:\n            left = mid + 1\n    return left",
+    "key_concepts_to_check": "A standard loop from 1 to `n` is technically correct but must be failed for inefficiency (it exceeds the API call limit). The student MUST use Binary Search (O(log n)).",
+    "progressive_hints": [
+      "Checking every single version one by one from 1 to `n` will take too long. You need to skip chunks of versions.",
+      "Because the versions are sorted, you can use Binary Search.",
+      "Check the middle version. If it's bad, you know the first bad version is either this one or to the left of it. If it's good, the first bad version must be to the right."
+    ]
+  },
+  {
+    "problem_id": 44,
+    "title": "Guess Number Higher or Lower",
+    "slug": "guess-number-higher-or-lower",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Binary Search"],
+    "problem_description": "We are playing the Guess Game. The game is as follows: I pick a number from `1` to `n`. You have to guess which number I picked. \n\nEvery time you guess wrong, I will tell you whether the number I picked is higher or lower than your guess. You call a pre-defined API `int guess(int num)`, which returns three possible results:\n- `-1`: Your guess is higher than the number I picked (i.e. num > pick).\n- `1`: Your guess is lower than the number I picked (i.e. num < pick).\n- `0`: your guess is equal to the number I picked (i.e. num == pick).\n\n**Example:**\nInput: `n = 10`, `pick = 6`\nOutput: `6`",
+    "starter_code": "def guessNumber(n):\n    pass",
+    "reference_solution": "def guessNumber(n):\n    left, right = 1, n\n    while left <= right:\n        mid = (left + right) // 2\n        res = guess(mid)\n        if res == 0:\n            return mid\n        elif res < 0:\n            right = mid - 1\n        else:\n            left = mid + 1",
+    "key_concepts_to_check": "Just like First Bad Version, this requires Binary Search. Any O(n) loop should fail for taking too long. Check that they properly handle the -1 and 1 returns from the `guess()` function.",
+    "progressive_hints": [
+      "If you just guess 1, 2, 3, 4 sequentially, it will take too long. You need to narrow down the range by half every time.",
+      "Start by guessing the exact middle number. ",
+      "If `guess()` returns -1, it means your guess was too high, so adjust your 'right' boundary to be `mid - 1`. If it returns 1, adjust your 'left' boundary to `mid + 1`."
+    ]
+  },
+  {
+    "problem_id": 45,
+    "title": "Hamming Distance",
+    "slug": "hamming-distance",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Bit Manipulation"],
+    "problem_description": "The Hamming distance between two integers is the number of positions at which the corresponding bits are different. Given two integers `x` and `y`, return the Hamming distance between them.\n\n**Example 1:**\nInput: `x = 1, y = 4`\nOutput: `2`\nExplanation:\n1   (0 0 0 1)\n4   (0 1 0 0)\n       ↑   ↑\nThe above arrows point to positions where the corresponding bits are different.",
+    "starter_code": "def hamming_distance(x, y):\n    pass",
+    "reference_solution": "def hamming_distance(x, y):\n    return bin(x ^ y).count('1')",
+    "key_concepts_to_check": "Using the XOR operator (`^`) is strictly required for this problem. They must XOR the two numbers and then count the number of '1's in the resulting binary string.",
+    "progressive_hints": [
+      "You need to compare the binary (bit) values of both numbers.",
+      "There is a bitwise operator called XOR (represented by `^` in Python) that returns `1` only if the bits are different.",
+      "If you apply `x ^ y`, you will get a new number. Convert that number to a binary string and simply count how many '1's it has!"
+    ]
+  },
+  {
+    "problem_id": 46,
+    "title": "Number of 1 Bits",
+    "slug": "number-of-1-bits",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Bit Manipulation"],
+    "problem_description": "Write a function that takes the binary representation of a positive integer and returns the number of set bits it has (also known as the Hamming weight).\n\n**Example 1:**\nInput: `n = 11` (binary is `1011`)\nOutput: `3`\n\n**Example 2:**\nInput: `n = 128` (binary is `10000000`)\nOutput: `1`",
+    "starter_code": "def hamming_weight(n):\n    pass",
+    "reference_solution": "def hamming_weight(n):\n    return bin(n).count('1')",
+    "key_concepts_to_check": "Using Python's `bin(n).count('1')` is completely valid and the expected beginner solution. If they use a bit-shifting `while` loop with `n & 1`, give them top marks.",
+    "progressive_hints": [
+      "You need to see the number as a binary string (a sequence of 1s and 0s).",
+      "Python has a built-in `bin()` function that converts an integer to a binary string.",
+      "Once it's a string, just use the `.count()` method to see how many '1's are inside it."
+    ]
+  },
+  {
+    "problem_id": 47,
+    "title": "Assign Cookies",
+    "slug": "assign-cookies",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Sorting", "Greedy"],
+    "problem_description": "Assume you are an awesome parent and want to give your children some cookies. But, you should give each child at most one cookie.\n\nEach child `i` has a greed factor `g[i]`, which is the minimum size of a cookie that the child will be content with; and each cookie `j` has a size `s[j]`. If `s[j] >= g[i]`, we can assign the cookie `j` to the child `i`, and the child `i` will be content. Your goal is to maximize the number of your content children and return the maximum number.\n\n**Example 1:**\nInput: `g = [1, 2, 3]`, `s = [1, 1]`\nOutput: `1` (You have 3 children and 2 cookies. Only the child with greed factor 1 can be satisfied.)",
+    "starter_code": "def find_content_children(g, s):\n    pass",
+    "reference_solution": "def find_content_children(g, s):\n    g.sort()\n    s.sort()\n    child_i = 0\n    cookie_j = 0\n    while child_i < len(g) and cookie_j < len(s):\n        if s[cookie_j] >= g[child_i]:\n            child_i += 1\n        cookie_j += 1\n    return child_i",
+    "key_concepts_to_check": "This introduces 'Greedy' algorithms. The student MUST sort both arrays first. Then use two pointers to match the smallest cookies to the least greedy children.",
+    "progressive_hints": [
+      "To satisfy the most children, you should always try to give the smallest possible cookie to the least greedy child first.",
+      "Sort both the children array and the cookie array in ascending order.",
+      "Use two pointers. If the current cookie is big enough for the current child, move both pointers forward. If the cookie is too small, just move to the next cookie."
+    ]
+  },
+  {
+    "problem_id": 48,
+    "title": "Arranging Coins",
+    "slug": "arranging-coins",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Math", "Binary Search"],
+    "problem_description": "You have `n` coins and you want to build a staircase with these coins. The staircase consists of `k` rows where the `ith` row has exactly `i` coins. The last row of the staircase may be incomplete. Given the integer `n`, return the number of complete rows of the staircase you will build.\n\n**Example 1:**\nInput: `n = 5`\nOutput: `2`\nExplanation: Because the 3rd row is incomplete, we return 2.",
+    "starter_code": "def arrange_coins(n):\n    pass",
+    "reference_solution": "def arrange_coins(n):\n    rows = 0\n    while n >= rows + 1:\n        rows += 1\n        n -= rows\n    return rows",
+    "key_concepts_to_check": "A while loop subtracting the current row count from the total coins is perfect for a beginner. If they use the math formula `(-1 + sqrt(1 + 8n)) // 2`, praise them for understanding the quadratic derivation.",
+    "progressive_hints": [
+      "Row 1 needs 1 coin. Row 2 needs 2 coins. Row 3 needs 3 coins, and so on.",
+      "Keep a tracker for how many rows you have built. Use a while loop.",
+      "As long as your remaining coins are greater than or equal to the size of the next row, increment your row count and subtract those coins from your pile."
+    ]
+  },
+  {
+    "problem_id": 49,
+    "title": "Intersection of Two Arrays II",
+    "slug": "intersection-of-two-arrays-ii",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Hash Maps", "Two Pointers"],
+    "problem_description": "Given two integer arrays `nums1` and `nums2`, return an array of their intersection. Each element in the result must appear as many times as it shows in both arrays, and you may return the result in any order.\n\n**Example 1:**\nInput: `nums1 = [1, 2, 2, 1]`, `nums2 = [2, 2]`\nOutput: `[2, 2]`\n\n**Example 2:**\nInput: `nums1 = [4, 9, 5]`, `nums2 = [9, 4, 9, 8, 4]`\nOutput: `[4, 9]`",
+    "starter_code": "def intersect(nums1, nums2):\n    pass",
+    "reference_solution": "def intersect(nums1, nums2):\n    counts = {}\n    res = []\n    for num in nums1:\n        counts[num] = counts.get(num, 0) + 1\n    for num in nums2:\n        if counts.get(num, 0) > 0:\n            res.append(num)\n            counts[num] -= 1\n    return res",
+    "key_concepts_to_check": "Unlike part 1, they cannot just use `set()` because duplicates matter. They must count occurrences in the first array using a dictionary, then decrement the count as they find matches in the second array.",
+    "progressive_hints": [
+      "Because duplicates matter, converting both lists to Sets will destroy data. You need to keep track of counts.",
+      "Loop through the first array and build a dictionary counting how many times each number appears.",
+      "Loop through the second array. If the number is in your dictionary with a count > 0, add it to your results and subtract 1 from the dictionary count."
+    ]
+  },
+  {
+    "problem_id": 50,
+    "title": "Find Pivot Index",
+    "slug": "find-pivot-index",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Prefix Sum"],
+    "problem_description": "Given an array of integers `nums`, calculate the pivot index of this array. The pivot index is the index where the sum of all the numbers strictly to the left of the index is equal to the sum of all the numbers strictly to the index's right. Return the leftmost pivot index. If no such index exists, return `-1`.\n\n**Example 1:**\nInput: `nums = [1, 7, 3, 6, 5, 6]`\nOutput: `3` (Left sum is 1+7+3=11. Right sum is 5+6=11. 6 is the pivot at index 3)",
+    "starter_code": "def pivot_index(nums):\n    pass",
+    "reference_solution": "def pivot_index(nums):\n    total_sum = sum(nums)\n    left_sum = 0\n    for i, num in enumerate(nums):\n        if left_sum == (total_sum - left_sum - num):\n            return i\n        left_sum += num\n    return -1",
+    "key_concepts_to_check": "If they calculate `sum(nums[:i])` and `sum(nums[i+1:])` inside a loop, fail them for O(n^2) time complexity. They must use the O(n) Prefix Sum technique by calculating the total sum first.",
+    "progressive_hints": [
+      "If you recalculate the left sum and right sum from scratch for every single index, your code will be too slow.",
+      "Calculate the total sum of the entire array once before starting your loop.",
+      "As you loop through the array, maintain a 'left_sum'. The 'right_sum' is simply `total_sum - left_sum - current_number`. Compare them!"
+    ]
+  },
+  {
+    "problem_id": 51,
+    "title": "Two Sum II - Input Array Is Sorted",
+    "slug": "two-sum-ii",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Two Pointers"],
+    "problem_description": "Given a 1-indexed array of integers `numbers` that is already sorted in non-decreasing order, find two numbers such that they add up to a specific `target` number. Return the indices of the two numbers, added by one, as an integer array `[index1, index2]` of length 2.\n\n**Example 1:**\nInput: `numbers = [2, 7, 11, 15]`, `target = 9`\nOutput: `[1, 2]`\nExplanation: The sum of 2 and 7 is 9. Therefore, index1 = 1, index2 = 2.",
+    "starter_code": "def two_sum(numbers, target):\n    pass",
+    "reference_solution": "def two_sum(numbers, target):\n    left, right = 0, len(numbers) - 1\n    while left < right:\n        current_sum = numbers[left] + numbers[right]\n        if current_sum == target:\n            return [left + 1, right + 1]\n        elif current_sum < target:\n            left += 1\n        else:\n            right -= 1",
+    "key_concepts_to_check": "Because the array is already sorted, a Two-Pointer approach is required. If they use a nested O(n^2) loop or a dictionary (O(n) memory), flag it as suboptimal but acceptable for a beginner. The return values must be 1-indexed.",
+    "progressive_hints": [
+      "The array is already sorted! This means you don't need extra memory (like a dictionary) to solve this quickly.",
+      "Put one pointer at the very beginning of the array, and another at the very end.",
+      "Add the numbers at your pointers. If the sum is too small, move your left pointer up. If the sum is too big, move your right pointer down."
+    ]
+  },
+  {
+    "problem_id": 52,
+    "title": "Jewels and Stones",
+    "slug": "jewels-and-stones",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Hash Maps", "Strings"],
+    "problem_description": "You're given strings `jewels` representing the types of stones that are jewels, and `stones` representing the stones you have. Each character in `stones` is a type of stone you have. You want to know how many of the stones you have are also jewels. Letters are case sensitive, so 'a' is considered a different type of stone from 'A'.\n\n**Example 1:**\nInput: `jewels = \"aA\"`, `stones = \"aAAbbbb\"`\nOutput: `3`",
+    "starter_code": "def num_jewels_in_stones(jewels, stones):\n    pass",
+    "reference_solution": "def num_jewels_in_stones(jewels, stones):\n    jewel_set = set(jewels)\n    count = 0\n    for stone in stones:\n        if stone in jewel_set:\n            count += 1\n    return count",
+    "key_concepts_to_check": "The optimal solution converts the `jewels` string into a Set for O(1) lookups, then iterates through `stones`. A simple nested loop is also completely fine for a beginner.",
+    "progressive_hints": [
+      "You need to check every single stone you own to see if it is in your list of jewels.",
+      "You could loop through your stones, and for each one, check if it exists in the `jewels` string.",
+      "For a faster approach, convert `jewels` into a Set first. Checking if an item is in a Set is instantly fast!"
+    ]
+  },
+  {
+    "problem_id": 53,
+    "title": "Defanging an IP Address",
+    "slug": "defanging-an-ip-address",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Strings"],
+    "problem_description": "Given a valid (IPv4) IP `address`, return a defanged version of that IP address. A defanged IP address replaces every period `\".\"` with `\"[.]\"`.\n\n**Example 1:**\nInput: `address = \"1.1.1.1\"`\nOutput: `\"1[.]1[.]1[.]1\"`\n\n**Example 2:**\nInput: `address = \"255.100.50.0\"`\nOutput: `\"255[.]100[.]50[.]0\"`",
+    "starter_code": "def defang_IPaddr(address):\n    pass",
+    "reference_solution": "def defang_IPaddr(address):\n    return address.replace('.', '[.]')",
+    "key_concepts_to_check": "Python's built-in `.replace()` method is the exact tool designed for this. If they manually iterate through the string and build a new one using a list and `.join()`, praise their algorithmic logic.",
+    "progressive_hints": [
+      "You need to swap out one specific character for a sequence of characters.",
+      "If you want to do it manually, loop through the string, and every time you see a '.', append '[.]' to a new result string.",
+      "Python has a built-in string method called `.replace()` that does this in exactly one line of code!"
+    ]
+  },
+  {
+    "problem_id": 54,
+    "title": "Number of Good Pairs",
+    "slug": "number-of-good-pairs",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Hash Maps", "Math"],
+    "problem_description": "Given an array of integers `nums`, return the number of good pairs. A pair `(i, j)` is called good if `nums[i] == nums[j]` and `i < j`.\n\n**Example 1:**\nInput: `nums = [1, 2, 3, 1, 1, 3]`\nOutput: `4`\nExplanation: There are 4 good pairs: (0,3), (0,4), (3,4), (2,5) 0-indexed.",
+    "starter_code": "def num_identical_pairs(nums):\n    pass",
+    "reference_solution": "def num_identical_pairs(nums):\n    counts = {}\n    good_pairs = 0\n    for num in nums:\n        if num in counts:\n            good_pairs += counts[num]\n            counts[num] += 1\n        else:\n            counts[num] = 1\n    return good_pairs",
+    "key_concepts_to_check": "An O(n^2) double-for-loop checking every pair is acceptable. The O(n) solution using a dictionary/hash map to track frequencies and adding the current frequency to the total is optimal.",
+    "progressive_hints": [
+      "The simplest way is to use two nested loops to compare every number with every other number that comes after it.",
+      "If you want to be faster, use a dictionary to keep track of how many times you've seen a number.",
+      "If you see a number you've seen before, the number of NEW pairs you can make is exactly equal to the number of times you've already seen it!"
+    ]
+  },
+  {
+    "problem_id": 55,
+    "title": "Find the Highest Altitude",
+    "slug": "find-the-highest-altitude",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Prefix Sum"],
+    "problem_description": "There is a biker going on a road trip. The road trip consists of `n + 1` points at different altitudes. The biker starts his trip on point 0 with altitude equal 0. You are given an integer array `gain` of length `n` where `gain[i]` is the net gain in altitude between points `i` and `i + 1` for all `0 <= i < n`. Return the highest altitude of a point.\n\n**Example:**\nInput: `gain = [-5, 1, 5, 0, -7]`\nOutput: `1`\nExplanation: The altitudes are [0, -5, -4, 1, 1, -6]. The highest is 1.",
+    "starter_code": "def largest_altitude(gain):\n    pass",
+    "reference_solution": "def largest_altitude(gain):\n    current_alt = 0\n    max_alt = 0\n    for g in gain:\n        current_alt += g\n        if current_alt > max_alt:\n            max_alt = current_alt\n    return max_alt",
+    "key_concepts_to_check": "This is a basic Prefix Sum problem. They must maintain a running total (starting at 0) and track the maximum value that running total reaches.",
+    "progressive_hints": [
+      "You start at altitude 0. This might be your highest point if you only go downhill!",
+      "You need two variables: one to track your current altitude, and one to remember the highest altitude you've ever been.",
+      "Loop through the `gain` array. Add the gain to your current altitude, and if it's higher than your max, update your max."
+    ]
+  },
+  {
+    "problem_id": 56,
+    "title": "Shuffle the Array",
+    "slug": "shuffle-the-array",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays"],
+    "problem_description": "Given the array `nums` consisting of `2n` elements in the form `[x1,x2,...,xn,y1,y2,...,yn]`. Return the array in the form `[x1,y1,x2,y2,...,xn,yn]`.\n\n**Example 1:**\nInput: `nums = [2, 5, 1, 3, 4, 7]`, `n = 3`\nOutput: `[2, 3, 5, 4, 1, 7]`\nExplanation: Since x1=2, x2=5, x3=1, y1=3, y2=4, y3=7 then the answer is [2, 3, 5, 4, 1, 7].",
+    "starter_code": "def shuffle(nums, n):\n    pass",
+    "reference_solution": "def shuffle(nums, n):\n    res = []\n    for i in range(n):\n        res.append(nums[i])\n        res.append(nums[i + n])\n    return res",
+    "key_concepts_to_check": "They must use the integer `n` to offset their array lookups. A single loop running `n` times, appending the element at `i` and the element at `i + n` is expected.",
+    "progressive_hints": [
+      "The array is split exactly in half. The first half is the 'x' values, the second half is the 'y' values.",
+      "You know the first 'y' value starts exactly at index `n`.",
+      "Create a new array. Loop `n` times. Inside the loop, append `nums[i]`, and immediately after, append `nums[i + n]`."
+    ]
+  },
+  {
+    "problem_id": 57,
+    "title": "Kids With the Greatest Number of Candies",
+    "slug": "kids-with-candies",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Math"],
+    "problem_description": "There are `n` kids with candies. You are given an integer array `candies`, where each `candies[i]` represents the number of candies the `ith` kid has, and an integer `extraCandies`, denoting the number of extra candies that you have. Return a boolean array `result` of length `n`, where `result[i]` is `True` if, after giving the `ith` kid all the `extraCandies`, they will have the greatest number of candies among all the kids, or `False` otherwise.\n\n**Example 1:**\nInput: `candies = [2, 3, 5, 1, 3]`, `extraCandies = 3`\nOutput: `[True, True, True, False, True]`",
+    "starter_code": "def kids_with_candies(candies, extraCandies):\n    pass",
+    "reference_solution": "def kids_with_candies(candies, extraCandies):\n    max_candies = max(candies)\n    return [candy + extraCandies >= max_candies for candy in candies]",
+    "key_concepts_to_check": "They must find the maximum number of candies in the array first. Then, iterate through the array and check if `current_candy + extraCandies >= max_candies`. List comprehensions are highly encouraged here.",
+    "progressive_hints": [
+      "To know if a kid has the most candies, you first need to know what the CURRENT maximum amount of candies is.",
+      "Use Python's `max()` function to find the highest number in the array.",
+      "Loop through every kid. If their candies PLUS the extra candies is greater than or equal to the max you found earlier, append True. Otherwise, append False."
+    ]
+  },
+  {
+    "problem_id": 58,
+    "title": "Running Sum of 1d Array",
+    "slug": "running-sum-of-1d-array",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Prefix Sum"],
+    "problem_description": "Given an array `nums`. We define a running sum of an array as `runningSum[i] = sum(nums[0]...nums[i])`. Return the running sum of `nums`.\n\n**Example 1:**\nInput: `nums = [1, 2, 3, 4]`\nOutput: `[1, 3, 6, 10]`\nExplanation: Running sum is obtained as follows: [1, 1+2, 1+2+3, 1+2+3+4].",
+    "starter_code": "def running_sum(nums):\n    pass",
+    "reference_solution": "def running_sum(nums):\n    res = [nums[0]]\n    for i in range(1, len(nums)):\n        res.append(res[-1] + nums[i])\n    return res",
+    "key_concepts_to_check": "This is the purest form of the Prefix Sum pattern. They can modify the array in-place (`nums[i] += nums[i-1]`) or build a new array by adding the current number to the last number in the result array.",
+    "progressive_hints": [
+      "A nested loop calculating the sum from scratch every time is too slow.",
+      "The sum at index 3 is just the sum at index 2 PLUS the number at index 3.",
+      "Loop through the array starting from the second number (index 1). Just add the current number to the running sum of the previous index."
+    ]
+  },
+  {
+    "problem_id": 59,
+    "title": "Check If Two String Arrays are Equivalent",
+    "slug": "check-if-two-string-arrays-are-equivalent",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Strings"],
+    "problem_description": "Given two string arrays `word1` and `word2`, return `True` if the two arrays represent the same string, and `False` otherwise. A string is represented by an array if the array elements concatenated in order forms the string.\n\n**Example 1:**\nInput: `word1 = [\"ab\", \"c\"]`, `word2 = [\"a\", \"bc\"]`\nOutput: `True`\nExplanation: word1 represents \"ab\" + \"c\" -> \"abc\". word2 represents \"a\" + \"bc\" -> \"abc\".",
+    "starter_code": "def array_strings_are_equal(word1, word2):\n    pass",
+    "reference_solution": "def array_strings_are_equal(word1, word2):\n    return \"\".join(word1) == \"\".join(word2)",
+    "key_concepts_to_check": "Using Python's string `.join()` method is the absolute optimal way to solve this. If they manually iterate and build strings using string concatenation (+), that is valid but less pythonic.",
+    "progressive_hints": [
+      "You need to glue all the pieces of `word1` together, and do the same for `word2`.",
+      "You could use a loop and add each string piece to a new, empty string variable.",
+      "Python has an incredibly fast method called `\"\".join(array)` that glues an array of strings together perfectly. Compare the two joined arrays!"
+    ]
+  },
+  {
+    "problem_id": 60,
+    "title": "Maximum Subarray",
+    "slug": "maximum-subarray",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Dynamic Programming"],
+    "problem_description": "Given an integer array `nums`, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum. A subarray is a contiguous part of an array.\n\n**Example 1:**\nInput: `nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]`\nOutput: `6`\nExplanation: [4, -1, 2, 1] has the largest sum = 6.",
+    "starter_code": "def max_subarray(nums):\n    pass",
+    "reference_solution": "def max_subarray(nums):\n    current_sum = max_sum = nums[0]\n    for num in nums[1:]:\n        current_sum = max(num, current_sum + num)\n        max_sum = max(max_sum, current_sum)\n    return max_sum",
+    "key_concepts_to_check": "This introduces Kadane's Algorithm. An O(n^3) or O(n^2) nested loop must fail for inefficiency. The student must check if the current number is better by itself, or better added to the running sum.",
+    "progressive_hints": [
+      "A nested loop checking every possible combination will be way too slow.",
+      "As you iterate through the array, you have a choice: Does adding this number to my running sum make it bigger, or should I just start a new sum from this number?",
+      "If your running sum ever becomes negative, it's hurting you! Throw it away and start a new sum with the next number."
+    ]
+  },
+
+  {
+    "problem_id": 61,
+    "title": "Fibonacci Number",
+    "slug": "fibonacci-number",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Math", "Dynamic Programming", "Recursion"],
+    "problem_description": "The Fibonacci numbers, commonly denoted `F(n)` form a sequence, called the Fibonacci sequence, such that each number is the sum of the two preceding ones, starting from `0` and `1`. That is, `F(0) = 0`, `F(1) = 1`, and `F(n) = F(n - 1) + F(n - 2)` for `n > 1`. Given `n`, calculate `F(n)`.\n\n**Example 1:**\nInput: `n = 2`\nOutput: `1` (F(2) = F(1) + F(0) = 1 + 0 = 1)\n\n**Example 2:**\nInput: `n = 4`\nOutput: `3` (F(4) = F(3) + F(2) = 2 + 1 = 3)",
+    "starter_code": "def fib(n):\n    pass",
+    "reference_solution": "def fib(n):\n    if n <= 1:\n        return n\n    a, b = 0, 1\n    for _ in range(2, n + 1):\n        a, b = b, a + b\n    return b",
+    "key_concepts_to_check": "A recursive solution `return fib(n-1) + fib(n-2)` is valid but slow O(2^n). The optimal beginner solution uses a loop to track the last two numbers iteratively for O(n) time and O(1) space.",
+    "progressive_hints": [
+      "You can solve this using recursion (a function calling itself), but it can get very slow for large numbers.",
+      "Try using a loop! You only ever need to remember the last two numbers to calculate the next one.",
+      "Create two variables, `a = 0` and `b = 1`. Loop from 2 up to `n`, and in each step, update your variables so they slide forward by one position."
+    ]
+  },
+  {
+    "problem_id": 62,
+    "title": "Find the Difference of Two Arrays",
+    "slug": "find-the-difference-of-two-arrays",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Hash Maps"],
+    "problem_description": "Given two 0-indexed integer arrays `nums1` and `nums2`, return a list `answer` of size 2 where:\n- `answer[0]` is a list of all distinct integers in `nums1` which are not present in `nums2`.\n- `answer[1]` is a list of all distinct integers in `nums2` which are not present in `nums1`.\nNote that the integers in the lists may be returned in any order.\n\n**Example 1:**\nInput: `nums1 = [1, 2, 3]`, `nums2 = [2, 4, 6]`\nOutput: `[[1, 3], [4, 6]]`",
+    "starter_code": "def find_difference(nums1, nums2):\n    pass",
+    "reference_solution": "def find_difference(nums1, nums2):\n    set1 = set(nums1)\n    set2 = set(nums2)\n    return [list(set1 - set2), list(set2 - set1)]",
+    "key_concepts_to_check": "The student must convert both arrays to Sets first to remove duplicates and enable O(1) lookups. Using the `-` operator for set difference is the perfect Pythonic solution.",
+    "progressive_hints": [
+      "The problem asks for 'distinct' integers, which means duplicates should be ignored entirely.",
+      "Convert both arrays into Python Sets. Sets automatically remove duplicates.",
+      "Python sets support subtraction! If you subtract `set2` from `set1`, you get everything that is in `set1` but missing from `set2`."
+    ]
+  },
+  {
+    "problem_id": 63,
+    "title": "Matrix Diagonal Sum",
+    "slug": "matrix-diagonal-sum",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Matrix"],
+    "problem_description": "Given a square matrix `mat`, return the sum of the matrix diagonals. Only include the sum of all the elements on the primary diagonal and all the elements on the secondary diagonal that are not part of the primary diagonal.\n\n**Example 1:**\nInput: `mat = [[1,2,3], [4,5,6], [7,8,9]]`\nOutput: `25`\nExplanation: Diagonals sum: 1 + 5 + 9 + 3 + 7 = 25. Notice that 5 is counted only once.",
+    "starter_code": "def diagonal_sum(mat):\n    pass",
+    "reference_solution": "def diagonal_sum(mat):\n    n = len(mat)\n    total = 0\n    for i in range(n):\n        total += mat[i][i]\n        if i != n - 1 - i:\n            total += mat[i][n - 1 - i]\n    return total",
+    "key_concepts_to_check": "The student must handle the center element of an odd-length matrix correctly (it must not be added twice). A single loop iterating through `range(len(mat))` is expected.",
+    "progressive_hints": [
+      "You don't need nested loops to check every single item in the matrix. You can find the diagonals mathematically.",
+      "In a loop where `i` goes from 0 to the size of the matrix, the primary diagonal is always `mat[i][i]`.",
+      "The secondary diagonal is `mat[i][length - 1 - i]`. Just be careful not to add the exact center element twice if the matrix has an odd size!"
+    ]
+  },
+  {
+    "problem_id": 64,
+    "title": "To Lower Case",
+    "slug": "to-lower-case",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Strings"],
+    "problem_description": "Given a string `s`, return the string after replacing every uppercase letter with the same lowercase letter.\n\n**Example 1:**\nInput: `s = \"Hello\"`\nOutput: `\"hello\"`\n\n**Example 2:**\nInput: `s = \"LOVELY\"`\nOutput: `\"lovely\"`",
+    "starter_code": "def to_lower_case(s):\n    pass",
+    "reference_solution": "def to_lower_case(s):\n    return s.lower()",
+    "key_concepts_to_check": "Using Python's built-in `.lower()` is the intended 800 Elo answer. If they manually iterate and use `chr(ord(c) + 32)` for ASCII conversion, give them massive praise in the feedback.",
+    "progressive_hints": [
+      "Python strings have lots of built-in methods designed specifically for text formatting.",
+      "Look into the `.lower()` method.",
+      "If you want a challenge, try doing it manually by converting characters to their ASCII integer values using `ord()`, adding 32, and converting back with `chr()`!"
+    ]
+  },
+  {
+    "problem_id": 65,
+    "title": "Reverse Vowels of a String",
+    "slug": "reverse-vowels-of-a-string",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Strings", "Two Pointers"],
+    "problem_description": "Given a string `s`, reverse only all the vowels in the string and return it. The vowels are 'a', 'e', 'i', 'o', and 'u', and they can appear in both lower and upper cases, more than once.\n\n**Example 1:**\nInput: `s = \"hello\"`\nOutput: `\"holle\"`\n\n**Example 2:**\nInput: `s = \"leetcode\"`\nOutput: `\"leotcede\"`",
+    "starter_code": "def reverse_vowels(s):\n    pass",
+    "reference_solution": "def reverse_vowels(s):\n    vowels = set(\"aeiouAEIOU\")\n    s_list = list(s)\n    left, right = 0, len(s) - 1\n    while left < right:\n        if s_list[left] not in vowels:\n            left += 1\n        elif s_list[right] not in vowels:\n            right -= 1\n        else:\n            s_list[left], s_list[right] = s_list[right], s_list[left]\n            left += 1\n            right -= 1\n    return \"\".join(s_list)",
+    "key_concepts_to_check": "Strings in Python are immutable, so they MUST convert the string to a list first. A two-pointer approach (front and back) that stops only when both point to vowels is required.",
+    "progressive_hints": [
+      "You cannot change characters directly inside a Python string. Convert it to a List first!",
+      "Use two pointers. Start one at the beginning of the list and one at the end.",
+      "Move the pointers inward. If a pointer is not on a vowel, keep moving it. When BOTH pointers are on vowels, swap them!"
+    ]
+  },
+  {
+    "problem_id": 66,
+    "title": "Can Place Flowers",
+    "slug": "can-place-flowers",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Greedy"],
+    "problem_description": "You have a long flowerbed in which some of the plots are planted, and some are not. However, flowers cannot be planted in adjacent plots. Given an integer array `flowerbed` containing `0`'s and `1`'s, where `0` means empty and `1` means not empty, and an integer `n`, return `True` if `n` new flowers can be planted in the `flowerbed` without violating the no-adjacent-flowers rule.\n\n**Example 1:**\nInput: `flowerbed = [1, 0, 0, 0, 1]`, `n = 1`\nOutput: `True`\n\n**Example 2:**\nInput: `flowerbed = [1, 0, 0, 0, 1]`, `n = 2`\nOutput: `False`",
+    "starter_code": "def can_place_flowers(flowerbed, n):\n    pass",
+    "reference_solution": "def can_place_flowers(flowerbed, n):\n    count = 0\n    flowerbed = [0] + flowerbed + [0]\n    for i in range(1, len(flowerbed) - 1):\n        if flowerbed[i-1] == 0 and flowerbed[i] == 0 and flowerbed[i+1] == 0:\n            flowerbed[i] = 1\n            count += 1\n    return count >= n",
+    "key_concepts_to_check": "The student needs to check the current spot, the spot to the left, and the spot to the right. A great beginner trick is temporarily adding a `0` to the start and end of the array to avoid out-of-bounds errors.",
+    "progressive_hints": [
+      "To plant a flower, the current spot must be 0, the spot to the left must be 0, and the spot to the right must be 0.",
+      "Be careful when checking the first and last spots of the array, because they don't have a left or right neighbor!",
+      "A clever trick: Temporarily add a `0` to the very beginning and the very end of the array before your loop. Then you won't have to write messy code to handle the edges!"
+    ]
+  },
+  {
+    "problem_id": 67,
+    "title": "Reverse Words in a String III",
+    "slug": "reverse-words-in-a-string-iii",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Strings", "Two Pointers"],
+    "problem_description": "Given a string `s`, reverse the order of characters in each word within a sentence while still preserving whitespace and initial word order.\n\n**Example 1:**\nInput: `s = \"Let's take LeetCode contest\"`\nOutput: `\"s'teL ekat edoCteeL tsetnoc\"`",
+    "starter_code": "def reverse_words(s):\n    pass",
+    "reference_solution": "def reverse_words(s):\n    words = s.split()\n    reversed_words = [word[::-1] for word in words]\n    return \" \".join(reversed_words)",
+    "key_concepts_to_check": "The student must split the string by spaces, reverse each individual chunk, and then join them back together with spaces. Python slicing `[::-1]` is highly encouraged here.",
+    "progressive_hints": [
+      "Do not try to reverse the entire string at once. Break it down into smaller pieces first.",
+      "Use `.split()` to turn the sentence into a list of individual words.",
+      "Loop through that list, reverse each string using Python slicing `[::-1]`, and then glue them back together using `' '.join()`."
+    ]
+  },
+  {
+    "problem_id": 68,
+    "title": "Check if Array Is Sorted and Rotated",
+    "slug": "check-if-array-is-sorted-and-rotated",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays"],
+    "problem_description": "Given an array `nums`, return `True` if the array was originally sorted in non-decreasing order, then rotated some number of positions (including zero). Otherwise, return `False`. There may be duplicates in the original array.\n\n**Example 1:**\nInput: `nums = [3, 4, 5, 1, 2]`\nOutput: `True`\nExplanation: [1, 2, 3, 4, 5] is the original sorted array. You can rotate it by 3 positions to get [3, 4, 5, 1, 2].",
+    "starter_code": "def check(nums):\n    pass",
+    "reference_solution": "def check(nums):\n    drops = 0\n    for i in range(len(nums)):\n        if nums[i] > nums[(i + 1) % len(nums)]:\n            drops += 1\n    return drops <= 1",
+    "key_concepts_to_check": "In a sorted and rotated array, the numbers should only \"drop\" (decrease) exactly one time. If they drop more than once, it's false. They must also check the wrap-around from the last element to the first.",
+    "progressive_hints": [
+      "If you take a sorted array and rotate it, the numbers will mostly keep going up. There will be exactly ONE place where a larger number sits next to a smaller number.",
+      "Loop through the array and count how many times `nums[i] > nums[i+1]`.",
+      "Don't forget to check the gap between the very last number in the array and the very first number! Use the modulo operator `%` to wrap around."
+    ]
+  },
+  {
+    "problem_id": 69,
+    "title": "Maximum Product of Two Elements in an Array",
+    "slug": "maximum-product-of-two-elements",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Sorting"],
+    "problem_description": "Given the array of integers `nums`, you will choose two different indices `i` and `j` of that array. Return the maximum value of `(nums[i]-1) * (nums[j]-1)`.\n\n**Example 1:**\nInput: `nums = [3, 4, 5, 2]`\nOutput: `12`\nExplanation: If you choose the indices i=1 and j=2 (indexed from 0), you will get the maximum value: (nums[1]-1)*(nums[2]-1) = (4-1)*(5-1) = 3*4 = 12.",
+    "starter_code": "def max_product(nums):\n    pass",
+    "reference_solution": "def max_product(nums):\n    nums.sort()\n    return (nums[-1] - 1) * (nums[-2] - 1)",
+    "key_concepts_to_check": "A double loop checking all pairs is valid but slow. The easiest valid approach is `nums.sort()` followed by grabbing the last two elements. Finding the top two max numbers in a single pass is the optimal O(n) solution.",
+    "progressive_hints": [
+      "To get the biggest possible multiplication result, you just need to find the two biggest numbers in the array.",
+      "You could use a nested loop to test every pair, but that is very slow.",
+      "Try sorting the array first! Then the two biggest numbers will be sitting right at the very end of the list."
+    ]
+  },
+  {
+    "problem_id": 70,
+    "title": "Number of Steps to Reduce a Number to Zero",
+    "slug": "number-of-steps-to-reduce-a-number-to-zero",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Math", "Bit Manipulation"],
+    "problem_description": "Given an integer `num`, return the number of steps to reduce it to zero. In one step, if the current number is even, you have to divide it by `2`, otherwise, you have to subtract `1` from it.\n\n**Example 1:**\nInput: `num = 14`\nOutput: `6`\nExplanation: \nStep 1) 14 is even; divide by 2 and obtain 7. \nStep 2) 7 is odd; subtract 1 and obtain 6.\nStep 3) 6 is even; divide by 2 and obtain 3. \nStep 4) 3 is odd; subtract 1 and obtain 2. \nStep 5) 2 is even; divide by 2 and obtain 1. \nStep 6) 1 is odd; subtract 1 and obtain 0.",
+    "starter_code": "def number_of_steps(num):\n    pass",
+    "reference_solution": "def number_of_steps(num):\n    steps = 0\n    while num > 0:\n        if num % 2 == 0:\n            num //= 2\n        else:\n            num -= 1\n        steps += 1\n    return steps",
+    "key_concepts_to_check": "The student should use a `while num > 0:` loop and the modulo operator `% 2` to check for even/odd numbers. Keeping a counter variable is essential.",
+    "progressive_hints": [
+      "You need a loop that keeps running as long as your number is greater than 0.",
+      "Inside the loop, use the modulo operator (`num % 2 == 0`) to check if the number is even.",
+      "If it's even, divide it by 2. If it's odd, subtract 1. Don't forget to add 1 to your step counter every time the loop runs!"
+    ]
+  },
+
+  {
+    "problem_id": 71,
+    "title": "Longest Common Prefix",
+    "slug": "longest-common-prefix",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Strings", "Sorting"],
+    "problem_description": "Write a function to find the longest common prefix string amongst an array of strings. If there is no common prefix, return an empty string `\"\"`.\n\n**Example 1:**\nInput: `strs = [\"flower\", \"flow\", \"flight\"]`\nOutput: `\"fl\"`\n\n**Example 2:**\nInput: `strs = [\"dog\", \"racecar\", \"car\"]`\nOutput: `\"\"`",
+    "starter_code": "def longest_common_prefix(strs):\n    pass",
+    "reference_solution": "def longest_common_prefix(strs):\n    if not strs:\n        return \"\"\n    strs.sort()\n    first = strs[0]\n    last = strs[-1]\n    i = 0\n    while i < len(first) and i < len(last) and first[i] == last[i]:\n        i += 1\n    return first[:i]",
+    "key_concepts_to_check": "Checking index by index using a nested loop is valid. The absolute best beginner trick is sorting the array of strings first alphabetically, which means you only ever have to compare the first string and the very last string in the array.",
+    "progressive_hints": [
+      "You need to find the matching letters at the start of EVERY word.",
+      "If you sort a list of strings alphabetically, the words that are the most different will end up at the very beginning and the very end of the list.",
+      "Sort the list! Then, you only need to compare the letters of the FIRST word and the LAST word. Where they stop matching is your longest common prefix."
+    ]
+  },
+  {
+    "problem_id": 72,
+    "title": "Pascal's Triangle II",
+    "slug": "pascals-triangle-ii",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Dynamic Programming"],
+    "problem_description": "Given an integer `rowIndex`, return the `rowIndex`-th (0-indexed) row of the Pascal's triangle.\n\n**Example 1:**\nInput: `rowIndex = 3`\nOutput: `[1, 3, 3, 1]`\n\n**Example 2:**\nInput: `rowIndex = 0`\nOutput: `[1]`",
+    "starter_code": "def get_row(rowIndex):\n    pass",
+    "reference_solution": "def get_row(rowIndex):\n    row = [1]\n    for i in range(rowIndex):\n        row = [1] + [row[j] + row[j+1] for j in range(len(row)-1)] + [1]\n    return row",
+    "key_concepts_to_check": "Unlike the first Pascal's problem, they only need to return ONE row. They should overwrite a single array iteratively to achieve O(n) space complexity. Using the mathematical combination formula `nCr` is brilliant but not required.",
+    "progressive_hints": [
+      "You don't need to save the entire triangle like in the previous Pascal problem. You just need to remember the row that came right before the one you are building.",
+      "Start with `row = [1]`.",
+      "Loop `rowIndex` times. In each loop, create the next row by adding adjacent numbers from your current row, and make sure it starts and ends with a `1`."
+    ]
+  },
+  {
+    "problem_id": 73,
+    "title": "Keyboard Row",
+    "slug": "keyboard-row",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Hash Maps", "Strings"],
+    "problem_description": "Given an array of strings `words`, return the words that can be typed using letters of the alphabet on only one row of American keyboard.\nThe first row consists of the characters `\"qwertyuiop\"`.\nThe second row consists of the characters `\"asdfghjkl\"`.\nThe third row consists of the characters `\"zxcvbnm\"`.\n\n**Example 1:**\nInput: `words = [\"Hello\", \"Alaska\", \"Dad\", \"Peace\"]`\nOutput: `[\"Alaska\", \"Dad\"]`",
+    "starter_code": "def find_words(words):\n    pass",
+    "reference_solution": "def find_words(words):\n    row1 = set(\"qwertyuiop\")\n    row2 = set(\"asdfghjkl\")\n    row3 = set(\"zxcvbnm\")\n    res = []\n    for word in words:\n        w_set = set(word.lower())\n        if w_set.issubset(row1) or w_set.issubset(row2) or w_set.issubset(row3):\n            res.append(word)\n    return res",
+    "key_concepts_to_check": "Converting the strings to sets and checking if the word's set is a subset of one of the keyboard row sets is the cleanest approach. They must remember to convert words to `.lower()` before checking.",
+    "progressive_hints": [
+      "First, define three variables containing the letters for each of the three keyboard rows.",
+      "Convert those keyboard rows into Python Sets.",
+      "Loop through the given words. Convert each word to lowercase and turn it into a Set as well. If the word's Set is a subset of ANY of the keyboard row Sets, it's a valid word!"
+    ]
+  },
+  {
+    "problem_id": 74,
+    "title": "Merge Strings Alternately",
+    "slug": "merge-strings-alternately",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Strings", "Two Pointers"],
+    "problem_description": "You are given two strings `word1` and `word2`. Merge the strings by adding letters in alternating order, starting with `word1`. If a string is longer than the other, append the additional letters onto the end of the merged string.\n\n**Example 1:**\nInput: `word1 = \"abc\"`, `word2 = \"pqr\"`\nOutput: `\"apbqcr\"`\n\n**Example 2:**\nInput: `word1 = \"ab\"`, `word2 = \"pqrs\"`\nOutput: `\"apbqrs\"`",
+    "starter_code": "def merge_alternately(word1, word2):\n    pass",
+    "reference_solution": "def merge_alternately(word1, word2):\n    res = []\n    i = 0\n    while i < len(word1) or i < len(word2):\n        if i < len(word1):\n            res.append(word1[i])\n        if i < len(word2):\n            res.append(word2[i])\n        i += 1\n    return \"\".join(res)",
+    "key_concepts_to_check": "The student should use a single loop that continues as long as `i` is less than the length of the longest string. They must safely check if the index is still within bounds for both strings before appending.",
+    "progressive_hints": [
+      "You need a loop to pull characters from both strings, but what if they are different lengths?",
+      "Use a single `while` loop that keeps running as long as your counter is smaller than the length of `word1` OR `word2`.",
+      "Inside the loop, check if your counter is still smaller than `word1`'s length. If yes, add a letter. Then do the exact same check for `word2`."
+    ]
+  },
+  {
+    "problem_id": 75,
+    "title": "Richest Customer Wealth",
+    "slug": "richest-customer-wealth",
+    "difficulty_level": "beginner",
+    "elo_requirement": 800,
+    "topic_tags": ["Arrays", "Matrix"],
+    "problem_description": "You are given an `m x n` integer grid `accounts` where `accounts[i][j]` is the amount of money the `i`th customer has in the `j`th bank. Return the wealth that the richest customer has. A customer's wealth is the amount of money they have in all their bank accounts. The richest customer is the customer that has the maximum wealth.\n\n**Example 1:**\nInput: `accounts = [[1, 2, 3], [3, 2, 1]]`\nOutput: `6`\nExplanation: \n1st customer has wealth = 1 + 2 + 3 = 6\n2nd customer has wealth = 3 + 2 + 1 = 6\nBoth customers are considered the richest with a wealth of 6 each, so return 6.",
+    "starter_code": "def maximum_wealth(accounts):\n    pass",
+    "reference_solution": "def maximum_wealth(accounts):\n    max_wealth = 0\n    for customer in accounts:\n        wealth = sum(customer)\n        if wealth > max_wealth:\n            max_wealth = wealth\n    return max_wealth",
+    "key_concepts_to_check": "This is a basic 2D array traversal. They should calculate the sum of each inner array (customer) and keep track of the maximum sum found. Using Python's `max(map(sum, accounts))` is a brilliant 1-liner.",
+    "progressive_hints": [
+      "The input is a list of lists. Each inner list represents one person's bank accounts.",
+      "You need to find the total sum for each inner list.",
+      "Loop through the main list. For each inner list, use Python's `sum()` function. Keep track of the highest sum you find and return it!"
+    ]
+  }
+]

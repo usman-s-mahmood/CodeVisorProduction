@@ -1,0 +1,29 @@
+{% extends "BlogApp/base.html" %}
+
+{% block body %}
+
+
+<!-- Page Header Start -->
+<div class="container-fluid page-header mb-5 py-5">
+    <div class="container">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Auth Error</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb text-uppercase">
+                <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="#">Auth</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">Auth Error</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+
+<br>
+<div class="container p-5">
+    <hr>
+    <p class="fs-1 text-center"><strong>You are trying to register a user with an email that is associated with another account! Use a unique email for every user that is to be registered</strong></p>
+    <hr>
+</div>
+<br>
+
+{% endblock body %}

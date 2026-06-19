@@ -1,0 +1,33 @@
+{% extends "BlogApp/base.html" %}
+
+{% block body %}
+
+<!-- Page Header Start -->
+<div class="container-fluid page-header mb-5 py-5">
+    <div class="container">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Login</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb text-uppercase">
+                <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="#">Auth</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">Login</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+
+<!-- Page Header End -->
+<br>
+    <div class="container">
+        <form action="" class="form-control" method=POST>
+            {% csrf_token %}
+            {{form.as_p}}
+            <button class="btn btn-primary" type="submit">Submit</button>
+            <br>
+            <p class="fs-5 text-center">Register a new account by clicking <a href="/auth/register">here</a></p>
+            <p class="fs-5 text-center">Forgot Password? Reset password by clicking <a href="/auth/reset-password">here</a></p>
+        </form>
+    </div>
+<br>
+{% endblock body %}

@@ -1,0 +1,150 @@
+{% extends "BlogApp/base.html" %}
+{% block body %}
+
+<div class="container-fluid page-header mb-5 py-5">
+    <div class="container">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Applicant Tracking</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb text-uppercase">
+                <li class="breadcrumb-item"><a class="text-white" href="/auth/dashboard">Dashboard</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">{{ job.title }} Applicants</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+
+
+<div class="container py-5">
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-8">
+            <h2 class="text-primary fw-bold mb-1">Candidates for: {{ job.title }}</h2>
+            <p class="text-muted"><i class="fa fa-users me-2"></i>Total Applicants: {{ applications.count }}</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <a href="/auth/dashboard" class="btn btn-outline-secondary fw-bold">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            {% for application in applications %}
+            <div class="card shadow-sm border-0 rounded-3 mb-4 border-start border-4 border-primary">
+                <div class="card-body p-4">
+                    <div class="row">
+                        
+                        <div class="col-md-8">
+                            <h4 class="text-dark fw-bold mb-1">{{ application.applicant.get_full_name|default:application.applicant.username }}</h4>
+                            
+                            {% comment %} <div class="d-flex flex-wrap gap-2 mt-2 mb-3">
+                                {% if application.applicant.profile.skill_level %}
+                                    <span class="badge bg-dark"><i class="fa fa-code text-info me-1"></i>{{ application.applicant.profile.skill_level|title }}</span>
+                                {% endif %}
+                                <span class="badge bg-dark"><i class="fa fa-star text-warning me-1"></i>{{ application.applicant.profile.xp|default:"0" }} XP</span>
+                                <span class="badge bg-dark"><i class="fa fa-check-circle text-success me-1"></i>{{ application.applicant.profile.problems_solved|default:"0" }} Solved</span>
+                            </div> {% endcomment %}
+
+                            <div class="text-muted small mb-3">
+                                <i class="fa fa-envelope me-2"></i>{{ application.applicant.email }}<br>
+                                <i class="fa fa-clock me-2"></i>Applied: {{ application.applied_at|date:"M d, Y h:i A" }}<br>
+                                <i class="fa fa-calendar-check me-2"></i>Availability: <strong>{{ application.get_availability_display }}</strong>
+                            </div>
+
+                            {% if application.applicant.profile.interests %}
+                            <div class="mb-3 text-muted small">
+                                <strong><i class="fa fa-bolt me-2 text-warning"></i>Interests:</strong> {{ application.applicant.profile.interests }}
+                            </div>
+                            {% endif %}
+
+                            {% if application.relevant_project_url %}
+                                <div class="mb-3 small">
+                                    <strong><i class="fa fa-link me-2"></i>Project Link:</strong> 
+                                    <a href="{{ application.relevant_project_url }}" target="_blank" class="text-primary">{{ application.relevant_project_url }}</a>
+                                </div>
+                            {% endif %}
+
+                            {% if application.cover_letter %}
+                                <div class="p-3 bg-light rounded border mt-3">
+                                    <strong class="d-block mb-2 text-dark">Cover Letter:</strong>
+                                    <div class="text-muted" style="font-size: 0.95rem;">
+                                        {{ application.cover_letter|safe }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-4 text-md-end mt-4 mt-md-0 d-flex flex-column justify-content-between border-start">
+                            
+                            <div class="mb-4 text-start ps-md-3">
+                                <label class="form-label fw-bold text-dark small mb-1">Update Application Status:</label>
+                                <form method="POST" action="">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="application_id" value="{{ application.id }}">
+                                    <div class="input-group input-group-sm">
+                                        <select name="new_status" class="form-select bg-light border-secondary">
+                                            {% for key, value in status_choices %}
+                                                <option value="{{ key }}" {% if application.status == key %}selected{% endif %}>
+                                                    {{ value }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                        <button type="submit" class="btn btn-outline-primary fw-bold">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                            <div class="d-grid gap-2 ps-md-3 mt-auto">
+                                <a href="{{ application.cv.url }}" target="_blank" class="btn btn-primary fw-bold shadow-sm">
+                                    <i class="fa fa-file-pdf me-2"></i>View CV
+                                </a>
+                                <a href="/marketplace/application/{{application.id}}/profile/" class="btn btn-outline-primary fw-bold shadow-sm">
+                                    <i class="fa fa-user me-2"></i>View Full Profile
+                                </a>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="text-center py-5 bg-light rounded border">
+                <i class="fa fa-folder-open fa-3x text-muted mb-3"></i>
+                <h4 class="text-dark">No applicants yet</h4>
+                <p class="text-muted">When developers apply to this role, their CVs will appear here.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% if applications.has_other_pages %}
+    <div class="mt-5" id="applicant-tracking-pagination">
+        <nav aria-label="Applicant navigation">
+            <ul class="pagination justify-content-center">
+                {% if applications.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link shadow-sm" href="?applicant_page={{ applications.previous_page_number }}#applicant-tracking-pagination">Previous</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link shadow-sm">Previous</span></li>
+                {% endif %}
+                
+                <li class="page-item active">
+                    <span class="page-link shadow-sm fw-bold">Page {{ applications.number }} of {{ applications.paginator.num_pages }}</span>
+                </li>
+                
+                {% if applications.has_next %}
+                    <li class="page-item">
+                        <a class="page-link shadow-sm" href="?applicant_page={{ applications.next_page_number }}#applicant-tracking-pagination">Next</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link shadow-sm">Next</span></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    {% endif %}
+
+
+
+{% endblock %}

@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeVisor AI Coach</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <link rel="stylesheet" href="{% static 'NexusAIApp/chat.css' %}">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <button class="new-chat-btn" onclick="window.location.reload()">
+            <i class="bi bi-plus-lg me-2"></i> New Chat
+        </button>
+        
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search conversations...">
+        </div>
+
+        <div class="history-list" id="historyList">
+            {% for session in sessions %}
+                <div class="history-item" onclick="loadSession({{ session.id }})">
+                    <i class="bi bi-chat-left-text me-2"></i> {{ session.title }}
+                </div>
+            {% empty %}
+                <div class="p-3 text-center text-muted" style="font-size: 0.8rem;">No conversations yet.</div>
+            {% endfor %}
+        </div>
+    </aside>
+
+    <main class="chat-container">
+        {% csrf_token %}
+        
+        <header class="chat-header">
+            <button class="mobile-menu-btn d-md-none">
+                <i class="bi bi-list"></i>
+            </button>
+            
+            <div class="fw-bold tracking-wider" style="letter-spacing: 1px;">
+                <a href="/" class="navbar-brand">CodeVisor AI</a>
+            </div>
+            
+            <div class="d-flex gap-3 align-items-center">
+                <span class="badge bg-dark border border-secondary" style="font-weight: 400;">
+                    <i class="bi bi-person me-1"></i> {{ user.username }}
+                </span>
+                {% comment %} <a href="/auth/logout" class="text-dim" title="Logout"><i class="bi bi-box-arrow-right"></i></a> {% endcomment %}
+            </div>
+        </header>
+
+        <div class="message-viewport" id="viewport">
+            <div class="msg bot">
+                <div class="avatar bot-avatar"><i class="bi bi-robot"></i></div>
+                <div class="bubble">
+                    <div class="content-text">
+                        Hello, **{{ user.username }}**. I am CodeVisor AI assistant. How can we improve your code today?
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-section">
+            <!--
+            <div class="input-box">
+                <button class="btn btn-link text-dim p-0" id="micBtn" title="Voice Input"><i class="bi bi-mic"></i></button>
+                {% comment %} <input type="text" id="userIn" placeholder="Type your message here..." autocomplete="off"> {% endcomment %}
+                
+                <textarea id="userIn" placeholder="Type your message here..." rows="1" autocomplete="off"></textarea>
+                <button class="btn btn-link p-0" style="color: var(--accent);" onclick="handleSend()">
+                    <i class="bi bi-send-fill"></i>
+                </button>
+            </div> -->
+
+            <div class="input-box">
+                <button class="btn btn-link text-dim p-0" id="micBtn" title="Voice Input">
+                    <i class="bi bi-mic"></i>
+                </button>
+                
+                <textarea id="userIn" placeholder="Type your message here..." rows="1" autocomplete="off"></textarea>
+                
+                <button class="btn btn-link p-0" style="color: var(--accent);" onclick="handleSend()">
+                    <i class="bi bi-send-fill"></i>
+                </button>
+            </div>
+            <p class="text-center text-white mt-2" style="font-size: 0.65rem; opacity: 0.8;">
+                CodeVisor AI may produce inaccurate info. Do not share any personal information!
+            </p>
+        </div>
+    </main>
+
+    
+    <script src="{% static 'NexusAIApp/chat.js' %}"></script>
+   
+    <script>
+        // Only keep the markdown initializer here
+        window.onload = () => {
+            const firstMsg = document.querySelector('.bot .content-text');
+            if(firstMsg && typeof md !== 'undefined') {
+                firstMsg.innerHTML = md.render(firstMsg.innerText);
+            }
+        };
+
+        /* REMOVED: The dummy loadSession(id) function.
+           Now the browser will correctly use the async loadSession 
+           defined inside your chat.js file.
+        */
+    </script>
+</body>
+</html>
+

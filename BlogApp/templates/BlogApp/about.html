@@ -1,0 +1,103 @@
+{%extends 'BlogApp/base.html'%}
+{%block body%}
+
+<!-- Page Header Start -->
+<div class="container-fluid page-header mb-5 py-5">
+    <div class="container">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">About</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb text-uppercase">
+                <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">About</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+    <!-- About Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <h6 class="text-secondary text-uppercase">About Us</h6>
+                    <h1 class="mb-4">A platform for Competitive Coding</h1>
+                    <p class="mb-4">CodeVisor is an AI based Competitive Coding platform that enables its users to practice coding with real life, project-based examples</p>
+                    <p class="fw-medium text-primary"><i class="fa fa-check text-success me-3"></i>Master The Art of Problem Solving</p>
+                    <p class="fw-medium text-primary"><i class="fa fa-check text-success me-3"></i>Compete with your friends via Code Battles</p>
+                    <p class="fw-medium text-primary"><i class="fa fa-check text-success me-3"></i>AI based assistant for coding problems</p>
+                    
+                </div>
+                <div class="col-lg-6 pt-4" style="min-height: 500px;">
+                    <div class="position-relative h-100 wow fadeInUp" data-wow-delay="0.5s">
+                        <img class="position-absolute img-fluid w-100 h-100" src="/static/BlogApp/img/about-1.jpg" style="object-fit: cover; padding: 0 0 50px 100px;" alt="">
+                        <img class="position-absolute start-0 bottom-0 img-fluid bg-white pt-2 pe-2 w-50 h-50" src="/static/BlogApp/img/about-2.jpg" style="object-fit: cover;" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- About End -->
+
+
+    <!-- Service Start -->
+    <div class="container-fluid py-5 px-4 px-lg-0">
+        <div class="row g-0">
+            <div class="col-lg-3 d-none d-lg-flex">
+                <div class="d-flex align-items-center justify-content-center bg-primary w-100 h-100">
+                    <h1 class="display-3 text-white m-0" style="transform: rotate(-90deg);">Built with the latest Tech</h1>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-9">
+                <div class="ms-lg-5 ps-lg-5">
+                    <div class="text-center text-lg-start wow fadeInUp" data-wow-delay="0.1s">
+                        {% comment %} <h6 class="text-secondary text-uppercase">Tech Stack</h6> {% endcomment %}
+                        <h1 class="mb-5">Tech Stack</h1>
+                    </div>
+                    <div class="owl-carousel service-carousel position-relative wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="bg-light p-4">
+                            <div class="d-flex align-items-center justify-content-center border border-5 border-white mb-4" style="width: 75px; height: 75px;">
+                                <i class="fab fa-python fa-2x text-dark mb-3"></i>
+                            </div>
+                            <h4 class="mb-3">Python</h4>
+                            <p>The most popular and beginner friendly programming language</p>
+                            <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Easy Syntax</p>
+                            <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Community Support</p>
+                            <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Diverse Fields</p>
+                        </div>
+                        <div class="bg-light p-4">
+                            <div class="d-flex align-items-center justify-content-center border border-5 border-white mb-4" style="width: 75px; height: 75px;">
+                                <i class="fas fa-laptop fa-2x text-dark mb-3"></i>
+                            </div>
+                            <h4 class="mb-3">Django</h4>
+                            <p>The web framework for perfectionists</p>
+                            <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Robust Architecture</p>
+                            <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Open Source</p>
+                            <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>RBAC Auth Structure</p>
+                        </div>
+                        <div class="bg-light p-4">
+                            <div class="d-flex align-items-center justify-content-center border border-5 border-white mb-4" style="width: 75px; height: 75px;">
+                                <i class="fas fa-brain fa-2x text-dark mb-3"></i>
+                            </div>
+                            <h4 class="mb-3">Llama</h4>
+                            <p>The LLM developed by programmers for the programmers</p>
+                            <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Great for Coding tasks</p>
+                            <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Open Source</p>
+                            <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Quick Responses</p>
+                        </div>
+                        <div class="bg-light p-4">
+                            <div class="d-flex align-items-center justify-content-center border border-5 border-white mb-4" style="width: 75px; height: 75px;">
+                                <i class="fas fa-database fa-2x text-dark mb-3"></i>
+                            </div>
+                            <h4 class="mb-3">PGSQL</h4>
+                            <p>Database for handling exceptional load</p>
+                            <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Fast Response</p>
+                            <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Flexiblility</p>
+                            <p class="text-primary fw-medium"><i class="fa fa-check text-success me-2"></i>Enhanced CRUD OPs</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Service End -->
+{%endblock body%}

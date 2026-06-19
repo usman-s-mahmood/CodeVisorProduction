@@ -1,0 +1,38 @@
+{% extends "BlogApp/base.html" %}
+
+{% block body %}
+<div class="container-fluid page-header mb-5 py-5">
+    <div class="container">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Edit Code Post</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb text-uppercase">
+                <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">Edit Code Post</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<br>
+    <div class="container">
+        <form action="" class="form-control" method=POST enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form.media}}
+            {{form.title.label}}
+            {{form.title}}
+            <label for="category">Select post category</label>
+            <select name="category" id="category" class="form-select">
+                {% for value in categories %}
+                    <option value="{{value.name}}">{{value.name}}</option>
+                {% endfor %}
+            </select>
+            {{form.tagline.label}}
+            {{form.tagline}}
+            {{form.thumbnail_url.label}} <br>
+            {{form.thumbnail_url}} <br>
+            <label for="content">Enter the content for your post</label><br>
+            {{form.content}} <br>
+            <button class="btn btn-success" type="submit">Submit</button>
+        </form>
+    </div>
+<br>
+{% endblock body %}

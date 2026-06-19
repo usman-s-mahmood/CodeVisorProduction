@@ -1,0 +1,58 @@
+{% extends "BlogApp/base.html" %}
+{% block body %}
+
+<div class="container-fluid page-header mb-5 py-5">
+    <div class="container">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Create Certification Topic</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb text-uppercase">
+                <li class="breadcrumb-item"><a class="text-white" href="/auth/dashboard">Dashboard</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">Add Topic</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card shadow-sm border-0 rounded-3 border-top border-primary border-4">
+                <div class="card-body p-5">
+                    
+                    <div class="d-flex align-items-center mb-4 pb-2 border-bottom">
+                        <i class="fa fa-plus-circle fa-2x text-primary me-3"></i>
+                        <div>
+                            <h3 class="mb-0 text-dark fw-bold">Add New Topic</h3>
+                            <p class="text-muted mb-0 small">Seed a brand new generic tech domain into the adaptive exam index.</p>
+                        </div>
+                    </div>
+
+                    <form method="POST" action="/practice/certifications/add-topic/">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <label for="id_name" class="form-label fw-bold text-dark">System Identifier / Codename</label>
+                            <input type="text" name="name" id="id_name" class="form-control" placeholder="e.g., oop, dsa, ccna, databases" required>
+                            <div class="form-text text-muted small">Must be lowercase, single-worded, with no spaces. Used as a reference key for the AI template models.</div>
+                        </div>
+
+                        <div class="mb-5">
+                            <label for="id_display_name" class="form-label fw-bold text-dark">Display Name</label>
+                            <input type="text" name="display_name" id="id_display_name" class="form-control" placeholder="e.g., Object Oriented Programming, Data Structures & Algorithms" required>
+                            <div class="form-text text-muted small">The formal public title that students will view on their active dashboards.</div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="/auth/dashboard" class="btn btn-outline-secondary fw-bold px-4">Cancel</a>
+                            <button type="submit" class="btn btn-primary fw-bold px-5">Publish Topic</button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        
+{% endblock %}

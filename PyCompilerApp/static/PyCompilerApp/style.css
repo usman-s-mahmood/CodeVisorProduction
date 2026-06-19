@@ -1,0 +1,162 @@
+:root {
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --neon-blue: #00d2ff;
+    --neon-purple: #9d50bb;
+    --terminal-green: #00ff41;
+}
+
+body {
+    background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
+    color: #e0e0e0;
+    font-family: 'Inter', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+}
+
+/* Glass Navbar */
+.navbar {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.navbar-brand {
+    font-weight: 800;
+    letter-spacing: 1px;
+    background: linear-gradient(to right, var(--neon-blue), var(--neon-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Main Layout Split */
+.main-container {
+    height: calc(100vh - 56px);
+    display: flex;
+    padding: 15px;
+    gap: 15px;
+}
+
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.panel-header {
+    padding: 10px 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid var(--glass-border);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--neon-blue);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Editor Section */
+#editor {
+    flex-grow: 1;
+}
+
+/* Terminal Section */
+#console-container {
+    flex-grow: 1;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+#console {
+    height: 100%;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    font-family: 'Fira Code', monospace;
+    color: var(--terminal-green);
+    outline: none;
+}
+
+/* Controls */
+.run-btn {
+    background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+    border: none;
+    color: white;
+    font-weight: bold;
+    padding: 8px 25px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
+    transition: 0.3s;
+}
+
+.run-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 210, 255, 0.5);
+}
+
+/* Blinking Cursor */
+.cursor {
+    display: inline-block;
+    width: 8px;
+    height: 15px;
+    background: var(--terminal-green);
+    margin-left: 2px;
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink { 50% { opacity: 0; } }
+
+
+/* ================= MOBILE FIX ================= */
+
+/* Tablet & below */
+@media (max-width: 992px) {
+
+    body {
+        overflow: auto;
+        height: auto;
+    }
+
+    .main-container {
+        flex-direction: column; /* 🔥 stack vertically */
+        height: auto;
+    }
+
+    .glass-panel {
+        width: 100% !important; /* 🔥 override w-50 */
+        height: 50vh; /* split screen vertically */
+    }
+
+    #editor, #console-container {
+        height: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+
+    .main-container {
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .glass-panel {
+        height: 45vh;
+    }
+
+    .panel-header {
+        font-size: 0.75rem;
+        padding: 8px 12px;
+    }
+
+    .run-btn {
+        padding: 6px 15px;
+        font-size: 0.8rem;
+    }
+}
+

@@ -1,0 +1,43 @@
+venv/
+virt/
+misc/
+node_modules/
+*.env
+*.pem
+secrets.json
+
+
+# === Python & Django ===
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+.env
+db.sqlite3
+# media/ # intentionally commenting it in order to test the CV uploads
+static_root/
+
+# === RAG & Vector DB (CRITICAL) ===
+# We do not push the 500MB+ vector binaries to GitHub
+chroma_db/
+processed_chunks.json
+knowledge_base/
+
+# === Environment & API Keys ===
+# Never push your Cohere or Pinecone keys!
+.python-version
+.secrets
+secrets.json
+
+# === OS & IDE ===
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.log
+
+# === Node/JS (If using npm) ===
+node_modules/
