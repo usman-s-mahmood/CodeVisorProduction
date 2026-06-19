@@ -1,7 +1,44 @@
 services:
-  web:
-    build: .
+  migrate:
+    build:
+      context: .
+    command: python manage.py migrate --noinput
+    restart: "no"
+    environment:
+      # These will be pulled securely from your Defang configuration
+      - DATABASE_URL
+      - SECRET_KEY
+      - DEBUG=False
+    deploy:
+      resources:
+        reservations:
+          cpus: "0.25"
+          memory: 256M
+
+  app:
+    build:
+      context: .
+    command: daphne -b 0.0.0.0 -p 8000 CodeVisorProject.asgi:application
     ports:
-      - "8000:8000"
-    # If you are using Daphne or Gunicorn for production, swap this command out
-    command: python manage.py runserver 0.0.0.0:8000
+      - mode: ingress
+        target: 8000
+        published: 8000
+    environment:
+      # Just list the keys here. Provide the values in the Defang dashboard.
+      - SECRET_KEY
+      - DEBUG=False
+      - DATABASE_URL
+      - EMAIL_HOST
+      - EMAIL_HOST_USER
+      - EMAIL_HOST_PASSWORD
+      - IMAGEKIT_PRIV_KEY
+      - IMAGEKIT_PUB_KEY
+      - IMAGEKIT_URL
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    deploy:
+      resources:
+        reservations:
+          cpus: "0.5"
+          memory: 512M
